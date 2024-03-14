@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Configuracion\ConfigMenuController;
 use App\Http\Controllers\Seguridad\LoginController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+// Ruta Base de datos Migrar
+Route::get('/migrar-bd', function () {echo Artisan::call('migrate:refresh');});
+//********************************************************************************* */
 Route::get('/', function () {return view('extranet.login.login');});
 Route::get('home', function () {return view('extranet.login.login');})->name('home');
 
