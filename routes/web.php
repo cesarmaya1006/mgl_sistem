@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // Ruta Base de datos Migrar
-Route::get('/migrar-bd', function () {echo Artisan::call('migrate:refresh');});
+Route::get('/migrar-bd', function () {
+    echo Artisan::call('migrate:refresh');
+    echo Artisan::call('db:seed');
+});
 //********************************************************************************* */
 Route::get('/', function () {return view('extranet.login.login');});
 Route::get('home', function () {return view('extranet.login.login');})->name('home');
