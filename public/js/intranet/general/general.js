@@ -53,6 +53,8 @@ var Sistema = function () {
                 toastr.info(mensaje, titulo);
             } else if (tipo == 'warning') {
                 toastr.warning(mensaje, titulo);
+            } else if (tipo == 'secondary') {
+                toastr.secondary(mensaje, titulo);
             }
         },
     }
@@ -146,6 +148,7 @@ function mayus(e) {
             });
         }
 
+
         $(".tabla_data_table").DataTable({
             lengthMenu: [10, 15, 25, 50, 75, 100],
             pageLength: 15,
@@ -223,6 +226,7 @@ function mayus(e) {
                     extend: "pdfHtml5",
                     orientation: "landscape",
                     pageSize: "Legal",
+                    title:$('#titulo_tabla').val(),
                 },
             ],
             language: {
@@ -254,6 +258,7 @@ function mayus(e) {
                 {
                     extend: "pdfHtml5",
                     pageSize: "Legal",
+                    title:$('#titulo_tabla').val(),
                 },
             ],
             language: {

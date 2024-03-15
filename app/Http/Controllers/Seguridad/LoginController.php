@@ -21,6 +21,9 @@ class LoginController extends Controller
             $rol = $this->verificarUsuarioRol($usuario, $request);
             if ($rol) {
                 $this->setSession($rol,$request);
+                //------------------------------------------------------------------
+
+                ///-------------------------------------------------------------------
             } else {
                 return back()->withErrors(['email' => 'El usuario no tiene roles activos.',])->onlyInput('email');
             }
@@ -31,6 +34,7 @@ class LoginController extends Controller
 
     //****************************************************************************************** */
     public function verificarUsuarioRol($usuario, $request){
+        $usuario->setSession();
         $rol = $usuario->rol()->where('estado',true)->first();
         if (!$rol) {
             Auth::logout();

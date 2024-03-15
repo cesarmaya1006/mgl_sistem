@@ -16,23 +16,45 @@ class ConfigMenuSeeder extends Seeder
     {
         $menus = [
             //Menu Inicio
-            ['nombre' => 'Dashboard', 'menu_id' => null, 'url' => 'dashboard', 'orden' => '1', 'icono' => 'mdi mdi-view-dashboard','Array_1' =>[]],
+            ['nombre' => 'Dashboard', 'menu_id' => null, 'url' => 'dashboard', 'orden' => '1', 'icono' => 'mdi mdi-view-dashboard', 'Array_1' => []],
             //Menu configuración 2
-            ['nombre' => 'Configuración', 'menu_id' => null, 'url' => '#', 'orden' => '2', 'icono' => 'fas fa-cogs',
+            [
+                'nombre' => 'Configuración Sistema', 'menu_id' => null, 'url' => '#', 'orden' => '2', 'icono' => 'fas fa-cogs',
                 'Array_1' => [
                     //Menu menu
-                    ['nombre' => 'Menús', 'menu_id' => '2',  'url' => 'dashboard/configuracion/menu', 'orden' => '1',  'icono' => 'fas fa-list-ul', 'Array_2' => []],
+                    ['nombre' => 'Menús', 'menu_id' => '2',  'url' => 'dashboard/configuracion_sis/menu', 'orden' => '1',  'icono' => 'fas fa-list-ul', 'Array_2' => []],
                     //Menu Roles
-                    ['nombre' => 'Roles', 'menu_id' => '2',  'url' => 'dashboard/configuracion/rol', 'orden' => '2',  'icono' => 'fas fa-users', 'Array_2' => []],
+                    ['nombre' => 'Roles', 'menu_id' => '2',  'url' => 'dashboard/configuracion_sis/rol', 'orden' => '2',  'icono' => 'fas fa-users', 'Array_2' => []],
                     //Menu Menu_Roles
-                    ['nombre' => 'Menú - Roles', 'menu_id' => '2',  'url' => 'dashboard/configuracion/permisos_menus_rol', 'orden' => '2',  'icono' => 'fas fa-chalkboard-teacher', 'Array_2' => []],
+                    ['nombre' => 'Menú - Roles', 'menu_id' => '2',  'url' => 'dashboard/configuracion_sis/permisos_menus_rol', 'orden' => '2',  'icono' => 'fas fa-chalkboard-teacher', 'Array_2' => []],
                     //Menu Empresas
-                    ['nombre' => 'Empresas', 'menu_id' => '2',  'url' => 'dashboard/configuracion/empresas', 'orden' => '2',  'icono' => 'fas fa-industry', 'Array_2' => []],
+                    ['nombre' => 'Empresas', 'menu_id' => '2',  'url' => 'dashboard/configuracion_sis/empresas', 'orden' => '2',  'icono' => 'fas fa-industry', 'Array_2' => []],
+
+                ],
+            ],
+            [
+                'nombre' => 'Configuración', 'menu_id' => null, 'url' => '#', 'orden' => '3', 'icono' => 'fas fa-cogs',
+                'Array_1' => [
+                    //Menu organigrama
+                    [
+                        'nombre' => 'Organigrama', 'menu_id' => '2',  'url' => '#', 'orden' => '1',  'icono' => 'fas fa-sitemap',
+                        'Array_2' => [
+                            //Menu menu
+                            ['nombre' => 'Áreas', 'menu_id' => '2',  'url' => 'dashboard/configuracion/areas', 'orden' => '1',  'icono' => 'fas fa-project-diagram'],
+                            //Menu Roles
+                            ['nombre' => 'Cargos', 'menu_id' => '2',  'url' => 'dashboard/configuracion/cargos', 'orden' => '2',  'icono' => 'fas fa-user-tie'],
+
+                        ]
+                    ],
 
                 ],
             ],
         ];
         $x = 0;
+        $n = 0;
+        $m = 0;
+        $l = 0;
+        $p = 0;
         foreach ($menus as $menu) {
             $x++;
             DB::table('config_menu')->insert([
@@ -43,30 +65,36 @@ class ConfigMenuSeeder extends Seeder
                 'icono' => $menu['icono'],
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]);
+            $p++;
+            $n = $p;
             $y = 0;
             if (count($menu['Array_1']) > 0) {
                 foreach ($menu['Array_1'] as $sub_menu_1) {
                     $y++;
                     DB::table('config_menu')->insert([
-                        'config_menu_id' => $x,
+                        'config_menu_id' => $n,
                         'nombre' => utf8_encode(utf8_decode($sub_menu_1['nombre'])),
                         'url' => $sub_menu_1['url'],
                         'orden' => $y,
                         'icono' => $sub_menu_1['icono'],
                         'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                     ]);
+                    $p++;
+                    $m = $p;
                     $z = 0;
                     if (count($sub_menu_1['Array_2']) > 0) {
                         foreach ($sub_menu_1['Array_2'] as $sub_menu_2) {
-                            $y++;
+                            $z++;
                             DB::table('config_menu')->insert([
-                                'config_menu_id' => $y,
+                                'config_menu_id' => $m,
                                 'nombre' => utf8_encode(utf8_decode($sub_menu_2['nombre'])),
                                 'url' => $sub_menu_2['url'],
                                 'orden' => $z,
                                 'icono' => $sub_menu_2['icono'],
                                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                             ]);
+                            $p++;
+                            $l= $p;
                         }
                     }
                 }
