@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Configuracion\ConfigEmpresaController;
 use App\Http\Controllers\Configuracion\ConfigMenuController;
+use App\Http\Controllers\Configuracion\ConfigMenuRolController;
+use App\Http\Controllers\Configuracion\ConfigRolController;
 use App\Http\Controllers\Seguridad\LoginController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -46,5 +49,37 @@ Route::prefix('dashboard')->middleware('auth')->group(function(){
             Route::get('guardar-orden', 'guardarOrden')->name('menu.ordenar');
         });
         // ------------------------------------------------------------------------------------
+        // Ruta Administrador del Sistema Roles
+        Route::controller(ConfigRolController::class)->prefix('rol')->group(function(){
+            Route::get('', 'index')->name('rol.index');
+            Route::get('crear', 'create')->name('rol.create');
+            Route::get('editar/{id}', 'edit')->name('rol.edit');
+            Route::post('guardar', 'store')->name('rol.store');
+            Route::put('actualizar/{id}', 'update')->name('rol.update');
+            Route::delete('eliminar/{id}', 'destroy')->name('rol.destroy');
+        });
+        // ----------------------------------------------------------------------------------------
+        /* Ruta Administrador del Sistema Menu Rol*/
+        Route::controller(ConfigMenuRolController::class)->prefix('permisos_menus_rol')->group(function(){
+            Route::get('', 'index')->name('menu.rol.index');
+            Route::post('guardar', 'store')->name('menu.rol.store');
+        });
+        // ----------------------------------------------------------------------------------------
+    });
+    Route::middleware('Administrador')->group(function(){
+        Route::prefix('configuracion')->group(function(){
+            // Ruta Administrador del SEmpresa
+            // ------------------------------------------------------------------------------------
+            Route::controller(ConfigEmpresaController::class)->prefix('empresas')->group(function(){
+                Route::get('', 'index')->name('empresa.index');
+                Route::get('crear', 'create')->name('empresa.create');
+                Route::get('editar/{id}', 'edit')->name('empresa.edit');
+                Route::post('guardar', 'store')->name('empresa.store');
+                Route::put('actualizar/{id}', 'update')->name('empresa.update');
+                Route::get('eliminar/{id}', 'destroy')->name('empresa.destroy');
+                Route::get('guardar-orden', 'guardarOrden')->name('empresa.ordenar');
+            });
+            // ----------------------------------------------------------------------------------------
+        });
     });
 });

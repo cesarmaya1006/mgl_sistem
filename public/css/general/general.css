@@ -6,3 +6,40 @@
     -moz-box-shadow: 8px 8px 4px 0px rgba(0,0,0,0.85);
     box-shadow: 8px 8px 4px 0px rgba(0,0,0,0.85);
 }
+
+.btn-accion-tabla {
+    cursor: pointer;
+    border: none;
+    background: 0;
+    padding: 0 0 0 5px;
+    font-size: 14px !important;
+    line-height: 1.5;
+}
+
+.box-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5% 0;
+}
+
+.img-circle {
+    background-color: white;
+    padding: 5px;
+    min-width: 40px;
+    min-height: 40px;
+}
+
+label.requerido:after {
+    content: ' *';
+    color: red;
+}
+
+.modal-dialog{
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 5px;
+
+    border-top: 8px solid;
+    border-image: linear-gradient(to right,  #009CFF 0%, #1DD600 100%) 1;
+}
