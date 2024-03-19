@@ -38,9 +38,9 @@
            with font-awesome or any other icon font library -->
                 @foreach ($menusComposer as $key => $item)
                     @if ($item['config_menu_id'] != 0)
-                    @break
-                @endif
-                @include("layouts.menu-item", ["item" => $item])
+                        @break
+                    @endif
+                    @include("layouts.menu-item", ["item" => $item])
                 @endforeach
             </ul>
         </nav>

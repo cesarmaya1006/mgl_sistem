@@ -10,7 +10,7 @@
 @endsection
 <!-- ************************************************************* -->
 @section('titulo_panel')
-<i class="fas fa-industry ml-4" aria-hidden="true"></i> Configuración - Áreas
+<i class="fas fa-industry ml-4" aria-hidden="true"></i> Configuración - Empresas
 @endsection
 <!-- ************************************************************* -->
 @section('contenido')
@@ -22,11 +22,11 @@
                     <div class="row">
                         <div class="col-12 col-md-6 mb-4 mb-md-0">
                             <h4 class="card-title">
-                                <strong>Registro Nueva Área</strong>
+                                <strong>Registro Nueva Empresa</strong>
                             </h4>
                         </div>
                         <div class="col-12 col-md-6 mb-4 mb-md-0">
-                            <a href="{{ route('area.index') }}" class="btn btn-success btn-sm btn-sombra text-center pl-3 pr-3 float-end" style="font-size: 0.9em;">
+                            <a href="{{ route('empresa.index') }}" class="btn btn-success btn-sm btn-sombra text-center pl-3 pr-3 float-end" style="font-size: 0.9em;">
                                 <i class="fas fa-reply mr-2"></i>
                                 Volver
                             </a>
@@ -41,10 +41,10 @@
                         @include('includes.error-form')
                     </div>
                     <div class="col-12">
-                        <form action="{{ route('area.store') }}" class="form-horizontal row" method="POST" autocomplete="off" enctype="multipart/form-data">
+                        <form action="{{ route('empresa.store') }}" class="form-horizontal row" method="POST" autocomplete="off" enctype="multipart/form-data">
                             @csrf
                             @method('post')
-                            @include('intranet.empresa.area.form')
+                            @include('intranet.config.empresas.form')
                             <!-- /.card-body -->
                             <div class="row mt-5">
                                 <div class="col-12">
@@ -66,6 +66,6 @@
 <!-- ************************************************************* -->
 <!-- script hoja -->
 @section('scripts_pagina')
-<script src="{{ asset('js/intranet/empresas/area/crear.js') }}"></script>
+
 @endsection
 <!-- ************************************************************* -->

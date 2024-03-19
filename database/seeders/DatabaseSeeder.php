@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             ConfigTipoDocumentoSeeder::class,
             ConfigUsuarioSeeder::class,
             ConfigMenuSeeder::class,
+            ConfigEmpresa::class,
         ]);
     }
 }

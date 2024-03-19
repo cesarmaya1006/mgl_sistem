@@ -88,13 +88,15 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::prefix('configuracion')->middleware(['SuperAdmin','Administrador','AdminEmpresa'])->group(function () {
         // Ruta Administrador del SEmpresa
         // ------------------------------------------------------------------------------------
-        Route::controller(EmpresaAreaController::class)->prefix('area')->group(function () {
+        Route::controller(EmpresaAreaController::class)->prefix('areas')->group(function () {
             Route::get('', 'index')->name('area.index');
             Route::get('crear', 'create')->name('area.create');
             Route::get('editar/{id}', 'edit')->name('area.edit');
             Route::post('guardar', 'store')->name('area.store');
             Route::put('actualizar/{id}', 'update')->name('area.update');
             Route::delete('eliminar/{id}', 'destroy')->name('area.destroy');
+            Route::get('getDependencias/{id}', 'getDependencias')->name('area.getDependencias');
+            Route::get('getAreas', 'getAreas')->name('area.getAreas');
         });
         // ----------------------------------------------------------------------------------------
     });

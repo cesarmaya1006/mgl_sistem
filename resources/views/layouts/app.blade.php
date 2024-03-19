@@ -9,7 +9,7 @@
     @yield ('estilosHojas')
     <!-- -------------------------------------- -->
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed" onload="menu_ul()">
     <div class="wrapper">
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">

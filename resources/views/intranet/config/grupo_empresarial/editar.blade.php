@@ -10,7 +10,7 @@
 @endsection
 <!-- ************************************************************* -->
 @section('titulo_panel')
-<i class="fas fa-industry ml-4" aria-hidden="true"></i> Configuración - Áreas
+<i class="fas fa-industry ml-4" aria-hidden="true"></i> Configuración - Empresas
 @endsection
 <!-- ************************************************************* -->
 @section('contenido')
@@ -22,11 +22,11 @@
                     <div class="row">
                         <div class="col-12 col-md-6 mb-4 mb-md-0">
                             <h4 class="card-title">
-                                <strong>Registro Nueva Área</strong>
+                                <strong>Editar Empresa</strong>
                             </h4>
                         </div>
                         <div class="col-12 col-md-6 mb-4 mb-md-0">
-                            <a href="{{ route('area.index') }}" class="btn btn-success btn-sm btn-sombra text-center pl-3 pr-3 float-end" style="font-size: 0.9em;">
+                            <a href="{{ route('empresa.index') }}" class="btn btn-success btn-sm btn-sombra text-center pl-3 pr-3 float-end" style="font-size: 0.9em;">
                                 <i class="fas fa-reply mr-2"></i>
                                 Volver
                             </a>
@@ -40,15 +40,20 @@
                         @include('includes.mensaje')
                         @include('includes.error-form')
                     </div>
+                    @if (isset($empresa))
+                        <div class="col-12 mt-3 mb-5">
+                            <button id="botonEstado_id" class="btn {{$empresa->estado==1?'btn-success':'btn-secondary'}} btn-sm btn-sombra pl-4 pr-4" data_url="{{route('empresa.activar', ['id' => $empresa->id]) }}" data_estado="{{$empresa->estado}}">{{$empresa->estado==1?'Empresa Activa':'Empresa Inactiva'}}</button>
+                        </div>
+                    @endif
                     <div class="col-12">
-                        <form action="{{ route('area.store') }}" class="form-horizontal row" method="POST" autocomplete="off" enctype="multipart/form-data">
+                        <form id="formulario" action="{{ route('empresa.update',['id'=>$empresa->id]) }}) }}" class="form-horizontal row" method="POST" autocomplete="off" enctype="multipart/form-data">
                             @csrf
-                            @method('post')
-                            @include('intranet.empresa.area.form')
+                            @method('put')
+                            @include('intranet.config.empresas.form')
                             <!-- /.card-body -->
                             <div class="row mt-5">
                                 <div class="col-12">
-                                    <button type="submit" class="btn btn-primary btn-sm btn-sombra pl-4 pr-4">Guardar</button>
+                                    <button type="submit" class="btn btn-primary btn-sm btn-sombra pl-4 pr-4">Actualizar</button>
                                 </div>
                             </div>
                             <!-- /.card-footer -->
@@ -66,6 +71,6 @@
 <!-- ************************************************************* -->
 <!-- script hoja -->
 @section('scripts_pagina')
-<script src="{{ asset('js/intranet/empresas/area/crear.js') }}"></script>
+<script src="{{ asset('js/intranet/configuracion/empresas/editar.js') }}"></script>
 @endsection
 <!-- ************************************************************* -->

@@ -2,6 +2,7 @@
 
 namespace App\Models\Configuracion;
 
+use App\Models\Empresa\EmpresaArea;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -16,6 +17,12 @@ class ConfigEmpresa extends Model
     public function tipos_docu()
     {
         return $this->belongsTo(ConfigTipoDocumento::class, 'config_tipo_documento_id', 'id');
+    }
+    //----------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------
+    public function areas()
+    {
+        return $this->hasMany(EmpresaArea::class, 'config_empresa_id', 'id');
     }
     //----------------------------------------------------------------------------------
 }

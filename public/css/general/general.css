@@ -34,12 +34,3 @@ label.requerido:after {
     color: red;
 }
 
-.modal-dialog{
-    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
-    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
-    border-radius: 5px;
-
-    border-top: 8px solid;
-    border-image: linear-gradient(to right,  #009CFF 0%, #1DD600 100%) 1;
-}

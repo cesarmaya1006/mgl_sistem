@@ -107,7 +107,13 @@ function mayus(e) {
         });
     }
 
+    function menu_ul(){
+        $( "a.active" ).parent( "ul.nav-treeview" ).css("display", "block");
+    }
+
     $(document).ready(function() {
+        $( "a.active" ).parent( "ul.nav-treeview" ).css("display", "block");
+
         $(".tabla-borrando").on('submit', '.form-eliminar', function() {
             event.preventDefault();
             const form = $(this);
