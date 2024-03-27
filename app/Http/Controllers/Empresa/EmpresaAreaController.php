@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Empresa;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Configuracion\ValidacionEmpresaArea;
 use App\Models\Configuracion\ConfigEmpresa;
+use App\Models\Configuracion\GrupoEmpresa;
 use App\Models\Empresa\EmpresaArea;
 use Illuminate\Http\Request;
 
@@ -31,9 +32,14 @@ class EmpresaAreaController extends Controller
      */
     public function create()
     {
-        $empresas = ConfigEmpresa::get();
-        $areas = EmpresaArea::get();
-        return view('intranet.empresa.area.crear',compact('empresas','areas'));
+        if (session('rol_id')<3) {
+            $grupos = GrupoEmpresa::get();
+            $empresas = ConfigEmpresa::get();
+            $areas = EmpresaArea::get();
+            return view('intranet.empresa.area.crear',compact('grupos','empresas','areas'));
+        } else {
+            # code...
+        }
     }
 
     /**
@@ -59,9 +65,10 @@ class EmpresaAreaController extends Controller
     public function edit($id)
     {
         $area_edit = EmpresaArea::findOrFail($id);
+        $grupos = GrupoEmpresa::orderBy('id')->get();
         $empresas = ConfigEmpresa::get();
         $areas = EmpresaArea::where('config_empresa_id',$area_edit->config_empresa_id)->get();
-        return view('intranet.empresa.area.editar',compact('empresas','areas','area_edit'));
+        return view('intranet.empresa.area.editar',compact('grupos','empresas','areas','area_edit'));
     }
 
     /**
@@ -79,11 +86,17 @@ class EmpresaAreaController extends Controller
     public function destroy(Request $request, $id)
     {
         if ($request->ajax()) {
-            if (EmpresaArea::destroy($id)) {
-                return response()->json(['mensaje' => 'ok']);
-            } else {
+            $area = EmpresaArea::FindOrFail($id);
+            if ($area->cargos->count()) {
                 return response()->json(['mensaje' => 'ng']);
+            } else {
+                if (EmpresaArea::destroy($id)) {
+                    return response()->json(['mensaje' => 'ok']);
+                } else {
+                    return response()->json(['mensaje' => 'ng']);
+                }
             }
+
         } else {
             abort(404);
         }

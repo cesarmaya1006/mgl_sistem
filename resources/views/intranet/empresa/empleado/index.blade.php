@@ -10,7 +10,7 @@
 @endsection
 <!-- ************************************************************* -->
 @section('titulo_panel')
-<i class="fas fa-user-tie ml-4" aria-hidden="true"></i> Configuración -  Cargos
+<i class="fas fa-user-tie ml-4" aria-hidden="true"></i> Configuración -  Usuarios
 @endsection
 <!-- ************************************************************* -->
 @section('contenido')
@@ -23,11 +23,11 @@
                         <div class="row">
                             <div class="col-12 col-md-6 mb-4 mb-md-0">
                                 <h4 class="card-title">
-                                    <strong>Listado de Cargos - Grupo Empresarial {{$grupo->nombres}}</strong>
+                                    <strong>Listado de Usuarios/Empleados - Grupo Empresarial {{$grupo->nombres}}</strong>
                                 </h4>
                             </div>
                             <div class="col-12 col-md-6 mb-4 mb-md-0">
-                                <a href="{{route('cargo.create')}}" class="btn btn-success btn-sm btn-sombra pl-3 pr-5 float-md-end">
+                                <a href="{{route('empleado.create')}}" class="btn btn-success btn-sm btn-sombra pl-3 pr-5 float-md-end">
                                     <i class="fa fa-plus-circle mr-3" aria-hidden="true"></i>
                                     Nuevo registro
                                 </a>

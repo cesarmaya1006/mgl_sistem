@@ -14,6 +14,17 @@
         <label for="identificacion">Identificación</label>
         <input type="text" class="form-control form-control-sm" value="{{ old('identificacion', $empresa->identificacion ?? '') }}" name="identificacion" id="identificacion" required>
     </div>
+    <div class="col-5 col-md-2 form-group">
+        <label for="config_grupo_empresas_id">Grupo Empresarial</label>
+        <select id="config_grupo_empresas_id" class="form-control form-control-sm" name="config_grupo_empresas_id" required>
+            <option value="">Elija grupo</option>
+            @foreach ($grupos as $grupo)
+                <option value="{{ $grupo->id }}" {{isset($empresa)?$empresa->config_grupo_empresas_id == $grupo->id?'selected':'':''}}>
+                    {{ $grupo->nombres }}
+                </option>
+            @endforeach
+        </select>
+    </div>
     <div class="col-12 col-md-4 form-group">
         <label for="nombres">Empresa</label>
         <input type="text" class="form-control form-control-sm" value="{{ old('nombres', $empresa->nombres ?? '') }}" name="nombres" id="nombres" required>

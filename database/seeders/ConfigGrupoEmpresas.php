@@ -7,7 +7,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ConfigEmpresa extends Seeder
+class ConfigGrupoEmpresas extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,9 +17,8 @@ class ConfigEmpresa extends Seeder
         $datas = [
             [
                 'config_tipo_documento_id' => 6,
-                'config_grupo_empresas_id' => 1,
                 'identificacion' => '333222111',
-                'nombres' => 'Empresa de Prueba',
+                'nombres' => 'Grupo de Prueba',
                 'email' => 'prueba@gmail.com',
                 'telefono' => '987654321',
                 'direccion' => 'Calle de prueba 123',
@@ -29,12 +28,11 @@ class ConfigEmpresa extends Seeder
             ],
         ];
         DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
-        DB::table('config_empresa')->truncate();
+        DB::table('config_grupo_empresas')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
 
         foreach ($datas as $data) {
-            DB::table('config_empresa')->insert([
-                'config_grupo_empresas_id' => $data['config_grupo_empresas_id'],
+            DB::table('config_grupo_empresas')->insert([
                 'config_tipo_documento_id' => $data['config_tipo_documento_id'],
                 'identificacion' => $data['identificacion'],
                 'nombres' => $data['nombres'],

@@ -35,7 +35,6 @@ $(document).ready(function () {
             type: "GET",
             data: data,
             success: function (respuesta) {
-                console.log(respuesta);
                 if (respuesta.areasPadre.length > 0) {
                     var respuesta_html = "";
                     respuesta_html +='<option value="">Elija área</option>';
@@ -44,12 +43,41 @@ $(document).ready(function () {
                     });
                     $("#empresa_area_id").html(respuesta_html);
                     $("#caja_areas").removeClass("d-none");
-                    $("#caja_area_nueva").removeClass("d-none");
-                } else {
-                    $("#caja_area_nueva").removeClass("d-none");
                 }
             },
             error: function () {},
         });
+    });
+    $("#empresa_area_id").on("change", function () {
+        const data_url = $(this).attr("data_url");
+        const id = $(this).val();
+        var data = {
+            id: id,
+        };
+        $.ajax({
+            url: data_url,
+            type: "GET",
+            data: data,
+            success: function (respuesta) {
+                if (respuesta.cargos.length > 0) {
+                    var respuesta_html = "";
+                    respuesta_html +='<option value="">Elija cargo</option>';
+                    $.each(respuesta.cargos, function (index, item) {
+                        respuesta_html +='<option value="'+item.id+'">'+item.cargo+'</option>';
+                    });
+                    $("#empresa_cargo_id").html(respuesta_html);
+                    $("#caja_cargos").removeClass("d-none");
+                }
+            },
+            error: function () {},
+        });
+    });
+    $("#empresa_cargo_id").on("change", function () {
+        const id = $(this).val();
+        if (id!=null) {
+           $('#caja_usuario_nuevo').removeClass('d-none');
+        } else {
+            $('#caja_usuario_nuevo').addClass('d-none');
+        }
     });
 });

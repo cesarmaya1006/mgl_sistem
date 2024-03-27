@@ -2,15 +2,14 @@
 
 namespace App\Models\Configuracion;
 
-use App\Models\Empresa\EmpresaArea;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class ConfigEmpresa extends Model
+class GrupoEmpresa extends Model
 {
     use HasFactory,Notifiable;
-    protected $table = 'config_empresa';
+    protected $table = 'config_grupo_empresas';
     protected $guarded = [];
 
     //==================================================================================
@@ -19,15 +18,10 @@ class ConfigEmpresa extends Model
         return $this->belongsTo(ConfigTipoDocumento::class, 'config_tipo_documento_id', 'id');
     }
     //----------------------------------------------------------------------------------
-    public function grupo()
-    {
-        return $this->belongsTo(GrupoEmpresa::class, 'config_grupo_empresas_id', 'id');
-    }
     //----------------------------------------------------------------------------------
-    //----------------------------------------------------------------------------------
-    public function areas()
+    public function empresas()
     {
-        return $this->hasMany(EmpresaArea::class, 'config_empresa_id', 'id');
+        return $this->hasMany(ConfigEmpresa::class, 'config_grupo_empresas_id', 'id');
     }
     //----------------------------------------------------------------------------------
 }

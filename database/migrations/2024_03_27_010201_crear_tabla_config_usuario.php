@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('config_usuario', function (Blueprint $table) {
             $table->bigIncrements('id')->autoIncrement();
             $table->unsignedBigInteger('config_tipo_documento_id')->nullable();
-            $table->foreign('config_tipo_documento_id', 'fk_mrc_config_tipo_documento')->references('id')->on('config_tipo_documento')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('config_tipo_documento_id', 'fk_mrc_config_tipo_documento_usuario')->references('id')->on('config_tipo_documento')->onDelete('restrict')->onUpdate('restrict');
+            $table->unsignedBigInteger('config_empresa_id')->nullable();
+            $table->foreign('config_empresa_id', 'fk_crm_config_empresa_usuario')->references('id')->on('config_empresa')->onDelete('restrict')->onUpdate('restrict');
             $table->string('identificacion', 100)->unique()->nullable();
             $table->string('nombres', 150);
             $table->string('apellidos', 150)->nullable();

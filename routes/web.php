@@ -4,7 +4,10 @@ use App\Http\Controllers\Configuracion\ConfigEmpresaController;
 use App\Http\Controllers\Configuracion\ConfigMenuController;
 use App\Http\Controllers\Configuracion\ConfigMenuRolController;
 use App\Http\Controllers\Configuracion\ConfigRolController;
+use App\Http\Controllers\Configuracion\GrupoEmpresaController;
 use App\Http\Controllers\Empresa\EmpresaAreaController;
+use App\Http\Controllers\Empresa\EmpresaCargoController;
+use App\Http\Controllers\Empresa\EmpresaEmpleadoController;
 use App\Http\Controllers\Seguridad\LoginController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -72,6 +75,20 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         // ----------------------------------------------------------------------------------------
     });
     Route::prefix('configuracion_sis')->middleware(['SuperAdmin','Administrador'])->group(function () {
+        // Ruta Administrador Grupo Empresas
+        // ------------------------------------------------------------------------------------
+        Route::controller(GrupoEmpresaController::class)->prefix('grupo_empresas')->group(function () {
+            Route::get('', 'index')->name('grupo_empresas.index');
+            Route::get('crear', 'create')->name('grupo_empresas.create');
+            Route::get('editar/{id}', 'edit')->name('grupo_empresas.edit');
+            Route::post('guardar', 'store')->name('grupo_empresas.store');
+            Route::put('actualizar/{id}', 'update')->name('grupo_empresas.update');
+            Route::delete('eliminar/{id}', 'destroy')->name('grupo_empresas.destroy');
+            Route::get('activar/{id}', 'activar')->name('grupo_empresas.activar');
+            Route::get('getEmpresas', 'getEmpresas')->name('grupo_empresas.getEmpresas');
+
+        });
+        // ------------------------------------------------------------------------------------
         // Ruta Administrador del SEmpresa
         // ------------------------------------------------------------------------------------
         Route::controller(ConfigEmpresaController::class)->prefix('empresas')->group(function () {
@@ -84,9 +101,10 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
             Route::get('activar/{id}', 'activar')->name('empresa.activar');
         });
         // ----------------------------------------------------------------------------------------
+
     });
     Route::prefix('configuracion')->middleware(['SuperAdmin','Administrador','AdminEmpresa'])->group(function () {
-        // Ruta Administrador del SEmpresa
+        // Ruta Administrador de Empresa - Areas
         // ------------------------------------------------------------------------------------
         Route::controller(EmpresaAreaController::class)->prefix('areas')->group(function () {
             Route::get('', 'index')->name('area.index');
@@ -99,5 +117,29 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
             Route::get('getAreas', 'getAreas')->name('area.getAreas');
         });
         // ----------------------------------------------------------------------------------------
+        // Ruta Administrador de Empresa - Areas
+        // ------------------------------------------------------------------------------------
+        Route::controller(EmpresaCargoController::class)->prefix('cargos')->group(function () {
+            Route::get('', 'index')->name('cargo.index');
+            Route::get('crear', 'create')->name('cargo.create');
+            Route::get('editar/{id}', 'edit')->name('cargo.edit');
+            Route::post('guardar', 'store')->name('cargo.store');
+            Route::put('actualizar/{id}', 'update')->name('cargo.update');
+            Route::delete('eliminar/{id}', 'destroy')->name('cargo.destroy');
+        });
+        // ----------------------------------------------------------------------------------------
+        // Ruta Administrador de Empresa - Areas
+        // ------------------------------------------------------------------------------------
+        Route::controller(EmpresaEmpleadoController::class)->prefix('empleados')->group(function () {
+            Route::get('', 'index')->name('empleado.index');
+            Route::get('crear', 'create')->name('empleado.create');
+            Route::get('editar/{id}', 'edit')->name('empleado.edit');
+            Route::post('guardar', 'store')->name('empleado.store');
+            Route::put('actualizar/{id}', 'update')->name('empleado.update');
+            Route::delete('eliminar/{id}', 'destroy')->name('empleado.destroy');
+            Route::get('getCargos', 'getCargos')->name('empleado.getCargos');
+        });
+        // ----------------------------------------------------------------------------------------
+
     });
 });

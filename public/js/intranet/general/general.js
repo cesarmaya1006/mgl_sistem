@@ -112,8 +112,6 @@ function mayus(e) {
     }
 
     $(document).ready(function() {
-        $( "a.active" ).parent( "ul.nav-treeview" ).css("display", "block");
-
         $(".tabla-borrando").on('submit', '.form-eliminar', function() {
             event.preventDefault();
             const form = $(this);

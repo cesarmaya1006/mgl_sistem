@@ -48,8 +48,8 @@
                                     <tr>
                                         <th class="text-center">Id</th>
                                         @if (session('rol_id')<3)
+                                            <th class="text-center">Grupo Empresarial</th>
                                             <th class="text-center">Empresa</th>
-
                                         @endif
                                         <th class="text-center">Area</th>
                                         <th class="text-center">Area Superior</th>
@@ -62,8 +62,8 @@
                                     <tr>
                                         <td class="text-center">{{ $area->id }}</td>
                                         @if (session('rol_id')<3)
+                                            <td class="text-center">{{ $area->empresa->grupo->nombres }}</td>
                                             <td class="text-center">{{ $area->empresa->nombres }}</td>
-
                                         @endif
                                         <td class="text-center">{{ $area->area }}</td>
                                         <td class="text-center">{{ $area->empresa_area_id!=null?$area->area_sup($area->empresa_area_id):'---' }}</td>

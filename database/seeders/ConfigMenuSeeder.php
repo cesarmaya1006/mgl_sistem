@@ -27,8 +27,10 @@ class ConfigMenuSeeder extends Seeder
                     ['nombre' => 'Roles', 'menu_id' => '2',  'url' => 'dashboard/configuracion_sis/rol', 'orden' => '2',  'icono' => 'fas fa-users', 'Array_2' => []],
                     //Menu Menu_Roles
                     ['nombre' => 'Menú - Roles', 'menu_id' => '2',  'url' => 'dashboard/configuracion_sis/permisos_menus_rol', 'orden' => '2',  'icono' => 'fas fa-chalkboard-teacher', 'Array_2' => []],
+                    //Menu Grupo Empresas
+                    ['nombre' => 'Grupo Empresas', 'menu_id' => '2',  'url' => 'dashboard/configuracion_sis/grupo_empresas', 'orden' => '2',  'icono' => 'fas fa-industry', 'Array_2' => []],
                     //Menu Empresas
-                    ['nombre' => 'Empresas', 'menu_id' => '2',  'url' => 'dashboard/configuracion_sis/empresas', 'orden' => '2',  'icono' => 'fas fa-industry', 'Array_2' => []],
+                    ['nombre' => 'Empresas', 'menu_id' => '2',  'url' => 'dashboard/configuracion_sis/empresas', 'orden' => '2',  'icono' => 'fas fa-building', 'Array_2' => []],
 
                 ],
             ],
@@ -39,10 +41,12 @@ class ConfigMenuSeeder extends Seeder
                     [
                         'nombre' => 'Organigrama', 'menu_id' => '2',  'url' => '#', 'orden' => '1',  'icono' => 'fas fa-sitemap',
                         'Array_2' => [
-                            //Menu menu
+                            //Menu Areas
                             ['nombre' => 'Áreas', 'menu_id' => '2',  'url' => 'dashboard/configuracion/areas', 'orden' => '1',  'icono' => 'fas fa-project-diagram'],
                             //Menu Roles
                             ['nombre' => 'Cargos', 'menu_id' => '2',  'url' => 'dashboard/configuracion/cargos', 'orden' => '2',  'icono' => 'fas fa-user-tie'],
+                            //Menu Roles
+                            ['nombre' => 'Empleados', 'menu_id' => '2',  'url' => 'dashboard/configuracion/empleados', 'orden' => '2',  'icono' => 'fas fa-users'],
 
                         ]
                     ],

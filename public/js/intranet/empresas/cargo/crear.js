@@ -44,12 +44,19 @@ $(document).ready(function () {
                     });
                     $("#empresa_area_id").html(respuesta_html);
                     $("#caja_areas").removeClass("d-none");
-                    $("#caja_area_nueva").removeClass("d-none");
-                } else {
-                    $("#caja_area_nueva").removeClass("d-none");
                 }
             },
             error: function () {},
         });
+    });
+    $("#empresa_area_id").on("change", function () {
+        const data_url = $(this).attr("data_url");
+        const id = $(this).val();
+        console.log(id);
+        if (id!=null) {
+           $('#caja_cargo_nuevo').removeClass('d-none');
+        } else {
+            $('#caja_cargo_nuevo').addClass('d-none');
+        }
     });
 });

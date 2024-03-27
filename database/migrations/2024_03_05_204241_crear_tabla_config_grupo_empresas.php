@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('config_empresa', function (Blueprint $table) {
+        Schema::create('config_grupo_empresas', function (Blueprint $table) {
             $table->bigIncrements('id')->autoIncrement();
-            $table->unsignedBigInteger('config_grupo_empresas_id');
-            $table->foreign('config_grupo_empresas_id', 'fk_crm_empresa_config_grupo_empresas')->references('id')->on('config_grupo_empresas')->onDelete('restrict')->onUpdate('restrict');
             $table->unsignedBigInteger('config_tipo_documento_id');
-            $table->foreign('config_tipo_documento_id', 'fk_crm_empresas_config_tipo_documento')->references('id')->on('config_tipo_documento')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('config_tipo_documento_id', 'fk_crm_grupo_empresas_config_tipo_documento')->references('id')->on('config_tipo_documento')->onDelete('restrict')->onUpdate('restrict');
             $table->string('identificacion', 100)->unique();
             $table->string('nombres', 150);
             $table->string('email',150)->unique();
@@ -36,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('config_empresa');
+        Schema::dropIfExists('config_grupo_empresas');
     }
 };
