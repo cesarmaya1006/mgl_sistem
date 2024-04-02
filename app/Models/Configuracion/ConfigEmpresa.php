@@ -30,4 +30,14 @@ class ConfigEmpresa extends Model
         return $this->hasMany(EmpresaArea::class, 'config_empresa_id', 'id');
     }
     //----------------------------------------------------------------------------------
+    public function apariencias()
+    {
+        return $this->hasMany(ConfigApariencia::class, 'config_empresa_id', 'id');
+    }
+    //----------------------------------------------------------------------------------
+    public function usuarios()
+    {
+        return $this->hasMany(ConfigUsuario::class, 'config_empresa_id', 'id');
+    }
+    //----------------------------------------------------------------------------------
 }

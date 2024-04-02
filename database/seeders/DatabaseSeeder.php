@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             ConfigMenuSeeder::class,
             ConfigGrupoEmpresas::class,
             ConfigEmpresa::class,
+            ConfigApariencia::class,
             ConfigEmpresaArea::class,
             ConfigEmpresaCargo::class,
         ]);

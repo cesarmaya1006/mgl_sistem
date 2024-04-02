@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('empresa_empleados', function (Blueprint $table) {
             $table->bigIncrements('id')->autoIncrement();
-            $table->unsignedBigInteger('config_usuario_id')->nullable();
-            $table->foreign('config_usuario_id', 'fk_crm_config_usuario_usuario')->references('id')->on('config_usuario')->onDelete('restrict')->onUpdate('restrict');
-            $table->unsignedBigInteger('empresa_cargo_id')->nullable();
+            $table->foreign('id', 'fk_crm_config_usuario_usuario')->references('id')->on('config_usuario')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('empresa_cargo_id');
             $table->foreign('empresa_cargo_id', 'fk_crm_empresa_cargo_usuario')->references('id')->on('empresa_cargo')->onDelete('restrict')->onUpdate('restrict');
             $table->boolean('mgl')->default(0);
             $table->boolean('estado')->default(1);

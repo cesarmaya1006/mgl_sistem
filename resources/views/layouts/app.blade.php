@@ -9,7 +9,7 @@
     @yield ('estilosHojas')
     <!-- -------------------------------------- -->
 </head>
-<body class="hold-transition sidebar-mini layout-fixed" onload="menu_ul()">
+<body class="hold-transition sidebar-mini layout-fixed {{session('apariencia.body_dark_mode')=='si'? 'dark-mode':''}}" onload="menu_ul()">
     <div class="wrapper">
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">

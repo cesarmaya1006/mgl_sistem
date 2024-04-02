@@ -20,7 +20,6 @@
 <!-- AdminLTE App -->
 <script src="{{asset('lte/dist/js/adminlte.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{{asset('lte/dist/js/demo.js')}}"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{asset('js/intranet/general/general.js')}}"></script>
@@ -37,3 +36,4 @@
 <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.4.1/js/responsive.bootstrap5.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="{{asset('lte/dist/js/demo.js')}}"></script>

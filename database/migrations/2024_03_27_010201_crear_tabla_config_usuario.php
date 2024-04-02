@@ -28,6 +28,8 @@ return new class extends Migration
             $table->text('two_factor_recovery_codes')->nullable();
             $table->boolean('camb_password')->default(0);
             $table->timestamp('email_verified_at')->nullable();
+            $table->boolean('estado')->default(1);
+            $table->string('foto', 255)->default('usuario-inicial.jpg');
             $table->rememberToken();
             $table->timestamps();
             $table->charset = 'utf8';

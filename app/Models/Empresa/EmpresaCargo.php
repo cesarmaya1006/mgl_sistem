@@ -19,7 +19,7 @@ class EmpresaCargo extends Model
     }
     //----------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------
-    public function cargos()
+    public function empleados()
     {
         return $this->hasMany(EmpresaEmpleado::class, 'empresa_cargo_id', 'id');
     }

@@ -11,7 +11,7 @@ class ValidacionEmpresasUsuarios extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,30 @@ class ValidacionEmpresasUsuarios extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'identificacion' => 'required|max:100|unique:config_usuario,identificacion,' . $this->route('id'),
+            'email' => 'required|max:150|unique:config_usuario,email,' . $this->route('id'),
+
+        ];
+    }
+    public function attributes()
+    {
+        return [
+            'identificacion' => 'Identificación',
+            'email' => 'Correo Electrónico',
+
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'identificacion.required' => 'El campo Identificación es obligatorio',
+            'identificacion.max' => 'El campo Identificación no puede superar 100 caracteres',
+            'identificacion.unique' => 'El campo Identificación ya se encuentra en la base de datos',
+            'email.required' => 'El campo Correo Electrónico es obligatorio',
+            'email.max' => 'El campo Correo Electrónico no puede superar 100 caracteres',
+            'email.unique' => 'El campo Correo Electrónico ya se encuentra en la base de datos',
+
         ];
     }
 }
