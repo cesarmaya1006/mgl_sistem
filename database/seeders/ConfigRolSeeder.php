@@ -26,10 +26,6 @@ class ConfigRolSeeder extends Seeder
                 'slug' => 'admin',
             ],
             [
-                'nombre' => 'MGL',
-                'slug' => 'mgl',
-            ],
-            [
                 'nombre' => 'Administrador Empresa',
                 'slug' => 'adminempresa',
             ],

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Configuracion\ConfigAparienciaController;
 use App\Http\Controllers\Configuracion\ConfigEmpresaController;
 use App\Http\Controllers\Configuracion\ConfigMenuController;
 use App\Http\Controllers\Configuracion\ConfigMenuRolController;
@@ -104,6 +105,15 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
 
     });
     Route::prefix('configuracion')->middleware(['SuperAdmin','Administrador','AdminEmpresa'])->group(function () {
+        // Ruta Apariencias
+        // ------------------------------------------------------------------------------------
+        Route::controller(ConfigAparienciaController::class)->prefix('apariencia')->group(function () {
+            Route::get('body_dark_mode', 'body_dark_mode')->name('apariencia.body_dark_mode');
+            Route::get('cambio_check', 'cambio_check')->name('apariencia.cambio_check');
+            Route::get('fondomenu_sup', 'fondomenu_sup')->name('apariencia.fondomenu_sup');
+
+        });
+        // ----------------------------------------------------------------------------------------
         // Ruta Administrador de Empresa - Areas
         // ------------------------------------------------------------------------------------
         Route::controller(EmpresaAreaController::class)->prefix('areas')->group(function () {

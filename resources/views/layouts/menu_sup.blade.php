@@ -1,5 +1,11 @@
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-white navbar-light" id="menu_superior">
+<nav class="main-header navbar navbar-expand navbar-white
+    {{session('apariencia.fondo_barra_sup')=='navbar-light'||session('apariencia.fondo_barra_sup')=='bg-warning'?'navbar-light':'navbar-dark'}}
+    {{session('apariencia.dropdown_legacy')=='si'? 'dropdown-legacy':''}}
+    {{session('apariencia.text_sm_header_checkbox')=='si'? 'text-sm':''}}
+    {{session('apariencia.border_bottom')=='si'? 'border-bottom-0':''}}
+    {{session('apariencia.fondo_barra_sup')!='navbar-light'?session('apariencia.fondo_barra_sup'):''}}
+    " id="menu_superior">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">

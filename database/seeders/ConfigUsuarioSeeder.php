@@ -23,7 +23,6 @@ class ConfigUsuarioSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
         $usuario = ConfigUsuario::create($data);
         $usuario->rol()->attach(1);
-
         $id++;
     }
 }

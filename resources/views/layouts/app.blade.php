@@ -9,7 +9,24 @@
     @yield ('estilosHojas')
     <!-- -------------------------------------- -->
 </head>
-<body class="hold-transition sidebar-mini layout-fixed {{session('apariencia.body_dark_mode')=='si'? 'dark-mode':''}}" onload="menu_ul()">
+<body class="hold-transition sidebar-mini layout-fixed
+{{session('apariencia.body_dark_mode')=='si'? 'dark-mode':''}}
+{{session('apariencia.encabezado_fijo')=='si'? 'layout-navbar-fixed':''}}
+{{session('apariencia.sidebar_collapse')=='si'? 'sidebar-collapse':''}}
+{{session('apariencia.sidebar_mini_md_checkbox')=='si'? 'sidebar-mini-md':''}}
+{{session('apariencia.sidebar_mini_xs_checkbox')=='si'? 'sidebar-mini-xs':''}}
+{{session('apariencia.footer_fixed_checkbox')=='si'? 'layout-footer-fixed':''}}
+{{session('apariencia.text_sm_body_checkbox')=='si'? 'text-sm':''}}"
+onload="menu_ul()">
+    <input type="hidden" id="sidebar_collapse_input" value="{{session('apariencia.sidebar_collapse')}}">
+    <input type="hidden" id="sidebar_mini_md_checkbox_input" value="{{session('apariencia.sidebar_mini_md_checkbox')}}">
+    <input type="hidden" id="sidebar_mini_xs_checkbox_input" value="{{session('apariencia.sidebar_mini_xs_checkbox')}}">
+    <input type="hidden" id="flat_sidebar_checkbox_input" value="{{session('apariencia.flat_sidebar_checkbox')}}">
+    <!--  Rutas Apariencia -->
+    <input type="hidden" id="id_cambio_check_ruta" data_url="{{route('apariencia.cambio_check')}}">
+    <input type="hidden" id="ruta_body_dark_mode" data_url="{{route('apariencia.body_dark_mode')}}">
+    <input type="hidden" id="ruta_fondo_barra_sup" data_url="{{route('apariencia.fondomenu_sup')}}">
+    <!-- Fin rutas apariencias -->
     <div class="wrapper">
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">

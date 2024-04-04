@@ -28,6 +28,8 @@ class DatabaseSeeder extends Seeder
             ConfigApariencia::class,
             ConfigEmpresaArea::class,
             ConfigEmpresaCargo::class,
+            ConfigUsuarioSeeder::class,
+
         ]);
     }
 }

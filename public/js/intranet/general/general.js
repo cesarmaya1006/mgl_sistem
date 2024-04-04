@@ -361,16 +361,112 @@ $(document).ready(function () {
         },
     });
 
-
+    //--------------------------------------------------------------------------------------------
+    $("#id_body_dark_mode").change(function () {
+        var valor_dark = "";
+        if (this.checked) {
+            valor_dark = "si";
+        } else {
+            valor_dark = "no";
+        }
+        const data_url = $("#ruta_body_dark_mode").attr("data_url");
+        var data = {
+            body_dark_mode: valor_dark,
+        };
+        $.ajax({
+            url: data_url,
+            type: "GET",
+            data: data,
+            success: function (respuesta) {
+                Sistema.notificaciones(
+                    respuesta.respuesta,
+                    "Sistema",
+                    respuesta.tipo
+                );
+            },
+            error: function () {},
+        });
+    });
+    //--------------------------------------------------------------------------------------------
+    $(".check_apariencia").change(function () {
+        var valor_fijo = "";
+        if (this.checked) {
+            valor_fijo = "si";
+        } else {
+            valor_fijo = "no";
+        }
+        const data_url = $("#id_cambio_check_ruta").attr("data_url");
+        const bd_variable = $(this).attr("bd_variable");
+        var data = {
+            valor_fijo: valor_fijo,
+            bd_variable: bd_variable,
+        };
+        $.ajax({
+            url: data_url,
+            type: "GET",
+            data: data,
+            success: function (respuesta) {
+                Sistema.notificaciones(
+                    respuesta.respuesta,
+                    "Sistema",
+                    respuesta.tipo
+                );
+            },
+            error: function () {},
+        });
+    });
+    //--------------------------------------------------------------------------------------------
     $("#fondo_barra_sup").on("change", function () {
         $(this).removeClass();
-        var color = 'bg-'+ $(this).val().toLowerCase();
-        $(this).addClass('custom-select mb-3 text-light border-0 ' + color);
-        if (color=='bg-light' || color=='bg-white') {
-            $('#menu_superior').removeClass().addClass('main-header navbar navbar-expand navbar-white navbar-light');
-        } else {
-            $('#menu_superior').removeClass().addClass('main-header navbar navbar-dark navbar-expand ' + color);
+        var color = "bg-" + $(this).val().toLowerCase();
+        $(this).addClass("custom-select mb-3 text-light border-0 " + color);
+        if (color == "bg-light") {
+            $("#menu_superior")
+                .removeClass()
+                .addClass(
+                    "main-header navbar navbar-expand navbar-white navbar-light"
+                );
+                color = 'navbar-light';
+        }else if(color == "bg-warning"){
+            $("#menu_superior")
+                .removeClass()
+                .addClass(
+                    "main-header navbar navbar-expand navbar-white navbar-light " + color
+                );
         }
+         else {
+            $("#menu_superior")
+                .removeClass()
+                .addClass(
+                    "main-header navbar navbar-expand navbar-white navbar-dark " + color
+                );
+        }
+        const data_url = $("#ruta_fondo_barra_sup").attr("data_url");
+        const bd_valor = color;
+        var data = {
+            bd_valor: bd_valor
+        };
+        $.ajax({
+            url: data_url,
+            type: "GET",
+            data: data,
+            success: function(respuesta) {
+                Sistema.notificaciones(respuesta.respuesta, 'Sistema', respuesta.tipo);
+            },
+            error: function () {},
+        });
+    });
+    //--------------------------------------------------------------------------------------------
+
+    $("#fondo_barra_lat").on("change", function () {
+        color_fondo_hijos("bg-" + $(this).val().toLowerCase());
+        $(this)
+            .removeClass()
+            .addClass(
+                "custom-select mb-3 text-light border-0 " +
+                    "bg-" +
+                    $(this).val().toLowerCase()
+            );
 
         /*$.ajax({
             url: data_url,
@@ -394,4 +490,219 @@ $(document).ready(function () {
             error: function () {},
         });*/
     });
+
+    sidebar_collapse();
+    sidebar_mini_md_checkbox_input();
+    sidebar_mini_xs_checkbox_input();
+    flat_sidebar_checkbox_input();
+    color_fondo_hijos($("#fondo_barra_lat_input").val());
+    $("#fondo_barra_lat")
+        .removeClass()
+        .addClass(
+            "custom-select mb-3 text-light border-0 " +
+                $("#fondo_barra_lat_input").val().toLowerCase()
+        );
+    $("#fondo_barra_lat")
+        .find("." + $("#fondo_barra_lat_input").val().toLowerCase())
+        .prop("selected", true);
 });
+
+function sidebar_collapse() {
+    if ($("#sidebar_collapse_input").val() == "si") {
+        $("body").addClass("sidebar-collapse");
+        $(window).trigger("resize");
+    } else {
+        $("body").removeClass("sidebar-collapse");
+        $(window).trigger("resize");
+    }
+}
+function sidebar_mini_md_checkbox_input() {
+    if ($("#sidebar_mini_md_checkbox_input").val() == "si") {
+        $("body").addClass("sidebar-mini-md");
+    } else {
+        $("body").removeClass("sidebar-mini-md");
+    }
+}
+function sidebar_mini_xs_checkbox_input() {
+    if ($("#sidebar_mini_xs_checkbox_input").val() == "si") {
+        $("body").addClass("sidebar-mini-xs");
+    } else {
+        $("body").removeClass("sidebar-mini-xs");
+    }
+}
+function flat_sidebar_checkbox_input() {
+    if ($("#sidebar_mini_xs_checkbox_input").val() == "si") {
+        $(".nav-sidebar").addClass("nav-flat");
+    } else {
+        $(".nav-sidebar").removeClass("nav-flat");
+    }
+}
+function color_fondo_hijos(color) {
+    var hijos = $(".main-sidebar").find("a");
+    switch (color) {
+        case "bg-primary":
+            if ($(".main-sidebar").hasClass("sidebar-no-expand")) {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar elevation-4 sidebar-no-expand sidebar-light-olive bg-primary"
+                    );
+            } else {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar sidebar-light-olive elevation-4 bg-primary"
+                    );
+            }
+            hijos.each(function () {
+                $(this).css("color", "white");
+            });
+            break;
+        case "bg-warning":
+            if ($(".main-sidebar").hasClass("sidebar-no-expand")) {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar elevation-4 sidebar-no-expand sidebar-light-lightblue bg-warning"
+                    );
+            } else {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar sidebar-light-lightblue elevation-4 bg-warning"
+                    );
+            }
+            hijos.each(function () {
+                $(this).css("color", "black");
+            });
+            break;
+        case "bg-info":
+            if ($(".main-sidebar").hasClass("sidebar-no-expand")) {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar elevation-4 sidebar-no-expand sidebar-light-navy bg-info"
+                    );
+            } else {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar sidebar-light-navy elevation-4 bg-info"
+                    );
+            }
+            hijos.each(function () {
+                $(this).css("color", "white");
+            });
+            break;
+        case "bg-danger":
+            if ($(".main-sidebar").hasClass("sidebar-no-expand")) {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar elevation-4 sidebar-no-expand sidebar-light-navy bg-danger"
+                    );
+            } else {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar sidebar-light-navy elevation-4 bg-danger"
+                    );
+            }
+            hijos.each(function () {
+                $(this).css("color", "white");
+            });
+            break;
+        case "bg-success":
+            if ($(".main-sidebar").hasClass("sidebar-no-expand")) {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar elevation-4 sidebar-no-expand sidebar-light-navy bg-success"
+                    );
+            } else {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar sidebar-light-navy elevation-4 bg-success"
+                    );
+            }
+            hijos.each(function () {
+                $(this).css("color", "white");
+            });
+            break;
+        case "bg-indigo":
+            if ($(".main-sidebar").hasClass("sidebar-no-expand")) {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar elevation-4 sidebar-no-expand sidebar-light-info bg-indigo"
+                    );
+            } else {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar sidebar-light-info elevation-4 bg-indigo"
+                    );
+            }
+            hijos.each(function () {
+                $(this).css("color", "white");
+            });
+            break;
+        case "bg-lightblue":
+            if ($(".main-sidebar").hasClass("sidebar-no-expand")) {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar elevation-4 sidebar-no-expand sidebar-light-primary bg-lightblue"
+                    );
+            } else {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar sidebar-light-primary elevation-4 bg-lightblue"
+                    );
+            }
+            hijos.each(function () {
+                $(this).css("color", "white");
+            });
+            break;
+        case "bg-navy":
+            if ($(".main-sidebar").hasClass("sidebar-no-expand")) {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar elevation-4 sidebar-no-expand sidebar-light-info bg-navy"
+                    );
+            } else {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar sidebar-light-info elevation-4 bg-navy"
+                    );
+            }
+            hijos.each(function () {
+                $(this).css("color", "white");
+            });
+            break;
+        case "bg-purple":
+            if ($(".main-sidebar").hasClass("sidebar-no-expand")) {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar elevation-4 sidebar-no-expand sidebar-light-danger bg-purple"
+                    );
+            } else {
+                $(".main-sidebar")
+                    .removeClass()
+                    .addClass(
+                        "main-sidebar sidebar-light-danger elevation-4 bg-purple"
+                    );
+            }
+            hijos.each(function () {
+                $(this).css("color", "white");
+            });
+            break;
+        default:
+            break;
+    }
+}

@@ -73,6 +73,7 @@
       $('body').removeClass('dark-mode')
     }
   })
+  $dark_mode_checkbox.attr("id","id_body_dark_mode")
   var $dark_mode_container = $('<div />', { class: 'mb-4' }).append($dark_mode_checkbox).append('<span>Modo Obscuro</span>')
   $container.append($dark_mode_container)
 
@@ -81,7 +82,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('body').hasClass('layout-navbar-fixed'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('body').addClass('layout-navbar-fixed')
@@ -89,6 +90,7 @@
       $('body').removeClass('layout-navbar-fixed')
     }
   })
+  $header_fixed_checkbox.attr("id","id_encabezado_fijo").attr("bd_variable","encabezado_fijo")
   var $header_fixed_container = $('<div />', { class: 'mb-1' }).append($header_fixed_checkbox).append('<span>Fijo</span>')
   $container.append($header_fixed_container)
 
@@ -96,7 +98,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('.main-header').hasClass('dropdown-legacy'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.main-header').addClass('dropdown-legacy')
@@ -104,6 +106,7 @@
       $('.main-header').removeClass('dropdown-legacy')
     }
   })
+  $dropdown_legacy_offset_checkbox.attr("bd_variable","dropdown_legacy")
   var $dropdown_legacy_offset_container = $('<div />', { class: 'mb-1' }).append($dropdown_legacy_offset_checkbox).append('<span>Desplazamiento heredado desplegable</span>')
   $container.append($dropdown_legacy_offset_container)
 
@@ -111,7 +114,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('.main-header').hasClass('border-bottom-0'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.main-header').addClass('border-bottom-0')
@@ -119,6 +122,7 @@
       $('.main-header').removeClass('border-bottom-0')
     }
   })
+  $no_border_checkbox.attr("bd_variable","border_bottom")
   var $no_border_container = $('<div />', { class: 'mb-4' }).append($no_border_checkbox).append('<span>Sin bordes</span>')
   $container.append($no_border_container)
 
@@ -128,7 +132,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('body').hasClass('sidebar-collapse'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('body').addClass('sidebar-collapse')
@@ -138,6 +142,7 @@
       $(window).trigger('resize')
     }
   })
+  $sidebar_collapsed_checkbox.attr("bd_variable","sidebar_collapse")
   var $sidebar_collapsed_container = $('<div />', { class: 'mb-1' }).append($sidebar_collapsed_checkbox).append('<span>Colapsado</span>')
   $container.append($sidebar_collapsed_container)
 
@@ -152,6 +157,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('body').hasClass('layout-fixed'),
+
     class: 'mr-1'
   }).on('click', function () {
     if ($(this).is(':checked')) {
@@ -162,6 +168,7 @@
       $(window).trigger('resize')
     }
   })
+  $sidebar_fixed_checkbox.prop( "disabled", true )
   var $sidebar_fixed_container = $('<div />', { class: 'mb-1' }).append($sidebar_fixed_checkbox).append('<span>Fijo</span>')
   $container.append($sidebar_fixed_container)
 
@@ -177,6 +184,7 @@
       $('body').removeClass('sidebar-mini')
     }
   })
+  $sidebar_mini_checkbox.prop( "disabled", true )
   var $sidebar_mini_container = $('<div />', { class: 'mb-1' }).append($sidebar_mini_checkbox).append('<span>Mini barra lateral</span>')
   $container.append($sidebar_mini_container)
 
@@ -184,7 +192,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('body').hasClass('sidebar-mini-md'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('body').addClass('sidebar-mini-md')
@@ -192,6 +200,7 @@
       $('body').removeClass('sidebar-mini-md')
     }
   })
+  $sidebar_mini_md_checkbox.attr("bd_variable","sidebar_mini_md_checkbox")
   var $sidebar_mini_md_container = $('<div />', { class: 'mb-1' }).append($sidebar_mini_md_checkbox).append('<span>Mini barra lateral MD</span>')
   $container.append($sidebar_mini_md_container)
 
@@ -199,7 +208,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('body').hasClass('sidebar-mini-xs'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('body').addClass('sidebar-mini-xs')
@@ -207,6 +216,7 @@
       $('body').removeClass('sidebar-mini-xs')
     }
   })
+  $sidebar_mini_xs_checkbox.attr("bd_variable","sidebar_mini_xs_checkbox")
   var $sidebar_mini_xs_container = $('<div />', { class: 'mb-1' }).append($sidebar_mini_xs_checkbox).append('<span>Mini barra lateral XS</span>')
   $container.append($sidebar_mini_xs_container)
 
@@ -214,7 +224,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('.nav-sidebar').hasClass('nav-flat'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.nav-sidebar').addClass('nav-flat')
@@ -222,6 +232,7 @@
       $('.nav-sidebar').removeClass('nav-flat')
     }
   })
+  $flat_sidebar_checkbox.attr("bd_variable","flat_sidebar_checkbox")
   var $flat_sidebar_container = $('<div />', { class: 'mb-1' }).append($flat_sidebar_checkbox).append('<span>Estilo plano de navegación</span>')
   $container.append($flat_sidebar_container)
 
@@ -229,7 +240,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('.nav-sidebar').hasClass('nav-legacy'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.nav-sidebar').addClass('nav-legacy')
@@ -237,6 +248,7 @@
       $('.nav-sidebar').removeClass('nav-legacy')
     }
   })
+  $legacy_sidebar_checkbox.attr("bd_variable","legacy_sidebar_checkbox")
   var $legacy_sidebar_container = $('<div />', { class: 'mb-1' }).append($legacy_sidebar_checkbox).append('<span>Estilo heredado de navegación</span>')
   $container.append($legacy_sidebar_container)
 
@@ -244,7 +256,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('.nav-sidebar').hasClass('nav-compact'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.nav-sidebar').addClass('nav-compact')
@@ -252,6 +264,7 @@
       $('.nav-sidebar').removeClass('nav-compact')
     }
   })
+  $compact_sidebar_checkbox.attr("bd_variable","compact_sidebar_checkbox")
   var $compact_sidebar_container = $('<div />', { class: 'mb-1' }).append($compact_sidebar_checkbox).append('<span>Navegación compacta</span>')
   $container.append($compact_sidebar_container)
 
@@ -259,7 +272,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('.nav-sidebar').hasClass('nav-child-indent'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.nav-sidebar').addClass('nav-child-indent')
@@ -267,29 +280,15 @@
       $('.nav-sidebar').removeClass('nav-child-indent')
     }
   })
+  $child_indent_sidebar_checkbox.attr("bd_variable","child_indent_sidebar_checkbox")
   var $child_indent_sidebar_container = $('<div />', { class: 'mb-1' }).append($child_indent_sidebar_checkbox).append('<span>Sangría secundaria de navegación</span>')
   $container.append($child_indent_sidebar_container)
-
-  var $child_hide_sidebar_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('.nav-sidebar').hasClass('nav-collapse-hide-child'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('.nav-sidebar').addClass('nav-collapse-hide-child')
-    } else {
-      $('.nav-sidebar').removeClass('nav-collapse-hide-child')
-    }
-  })
-  var $child_hide_sidebar_container = $('<div />', { class: 'mb-1' }).append($child_hide_sidebar_checkbox).append('<span>Ocultar niño de navegación al contraer</span>')
-  $container.append($child_hide_sidebar_container)
 
   var $no_expand_sidebar_checkbox = $('<input />', {
     type: 'checkbox',
     value: 1,
     checked: $('.main-sidebar').hasClass('sidebar-no-expand'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.main-sidebar').addClass('sidebar-no-expand')
@@ -297,6 +296,7 @@
       $('.main-sidebar').removeClass('sidebar-no-expand')
     }
   })
+  $no_expand_sidebar_checkbox.attr("bd_variable","no_expand_sidebar_checkbox")
   var $no_expand_sidebar_container = $('<div />', { class: 'mb-4' }).append($no_expand_sidebar_checkbox).append('<span>Deshabilitar la expansión automática de desplazamiento/enfoque</span>')
   $container.append($no_expand_sidebar_container)
 
@@ -305,7 +305,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('body').hasClass('layout-footer-fixed'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('body').addClass('layout-footer-fixed')
@@ -313,6 +313,7 @@
       $('body').removeClass('layout-footer-fixed')
     }
   })
+  $footer_fixed_checkbox.attr("bd_variable","footer_fixed_checkbox")
   var $footer_fixed_container = $('<div />', { class: 'mb-4' }).append($footer_fixed_checkbox).append('<span>Fijo</span>')
   $container.append($footer_fixed_container)
 
@@ -322,7 +323,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('body').hasClass('text-sm'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('body').addClass('text-sm')
@@ -330,6 +331,7 @@
       $('body').removeClass('text-sm')
     }
   })
+  $text_sm_body_checkbox.attr("bd_variable","text_sm_body_checkbox")
   var $text_sm_body_container = $('<div />', { class: 'mb-1' }).append($text_sm_body_checkbox).append('<span>Cuerpo</span>')
   $container.append($text_sm_body_container)
 
@@ -337,7 +339,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('.main-header').hasClass('text-sm'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.main-header').addClass('text-sm')
@@ -345,6 +347,7 @@
       $('.main-header').removeClass('text-sm')
     }
   })
+  $text_sm_header_checkbox.attr("bd_variable","text_sm_header_checkbox")
   var $text_sm_header_container = $('<div />', { class: 'mb-1' }).append($text_sm_header_checkbox).append('<span>Barra de navegación</span>')
   $container.append($text_sm_header_container)
 
@@ -352,7 +355,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('.brand-link').hasClass('text-sm'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.brand-link').addClass('text-sm')
@@ -360,6 +363,7 @@
       $('.brand-link').removeClass('text-sm')
     }
   })
+  $text_sm_brand_checkbox.attr("bd_variable","text_sm_brand_checkbox")
   var $text_sm_brand_container = $('<div />', { class: 'mb-1' }).append($text_sm_brand_checkbox).append('<span>Marca</span>')
   $container.append($text_sm_brand_container)
 
@@ -367,7 +371,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('.nav-sidebar').hasClass('text-sm'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.nav-sidebar').addClass('text-sm')
@@ -375,6 +379,7 @@
       $('.nav-sidebar').removeClass('text-sm')
     }
   })
+  $text_sm_sidebar_checkbox.attr("bd_variable","text_sm_sidebar_checkbox")
   var $text_sm_sidebar_container = $('<div />', { class: 'mb-1' }).append($text_sm_sidebar_checkbox).append('<span>Navegación de la barra lateral</span>')
   $container.append($text_sm_sidebar_container)
 
@@ -382,7 +387,7 @@
     type: 'checkbox',
     value: 1,
     checked: $('.main-footer').hasClass('text-sm'),
-    class: 'mr-1'
+    class: 'mr-1 check_apariencia'
   }).on('click', function () {
     if ($(this).is(':checked')) {
       $('.main-footer').addClass('text-sm')
@@ -390,6 +395,7 @@
       $('.main-footer').removeClass('text-sm')
     }
   })
+  $text_sm_footer_checkbox.attr("bd_variable","text_sm_footer_checkbox")
   var $text_sm_footer_container = $('<div />', { class: 'mb-4' }).append($text_sm_footer_checkbox).append('<span>Pie de página</span>')
   $container.append($text_sm_footer_container)
 
@@ -429,14 +435,8 @@
     'bg-indigo',
     'bg-lightblue',
     'bg-navy',
-    'bg-purple',
-    'bg-fuchsia',
-    'bg-pink',
-    'bg-maroon',
-    'bg-orange',
-    'bg-lime',
-    'bg-teal',
-    'bg-olive'
+    'bg-light',
+    'bg-purple'
   ]
 
   var accent_colors = [
@@ -497,16 +497,14 @@
 
   $container.append('<h6>Fondo Barra Superior</h6>')
 
-  var $navbar_variants = $('<div />', {
-    class: 'd-flex'
-  })
+  var $navbar_variants = $('<div />', {class: 'd-flex'})
   var navbar_all_colors = sidebar_colors
   var $navbar_variants_colors = createSkinBlock(navbar_all_colors, function () {
     var color = $(this).data('color')
     var $main_header = $('.main-header')
     $main_header.removeClass('navbar-dark').removeClass('navbar-light')
     navbar_all_colors.forEach(function (color) {
-      $main_header.removeClass(color)
+        $main_header.removeClass(color)
     })
 
     $(this).parent().removeClass().addClass('custom-select mb-3 text-light border-0 ')
@@ -570,11 +568,15 @@
             active_sidebar_color = className
         }
     })
-    $sidebar_variants_colors.find('option.' + active_sidebar_color).prop('selected', true)
-    $sidebar_variants_colors.removeClass().addClass('custom-select mb-3 text-light border-0 fondo_barra_lat ').addClass(active_sidebar_color).attr("id","fondo_barra_lat")
+    //$sidebar_variants_colors.find(active_sidebar_color).prop('selected', true)
+
+    $sidebar_variants_colors.removeClass().addClass('custom-select mb-3 text-light border-0 fondo_barra_lat mb-4 ').addClass(active_sidebar_color).attr("id","fondo_barra_lat")
     $sidebar_variants.append($sidebar_variants_colors)
     $container.append($sidebar_variants)
-
+    $container.append('<br/>')
+    $container.append('<br/>')
+    $container.append('<br/>')
+    $container.append('<hr/>')
     //--------------------------------------------------------------------------------------------------------
 
 

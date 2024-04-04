@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Configuracion;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Configuracion\ValidacionGrupoEmpresas;
+use App\Models\Configuracion\ConfigApariencia;
 use App\Models\Configuracion\ConfigEmpresa;
 use App\Models\Configuracion\ConfigTipoDocumento;
 use App\Models\Configuracion\GrupoEmpresa;
@@ -34,7 +35,10 @@ class GrupoEmpresaController extends Controller
      */
     public function store(ValidacionGrupoEmpresas $request)
     {
-        GrupoEmpresa::create($request->all());
+        $empresa= GrupoEmpresa::create($request->all());
+        $apariencia = ConfigApariencia::findOrfail(1);
+        $apariencia['config_empresa_id'] = $empresa->id;
+        ConfigApariencia::create($apariencia);
         return redirect('dashboard/configuracion_sis/grupo_empresas')->with('mensaje', 'Grupo Empresarial creado con éxito');
     }
 
