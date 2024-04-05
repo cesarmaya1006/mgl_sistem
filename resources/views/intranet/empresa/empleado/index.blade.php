@@ -43,7 +43,7 @@
                         </div>
                         @foreach ($grupo->empresas as $empresa)
                             <div class="col-12">
-                                <h5><strong>Cargos Empresa - {{$empresa->nombres}}</strong></h5>
+                                <h5><strong>Empleados Empresa - {{$empresa->nombres}}</strong></h5>
                             </div>
                             <div class="col-12">
                                 <input type="hidden" name="titulo_tabla" id="titulo_tabla" value="Listado de Areas">

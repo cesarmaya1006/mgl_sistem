@@ -3,6 +3,7 @@
 namespace App\Models\Configuracion;
 
 use App\Models\Empresa\EmpresaArea;
+use App\Models\Proyectos\Proyecto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -38,6 +39,11 @@ class ConfigEmpresa extends Model
     public function usuarios()
     {
         return $this->hasMany(ConfigUsuario::class, 'config_empresa_id', 'id');
+    }
+    //----------------------------------------------------------------------------------
+    public function proyectos()
+    {
+        return $this->hasMany(Proyecto::class, 'config_empresa_id', 'id');
     }
     //----------------------------------------------------------------------------------
 }

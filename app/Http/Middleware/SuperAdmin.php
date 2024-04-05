@@ -23,7 +23,7 @@ class SuperAdmin
 
     private function permiso()
     {
-        //return session()->get('rol_nombre') == 'Super Administrador';
-        return true;
+        return session()->get('rol.nombre') == 'Super Administrador';
+
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models\Configuracion;
 
 use App\Models\Empresa\EmpresaEmpleado;
+use App\Models\Proyectos\Proyecto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -36,9 +37,15 @@ class ConfigUsuario extends Authenticatable
         return $this->belongsTo(ConfigEmpresa::class, 'config_empresa_id', 'id');
     }
     //----------------------------------------------------------------------------------
+    public function proyectos()
+    {
+        return $this->hasMany(Proyecto::class, 'config_usuario_id', 'id');
+    }
+    //----------------------------------------------------------------------------------
     //==================================================================================
     public function setSession()
     {
+        $rol = $this->rol->first();
         Session::put([
             'id_usuario' => $this->id,
             'config_empresa_id' => $this->config_empresa_id,
@@ -51,9 +58,9 @@ class ConfigUsuario extends Authenticatable
             'direccion' => $this->direccion,
             'estado' => $this->estado,
             'foto' => $this->foto,
-
-
+            'rol' => $rol,
         ]);
+
         if ($this->empleado) {
             Session::put([
             'empresa_cargo_id' => $this->empleado->cargo->cargo,

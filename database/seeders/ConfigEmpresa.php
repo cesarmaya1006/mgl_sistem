@@ -25,6 +25,7 @@ class ConfigEmpresa extends Seeder
                 'direccion' => 'Calle de prueba 123',
                 'contacto' => 'Contacto prueba',
                 'cargo' => 'Cargo de prueba',
+                'logo' => 'empresa1.png',
 
             ],
         ];
@@ -43,6 +44,7 @@ class ConfigEmpresa extends Seeder
                 'direccion' => $data['direccion'],
                 'contacto' => $data['contacto'],
                 'cargo' => $data['cargo'],
+                'logo' => $data['logo'],
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]);
         }

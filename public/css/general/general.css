@@ -34,3 +34,8 @@ label.requerido:after {
     color: red;
 }
 
+.card-proyectos{
+    -webkit-box-shadow: 5px 5px 2px 0px rgba(0,0,0,0.50);
+    -moz-box-shadow: 5px 5px 2px 0px rgba(0,0,0,0.50);
+    box-shadow: 5px 5px 2px 0px rgba(0,0,0,0.50);
+}

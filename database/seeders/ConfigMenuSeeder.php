@@ -111,7 +111,7 @@ class ConfigMenuSeeder extends Seeder
             // Modulo archivo
             ['nombre' => 'Módulo Archivo', 'menu_id' => null, 'url' => 'dashboard/modulo-archivo', 'icono' => 'far fa-folder-open','Array_1' =>[]],
             // Modulo proyectos
-            ['nombre' => 'Módulo proyectos', 'menu_id' => null, 'url' => 'dashboard/modulo-proyectos', 'icono' => 'fas fa-project-diagram','Array_1' =>[]],
+            ['nombre' => 'Módulo proyectos', 'menu_id' => null, 'url' => 'dashboard/proyectos', 'icono' => 'fas fa-project-diagram','Array_1' =>[]],
             // Modulo archivo
             ['nombre' => 'Noticias', 'menu_id' => null, 'url' => 'dashboard/noticias', 'icono' => 'fas fa-newspaper','Array_1' =>[]],
             // Modulo archivo

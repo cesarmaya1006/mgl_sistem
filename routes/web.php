@@ -9,6 +9,7 @@ use App\Http\Controllers\Configuracion\GrupoEmpresaController;
 use App\Http\Controllers\Empresa\EmpresaAreaController;
 use App\Http\Controllers\Empresa\EmpresaCargoController;
 use App\Http\Controllers\Empresa\EmpresaEmpleadoController;
+use App\Http\Controllers\Proyectos\ProyectoController;
 use App\Http\Controllers\Seguridad\LoginController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -75,7 +76,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         });
         // ----------------------------------------------------------------------------------------
     });
-    Route::prefix('configuracion_sis')->middleware(['SuperAdmin','Administrador'])->group(function () {
+    Route::prefix('configuracion_sis')->middleware(['Administrador'])->group(function () {
         // Ruta Administrador Grupo Empresas
         // ------------------------------------------------------------------------------------
         Route::controller(GrupoEmpresaController::class)->prefix('grupo_empresas')->group(function () {
@@ -104,7 +105,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         // ----------------------------------------------------------------------------------------
 
     });
-    Route::prefix('configuracion')->middleware(['SuperAdmin','Administrador','AdminEmpresa'])->group(function () {
+    Route::prefix('configuracion')->middleware(['AdminEmpresa'])->group(function () {
         // Ruta Apariencias
         // ------------------------------------------------------------------------------------
         Route::controller(ConfigAparienciaController::class)->prefix('apariencia')->group(function () {
@@ -152,4 +153,15 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         // ----------------------------------------------------------------------------------------
 
     });
+    Route::prefix('proyectos')->middleware(['Empleado'])->group(function (){
+        // Ruta Apariencias
+        // ------------------------------------------------------------------------------------
+        Route::controller(ProyectoController::class)->group(function () {
+            Route::get('', 'index')->name('proyecto.index');
+            Route::get('crear', 'create')->name('proyecto.create');
+
+        });
+        // ----------------------------------------------------------------------------------------
+    });
+
 });

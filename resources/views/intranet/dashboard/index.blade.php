@@ -18,6 +18,13 @@ Dashboard
     <div class="col-12">
         <h1>Pagina Principal</h1>
         <br>
+        <br>
+        <h3>Rol: {{session()->get('rol.nombre')}}</h3>
+        <br>
+        <br>
+        {{session('rol.nombre')}}
+        <br>
+        <br>
         {{session('id_usuario')}}
         <br>
         {{session('config_empresa_id')}}

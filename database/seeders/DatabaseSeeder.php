@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ConfigRolSeeder::class,
             ConfigTipoDocumentoSeeder::class,
-            ConfigUsuarioSeeder::class,
             ConfigMenuSeeder::class,
             ConfigGrupoEmpresas::class,
             ConfigEmpresa::class,
@@ -29,6 +28,7 @@ class DatabaseSeeder extends Seeder
             ConfigEmpresaArea::class,
             ConfigEmpresaCargo::class,
             ConfigUsuarioSeeder::class,
+            ProyectosSeeder::class,
 
         ]);
     }

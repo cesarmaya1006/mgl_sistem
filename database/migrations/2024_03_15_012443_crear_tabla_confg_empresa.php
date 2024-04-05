@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('direccion', 200)->nullable();
             $table->string('contacto', 200)->nullable();
             $table->string('cargo', 200)->nullable();
+            $table->string('logo', 255)->nullable();
             $table->bigInteger('estado')->default(1);
             $table->timestamps();
             $table->charset = 'utf8';

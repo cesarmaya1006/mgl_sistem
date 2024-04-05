@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Configuracion\ConfigUsuario;
+use App\Models\Empresa\EmpresaEmpleado;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,14 +16,94 @@ class ConfigUsuarioSeeder extends Seeder
      */
     public function run(): void
     {
-        $id =1;
-        $tabla = 'config_usuario';
-        $data = ['nombres' => 'Super Administrador', 'email' => 'superadmin1006@gmail.com', 'password' => bcrypt('123')];
         DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
-        DB::table($tabla)->truncate();
+        DB::table('config_usuario')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
+
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
+        DB::table('empresa_empleados')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
+
+
+        $id = 0;
+        $data = ['nombres' => 'Super Administrador', 'email' => 'superadmin1006@gmail.com', 'password' => bcrypt('123')];
         $usuario = ConfigUsuario::create($data);
         $usuario->rol()->attach(1);
         $id++;
+
+        //-------------------------------------------------------------------------------------------------------------------
+
+        $data = ['nombres' => 'Administrador Sistema', 'email' => 'adminsis@gmail.com', 'password' => bcrypt('123')];
+        $usuario = ConfigUsuario::create($data);
+        $usuario->rol()->attach(2);
+        $id++;
+
+        //-------------------------------------------------------------------------------------------------------------------
+
+        $data = ['nombres' => 'Administrador', 'email' => 'admin@gmail.com', 'password' => bcrypt('123')];
+        $usuario = ConfigUsuario::create($data);
+        $usuario->rol()->attach(3);
+        $id++;
+
+        //-------------------------------------------------------------------------------------------------------------------
+        $identificacion = 987654321;
+        $telefono = 3103216549;
+        $foto = 1;
+        $cargo = 1;
+        $password = bcrypt('123');
+        $empleados = [
+            [
+                'nombres' => 'Ana',
+                'apellidos' => 'Peres',
+            ],
+            [
+                'nombres' => 'Beto',
+                'apellidos' => 'Peres',
+            ],
+            [
+                'nombres' => 'Carla',
+                'apellidos' => 'Peres',
+            ],
+            [
+                'nombres' => 'Dario',
+                'apellidos' => 'Peres',
+            ],
+            [
+                'nombres' => 'Eliseo',
+                'apellidos' => 'Peres',
+            ],
+
+        ];
+        foreach ($empleados as $empleado) {
+            DB::table('config_usuario')->insert([
+                'config_tipo_documento_id' => 1,
+                'config_empresa_id' => 1,
+                'identificacion' => $identificacion,
+                'nombres' => $empleado['nombres'],
+                'apellidos' => $empleado['apellidos'],
+                'email' => strtolower(substr($empleado['nombres'], 0, 1)) . strtolower(strtok($empleado['apellidos'], ' ')) . '@gmail.com',
+                'telefono' => $telefono,
+                'password' => $password,
+                'direccion' => 'Cr1 Trnv 1 casa G' . $id + 1,
+                'foto' => 'usuario' . $foto . '.jpg',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            ]);
+            $id++;
+            $identificacion++;
+            $telefono++;
+            $foto++;
+            $usuario = ConfigUsuario::findOrFail($id);
+            $usuario->rol()->attach(4);
+
+            DB::table('empresa_empleados')->insert([
+                'id' => $id,
+                'empresa_cargo_id' => $cargo,
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            ]);
+            $cargo++;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------
+
     }
 }

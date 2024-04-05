@@ -122,6 +122,8 @@ function menu_ul() {
 }
 
 $(document).ready(function () {
+    $('a.active').parents('li').addClass('menu-open');
+
     $(".tabla-borrando").on("submit", ".form-eliminar", function () {
         event.preventDefault();
         const form = $(this);
