@@ -30,6 +30,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('estado')->default(1);
             $table->string('foto', 255)->default('usuario-inicial.jpg');
+            $table->boolean('lider')->default(0)->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->charset = 'utf8';

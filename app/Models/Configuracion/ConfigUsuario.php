@@ -27,6 +27,7 @@ class ConfigUsuario extends Authenticatable
     {
         return $this->belongsToMany(ConfigRol::class, 'config_usuario_rol', 'config_usuario_id', 'config_rol_id')->withPivot('estado');
     }
+    //----------------------------------------------------------------------------------
     public function empleado()
     {
         return $this->belongsTo(EmpresaEmpleado::class, 'id');
@@ -42,6 +43,18 @@ class ConfigUsuario extends Authenticatable
         return $this->hasMany(Proyecto::class, 'config_usuario_id', 'id');
     }
     //----------------------------------------------------------------------------------
+    public function proyectos_miembro()
+    {
+        return $this->belongsToMany(Proyecto::class, 'proyecto_miembros', 'config_usuario_id', 'proyectos_id')->withPivot('estado');
+    }
+    //----------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------
+    public function empresas_tranv()
+    {
+        return $this->belongsToMany(ConfigEmpresa::class, 'usuario_tranv_empresa', 'config_usuario_id', 'config_empresa_id');
+    }
+    //----------------------------------------------------------------------------------
+
     //==================================================================================
     public function setSession()
     {

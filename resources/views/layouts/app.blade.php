@@ -26,6 +26,7 @@ onload="menu_ul()">
     <input type="hidden" id="id_cambio_check_ruta" data_url="{{route('apariencia.cambio_check')}}">
     <input type="hidden" id="ruta_body_dark_mode" data_url="{{route('apariencia.body_dark_mode')}}">
     <input type="hidden" id="ruta_fondo_barra_sup" data_url="{{route('apariencia.fondomenu_sup')}}">
+    <input type="hidden" id="ruta_fondo_barra_lat" data_url="{{route('apariencia.fondo_barra_lat')}}">
     <!-- Fin rutas apariencias -->
     <div class="wrapper">
         <!-- Preloader -->

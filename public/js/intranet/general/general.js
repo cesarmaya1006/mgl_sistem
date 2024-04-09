@@ -461,36 +461,25 @@ $(document).ready(function () {
     //--------------------------------------------------------------------------------------------
 
     $("#fondo_barra_lat").on("change", function () {
-        color_fondo_hijos("bg-" + $(this).val().toLowerCase());
+        const color = "bg-" + $(this).val().toLowerCase();
+        color_fondo_hijos(color);
         $(this)
             .removeClass()
-            .addClass(
-                "custom-select mb-3 text-light border-0 " +
-                    "bg-" +
-                    $(this).val().toLowerCase()
-            );
-
-        /*$.ajax({
-            url: data_url,
-            type: "GET",
-            data: data,
-            success: function (respuesta) {
-                console.log(respuesta);
-                if (respuesta.areasPadre.length > 0) {
-                    var respuesta_html = "";
-                    respuesta_html +='<option value="">Elija área</option>';
-                    $.each(respuesta.areasPadre, function (index, item) {
-                        respuesta_html +='<option value="'+item.id+'">'+item.area+'</option>';
-                    });
-                    $("#empresa_area_id").html(respuesta_html);
-                    $("#caja_areas").removeClass("d-none");
-                    $("#caja_area_nueva").removeClass("d-none");
-                } else {
-                    $("#caja_area_nueva").removeClass("d-none");
-                }
-            },
-            error: function () {},
-        });*/
+            .addClass("custom-select mb-3 text-light border-0 " + color);
+            const data_url = $("#ruta_fondo_barra_lat").attr("data_url");
+            const bd_valor = color;
+            var data = {
+                bd_valor: bd_valor
+            };
+            $.ajax({
+                url: data_url,
+                type: "GET",
+                data: data,
+                success: function(respuesta) {
+                    Sistema.notificaciones(respuesta.respuesta, 'Sistema', respuesta.tipo);
+                },
+                error: function () {},
+            });
     });
 
     sidebar_collapse();
@@ -498,15 +487,10 @@ $(document).ready(function () {
     sidebar_mini_xs_checkbox_input();
     flat_sidebar_checkbox_input();
     color_fondo_hijos($("#fondo_barra_lat_input").val());
-    $("#fondo_barra_lat")
-        .removeClass()
-        .addClass(
-            "custom-select mb-3 text-light border-0 " +
-                $("#fondo_barra_lat_input").val().toLowerCase()
-        );
-    $("#fondo_barra_lat")
-        .find("." + $("#fondo_barra_lat_input").val().toLowerCase())
-        .prop("selected", true);
+    $('#fondo_barra_sup').removeClass().addClass('custom-select mb-3 text-light border-0 ' + $("#fondo_barra_sup_input").val().toLowerCase().replace("navbar", 'bg'));
+    $("#fondo_barra_sup").find("." + $("#fondo_barra_sup_input").val().toLowerCase().replace("navbar", 'bg')).prop("selected", true);
+    $("#fondo_barra_lat").removeClass().addClass("custom-select mb-3 text-light border-0 " + $("#fondo_barra_lat_input").val().toLowerCase());
+    $("#fondo_barra_lat").find("." + $("#fondo_barra_lat_input").val().toLowerCase()).prop("selected", true);
 });
 
 function sidebar_collapse() {
@@ -704,7 +688,20 @@ function color_fondo_hijos(color) {
                 $(this).css("color", "white");
             });
             break;
+        case "bg-light":
+            if ($(".main-sidebar").hasClass("sidebar-no-expand")) {
+                $(".main-sidebar").removeClass().addClass("main-sidebar elevation-4 sidebar-no-expand sidebar-light-info");
+            } else {
+                $(".main-sidebar").removeClass().addClass("main-sidebar elevation-4 sidebar-light-info");
+            }
+            $('.sidebar').removeClass().addClass('sidebar os-host os-host-overflow os-host-overflow-y os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-transition os-theme-dark');
+            hijos.each(function () {
+                $(this).css("color", "black");
+            });
+            break;
         default:
             break;
     }
 }
+
+

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Proyectos;
 
 use App\Http\Controllers\Controller;
+use App\Models\Configuracion\ConfigUsuario;
 use App\Models\Configuracion\GrupoEmpresa;
 use App\Models\Proyectos\Proyecto;
 use Illuminate\Http\Request;
@@ -40,15 +41,17 @@ class ProyectoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Proyecto::create($request->all());
+        return redirect('dashboard/proyectos')->with('mensaje', 'Proyecto creado con éxito');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Proyecto $proyecto)
+    public function show(Request $request, $id)
     {
-        //
+        $proyecto = Proyecto::findOrfail($id);
+        return view('intranet.proyectos.proyecto.detalle',compact('proyecto'));
     }
 
     /**
@@ -74,4 +77,18 @@ class ProyectoController extends Controller
     {
         //
     }
+
+    public function getproyectos(Request $request,$estado,$config_empresa_id){
+        if ($request->ajax()) {
+            if ($estado =='todos') {
+                return response()->json(['proyectos' => Proyecto::where('config_empresa_id',$config_empresa_id)->with('miembros_proyecto')->with('lider')->get()]);
+            } else {
+                return response()->json(['proyectos' => Proyecto::where('config_empresa_id',$config_empresa_id)->where('estado',$estado)->with('miembros_proyecto')->with('lider')->get()]);
+            }
+        } else {
+            abort(404);
+        }
+    }
+
+
 }

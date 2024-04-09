@@ -55,22 +55,32 @@ class ConfigUsuarioSeeder extends Seeder
             [
                 'nombres' => 'Ana',
                 'apellidos' => 'Peres',
+                'lider' => 1,
             ],
             [
                 'nombres' => 'Beto',
                 'apellidos' => 'Peres',
+                'lider' => 1,
             ],
             [
                 'nombres' => 'Carla',
                 'apellidos' => 'Peres',
+                'lider' => 0,
             ],
             [
                 'nombres' => 'Dario',
                 'apellidos' => 'Peres',
+                'lider' => 0,
             ],
             [
                 'nombres' => 'Eliseo',
                 'apellidos' => 'Peres',
+                'lider' => 0,
+            ],
+            [
+                'nombres' => 'Cesar',
+                'apellidos' => 'Maya',
+                'lider' => 1,
             ],
 
         ];
@@ -86,6 +96,7 @@ class ConfigUsuarioSeeder extends Seeder
                 'password' => $password,
                 'direccion' => 'Cr1 Trnv 1 casa G' . $id + 1,
                 'foto' => 'usuario' . $foto . '.jpg',
+                'lider' => $empleado['lider'],
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]);
             $id++;
@@ -100,7 +111,10 @@ class ConfigUsuarioSeeder extends Seeder
                 'empresa_cargo_id' => $cargo,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]);
-            $cargo++;
+            if ($cargo!=5) {
+                $cargo++;
+            }
+
         }
 
         //-------------------------------------------------------------------------------------------------------------------

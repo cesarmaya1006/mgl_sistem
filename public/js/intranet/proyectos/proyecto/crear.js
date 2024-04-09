@@ -24,7 +24,7 @@ $(document).ready(function () {
         });
     });
 
-    $("#config_empresa_id").on("change", function () {
+    if ($('#config_empresa_id_2').length) {
         const data_url = $(this).attr("data_url");
         const id = $(this).val();
         var data = {
@@ -36,27 +36,50 @@ $(document).ready(function () {
             data: data,
             success: function (respuesta) {
                 console.log(respuesta);
-                if (respuesta.areasPadre.length > 0) {
+                if (respuesta.lideres.length > 0) {
                     var respuesta_html = "";
-                    respuesta_html +='<option value="">Elija área</option>';
-                    $.each(respuesta.areasPadre, function (index, item) {
-                        respuesta_html +='<option value="'+item.id+'">'+item.area+'</option>';
+                    respuesta_html +='<option value="">Seleccione un Lider</option>';
+                    $.each(respuesta.lideres, function (index, item) {
+                        respuesta_html +='<option value="' + item.id + '">'+ item.nombres + ' ' + item.apellidos + ' ( ' + item.empleado.cargo.cargo + ' )';
+                        if (id!= item.empleado.cargo.area.empresa.id) {
+                            respuesta_html+= ' - ' + item.empleado.cargo.area.empresa.nombres;
+                        }
+                        respuesta_html+= '</option>';
                     });
-                    $("#empresa_area_id").html(respuesta_html);
-                    $("#caja_areas").removeClass("d-none");
+                    $("#lider_id").html(respuesta_html);
                 }
             },
             error: function () {},
         });
-    });
-    $("#empresa_area_id").on("change", function () {
+      }
+
+    $("#config_empresa_id").on("change", function () {
+        $("#lider_id").html('<option value="">Seleccione un Lider</option>');
         const data_url = $(this).attr("data_url");
         const id = $(this).val();
-        console.log(id);
-        if (id!=null) {
-           $('#caja_cargo_nuevo').removeClass('d-none');
-        } else {
-            $('#caja_cargo_nuevo').addClass('d-none');
-        }
+        var data = {
+            id: id,
+        };
+        $.ajax({
+            url: data_url,
+            type: "GET",
+            data: data,
+            success: function (respuesta) {
+                console.log(respuesta);
+                if (respuesta.lideres.length > 0) {
+                    var respuesta_html = "";
+                    respuesta_html +='<option value="">Seleccione un Lider</option>';
+                    $.each(respuesta.lideres, function (index, item) {
+                        respuesta_html +='<option value="' + item.id + '">'+ item.nombres + ' ' + item.apellidos + ' ( ' + item.empleado.cargo.cargo + ' )';
+                        if (id!= item.empleado.cargo.area.empresa.id) {
+                            respuesta_html+= ' - ' + item.empleado.cargo.area.empresa.nombres;
+                        }
+                        respuesta_html+= '</option>';
+                    });
+                    $("#lider_id").html(respuesta_html);
+                }
+            },
+            error: function () {},
+        });
     });
 });

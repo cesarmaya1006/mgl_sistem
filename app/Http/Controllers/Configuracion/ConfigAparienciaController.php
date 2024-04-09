@@ -72,4 +72,24 @@ class ConfigAparienciaController extends Controller
             abort(404);
         }
     }
+
+    public function fondo_barra_lat(Request $request){
+        if ($request->ajax()) {
+            $aparienciaUptade['fondo_barra_lat'] = $_GET['bd_valor'];
+            if (session('config_empresa_id') != null) {
+                ConfigApariencia::where('config_empresa_id', session('config_empresa_id'))->first()->update($aparienciaUptade);
+                $apariencia = ConfigApariencia::where('config_empresa_id', session('config_empresa_id'))->first();
+            } else {
+                ConfigApariencia::findOrFail(1)->update($aparienciaUptade);
+                $apariencia = ConfigApariencia::findOrFail(1);
+            }
+            $request->session()->forget('apariencia');
+            Session::put([
+                'apariencia' => $apariencia,
+            ]);
+            return response()->json(['respuesta' => 'Fondo lateral cambiado correctamente', 'tipo' => 'success']);
+        } else {
+            abort(404);
+        }
+    }
 }

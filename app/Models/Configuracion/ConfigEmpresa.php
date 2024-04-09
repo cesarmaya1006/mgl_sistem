@@ -46,4 +46,10 @@ class ConfigEmpresa extends Model
         return $this->hasMany(Proyecto::class, 'config_empresa_id', 'id');
     }
     //----------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------
+    public function usuarios_tranv()
+    {
+        return $this->belongsToMany(ConfigUsuario::class, 'usuario_tranv_empresa', 'config_empresa_id', 'config_usuario_id');
+    }
+    //----------------------------------------------------------------------------------
 }

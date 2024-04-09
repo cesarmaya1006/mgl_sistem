@@ -9,8 +9,8 @@
     <a href="#" class="brand-link
                 {{session('apariencia.text_sm_brand_checkbox')=='si'? 'text-sm':''}}
                 pt-3 pb-4">
-        <img src="{{asset('imagenes/sistema/mgl_logo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8;background-color: white;">
-        <span class="brand-text font-weight-light text-white">Mgl - Tech</span>
+        <img src="{{asset('imagenes/sistema/mgl_logo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8;">
+        <span class="brand-text font-weight-light">Mgl - Tech</span>
     </a>
 
     <!-- Sidebar -->
@@ -21,7 +21,7 @@
                 <img src="{{asset('imagenes/usuarios/'.session('foto'))}}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block text-white">{{session('nombres').' '. session('apellidos')}}</a>
+                <a href="#" class="d-block">{{session('nombres').' '. session('apellidos')}}</a>
             </div>
         </div>
 

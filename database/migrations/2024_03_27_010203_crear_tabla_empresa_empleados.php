@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreign('id', 'fk_crm_config_usuario_usuario')->references('id')->on('config_usuario')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('empresa_cargo_id');
             $table->foreign('empresa_cargo_id', 'fk_crm_empresa_cargo_usuario')->references('id')->on('empresa_cargo')->onDelete('restrict')->onUpdate('restrict');
-            $table->boolean('mgl')->default(0);
+            $table->boolean('mgl')->default(0)->nullable();
             $table->boolean('estado')->default(1);
             $table->timestamps();
             $table->charset = 'utf8';

@@ -18,6 +18,7 @@ $(document).ready(function () {
                     });
                     $("#config_empresa_id").html(respuesta_html);
                     $("#caja_empresas").removeClass("d-none");
+                    $('#check_usuTranv_all').removeClass('d-none');
                 }
             },
             error: function () {},
@@ -80,6 +81,26 @@ $(document).ready(function () {
             $('#caja_usuario_nuevo').addClass('d-none');
         }
     });
+    $(".label_checkbox").change(function() {
+        const valor = $(this).val();
+        if(this.checked) {
+            $('#label_checkbox'+valor).html('Si');
+        }else{
+            $('#label_checkbox'+valor).html('No');
+        }
+    });
+    $("#usuario_tranv").change(function() {
+        const valor = $(this).val();
+        if(this.checked) {
+            $('#id_tabla_transv').removeClass('d-none');
+        }else{
+            $('#id_tabla_transv').addClass('d-none');
+            $('#body_usuario_tranv').find('input').prop( "checked", false );
+        }
+    });
+
+
+
 });
 
 function mostrar(){

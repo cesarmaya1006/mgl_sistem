@@ -21,9 +21,9 @@ class EmpresaEmpleadoController extends Controller
      */
     public function index()
     {
-        if (session('rol_id')<3) {
+        if (session('rol_id') < 3) {
             $grupos = GrupoEmpresa::get();
-            return view('intranet.empresa.empleado.index',compact('grupos'));
+            return view('intranet.empresa.empleado.index', compact('grupos'));
         } else {
             # code...
         }
@@ -35,9 +35,9 @@ class EmpresaEmpleadoController extends Controller
     public function create()
     {
         $tiposdocu = ConfigTipoDocumento::get();
-        if (session('rol_id')<3) {
+        if (session('rol_id') < 3) {
             $grupos = GrupoEmpresa::get();
-            return view('intranet.empresa.empleado.crear',compact('grupos','tiposdocu'));
+            return view('intranet.empresa.empleado.crear', compact('grupos', 'tiposdocu'));
         } else {
             # code...
         }
@@ -59,7 +59,7 @@ class EmpresaEmpleadoController extends Controller
             $imagen_foto->resize(400, 500);
             $imagen_foto->save($ruta . $nombrefoto, 100);
             $usuario_new['foto'] = $nombrefoto;
-        }else{
+        } else {
             $usuario_new['foto'] = 'usuario-inicial.jpg';
         }
         // - - - - - - - - - - - - - - - - - - - - - - - -
@@ -73,15 +73,19 @@ class EmpresaEmpleadoController extends Controller
         $usuario_new['password'] = bcrypt($request['identificacion']);
         $usuario_new['direccion'] = $request['direccion'];
         $usuario_new['camb_password'] = 1;
-        $roles =[5];
+        $usuario_new['lider'] = $request['lider'];
+        $roles = [4];
         $usuario = ConfigUsuario::create($usuario_new);
         $usuario->rol()->sync($roles);
+        $usuario->empresas_tranv()->sync($request['config_empresa_group']);
         $empleado_new['id'] = $usuario->id;
         $empleado_new['empresa_cargo_id'] = $request['empresa_cargo_id'];
+        if (session('rol_id') < 3) {
+            $empleado_new['mgl'] = $request['mgl'];
+        }
         $usuario = EmpresaEmpleado::create($empleado_new);
         //-------------------------------------------------------------------------------
         return redirect('dashboard/configuracion/empleados')->with('mensaje', 'Empleado creado con éxito');
-
     }
 
     /**
@@ -99,9 +103,9 @@ class EmpresaEmpleadoController extends Controller
     {
         $tiposdocu = ConfigTipoDocumento::get();
         $usuario_edit = ConfigUsuario::findOrFail($id);
-        if (session('rol_id')<3) {
+        if (session('rol_id') < 3) {
             $grupos = GrupoEmpresa::get();
-            return view('intranet.empresa.empleado.editar',compact('grupos','tiposdocu','usuario_edit'));
+            return view('intranet.empresa.empleado.editar', compact('grupos', 'tiposdocu', 'usuario_edit'));
         } else {
             # code...
         }
@@ -135,8 +139,13 @@ class EmpresaEmpleadoController extends Controller
         $usuario_update['password'] = bcrypt($request['identificacion']);
         $usuario_update['direccion'] = $request['direccion'];
         $usuario_update['camb_password'] = 1;
+        $usuario_update['lider'] = $request['lider'];
         ConfigUsuario::findOrFail($id)->update($usuario_update);
+        ConfigUsuario::findOrFail($id)->empresas_tranv()->sync($request['config_empresa_group']);
         $empleado_update['empresa_cargo_id'] = $request['empresa_cargo_id'];
+        if (session('rol_id') < 3) {
+            $empleado_update['mgl'] = $request['mgl'];
+        }
         EmpresaEmpleado::findOrFail($id)->update($empleado_update);
         //-------------------------------------------------------------------------------
         return redirect('dashboard/configuracion/empleados')->with('mensaje', 'Empleado actualizado con éxito');
@@ -149,9 +158,25 @@ class EmpresaEmpleadoController extends Controller
     {
         //
     }
-    public function getCargos(Request $request){
+    public function getCargos(Request $request)
+    {
         if ($request->ajax()) {
-            return response()->json(['cargos' => EmpresaCargo::where('empresa_area_id',$_GET['id'])->get()]);
+            return response()->json(['cargos' => EmpresaCargo::where('empresa_area_id', $_GET['id'])->get()]);
+        } else {
+            abort(404);
+        }
+    }
+    public function getLideresPorEmpresa(Request $request){
+        if ($request->ajax()) {
+            $config_empresa_id = $_GET['id'];
+            $lideres1 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id',$config_empresa_id)->where('estado',1)->where('lider',1)->get();
+            $lideres2 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id','!=',$config_empresa_id)->where('estado',1)->where('lider',1)->
+            whereHas('empresas_tranv', function ($q) use ($config_empresa_id) {
+                $q->where('config_empresa_id', $config_empresa_id);
+            })->get();
+            $lideres = $lideres1->concat($lideres2);
+            return response()->json(['lideres' => $lideres]);
+
         } else {
             abort(404);
         }

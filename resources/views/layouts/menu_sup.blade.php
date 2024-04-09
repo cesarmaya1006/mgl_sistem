@@ -6,6 +6,7 @@
     {{session('apariencia.border_bottom')=='si'? 'border-bottom-0':''}}
     {{session('apariencia.fondo_barra_sup')!='navbar-light'?session('apariencia.fondo_barra_sup'):''}}
     " id="menu_superior">
+    <input type="hidden" id="fondo_barra_sup_input" value="{{session('apariencia.fondo_barra_sup')}}">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">

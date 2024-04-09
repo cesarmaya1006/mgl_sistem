@@ -25,5 +25,11 @@ class Proyecto extends Model
         return $this->belongsTo(ConfigUsuario::class, 'config_usuario_id', 'id');
     }
     //--------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------
+    public function miembros_proyecto()
+    {
+        return $this->belongsToMany(ConfigUsuario::class, 'proyecto_miembros','proyectos_id', 'config_usuario_id')->withPivot('estado');
+    }
+    //----------------------------------------------------------------------------------
 
 }

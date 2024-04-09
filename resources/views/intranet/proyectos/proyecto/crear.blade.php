@@ -41,7 +41,7 @@
                         @include('includes.error-form')
                     </div>
                     <div class="col-12">
-                        <form action="{{ route('empleado.store') }}" class="form-horizontal row" method="POST" autocomplete="off" enctype="multipart/form-data">
+                        <form action="{{ route('proyecto.store') }}" class="form-horizontal row" method="POST" autocomplete="off" enctype="multipart/form-data">
                             @csrf
                             @method('post')
                             @if (session('rol_id')<3)
@@ -59,12 +59,14 @@
                                 </div>
                                 <div class="col-5 col-md-3 form-group d-none" id="caja_empresas">
                                     <label class="requerido" for="config_empresa_id">Empresa</label>
-                                    <select id="config_empresa_id" class="form-control form-control-sm" data_url="{{route('area.getAreas')}}" name="config_empresa_id" required>
+                                    <select id="config_empresa_id" class="form-control form-control-sm" data_url="{{route('empleado.getLideresPorEmpresa')}}" name="config_empresa_id" required>
                                         <option value="">Elija grupo</option>
                                     </select>
                                 </div>
                             </div>
                             <hr>
+                            @else
+                            <input type="hidden" id="config_empresa_id_2" name="config_empresa_id" value="{{session('config_empresa_id')}}" data_url="{{route('empleado.getLideresPorEmpresa')}}">
                             @endif
                             <div class="row">
                                 <div class="col-12 col-md-2 form-group">
@@ -72,6 +74,26 @@
                                     <input class="form-control form-control-sm" type="date" name="fec_creacion"
                                         id="fec_creacion" value="{{ date('Y-m-d') }}" required>
                                     <small id="helpId" class="form-text text-muted">Fecha creación proyecto</small>
+                                </div>
+                                <div class="col-12 col-md-4 form-group">
+                                    <label for="titulo">Lider Proyecto</label>
+                                    <select class="form-control form-control-sm" name="config_usuario_id" id="lider_id" required>
+                                        <option value="">Seleccione un Lider</option>
+
+                                    </select>
+                                    <small id="helpId" class="form-text text-muted">Lider Proyecto</small>
+                                </div>
+                                <div class="col-12 col-md-4 form-group">
+                                    <label for="titulo">Titulo Proyecto</label>
+                                    <input type="text" class="form-control form-control-sm" name="titulo" id="titulo"
+                                        aria-describedby="helpId" onkeyup="mayus(this);" required>
+                                    <small id="helpId" class="form-text text-muted">Titulo Proyecto</small>
+                                </div>
+                                <div class="col-12 form-group">
+                                    <label for="titulo">Objetivo del Proyecto</label>
+                                    <textarea class="form-control form-control-sm" id="objetivo" name="objetivo" rows="3"
+                                        placeholder="Ingrese el objetivo de proyecto" required></textarea>
+                                    <small id="helpId" class="form-text text-muted">Objetivo del Proyecto</small>
                                 </div>
                             </div>
                             <!-- /.card-body -->

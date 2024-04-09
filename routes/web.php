@@ -112,6 +112,8 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
             Route::get('body_dark_mode', 'body_dark_mode')->name('apariencia.body_dark_mode');
             Route::get('cambio_check', 'cambio_check')->name('apariencia.cambio_check');
             Route::get('fondomenu_sup', 'fondomenu_sup')->name('apariencia.fondomenu_sup');
+            Route::get('fondo_barra_lat', 'fondo_barra_lat')->name('apariencia.fondo_barra_lat');
+
 
         });
         // ----------------------------------------------------------------------------------------
@@ -149,6 +151,8 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
             Route::put('actualizar/{id}', 'update')->name('empleado.update');
             Route::delete('eliminar/{id}', 'destroy')->name('empleado.destroy');
             Route::get('getCargos', 'getCargos')->name('empleado.getCargos');
+            Route::get('getLideresPorEmpresa', 'getLideresPorEmpresa')->name('empleado.getLideresPorEmpresa');
+
         });
         // ----------------------------------------------------------------------------------------
 
@@ -159,6 +163,13 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::controller(ProyectoController::class)->group(function () {
             Route::get('', 'index')->name('proyecto.index');
             Route::get('crear', 'create')->name('proyecto.create');
+            Route::post('guardar', 'store')->name('proyecto.store');
+            Route::get('detalle/{id}', 'show')->name('proyecto.detalle');
+            Route::get('gestion/{id}', 'gestion')->name('proyecto.gestion');
+
+            Route::get('getproyectos/{estado}/{config_empresa_id}', 'getproyectos')->name('proyecto.getproyectos');
+
+
 
         });
         // ----------------------------------------------------------------------------------------
