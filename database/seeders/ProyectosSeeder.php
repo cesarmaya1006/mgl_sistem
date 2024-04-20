@@ -33,7 +33,9 @@ class ProyectosSeeder extends Seeder
                 'config_usuario_id' => 4,
             ],
         ];
+        $id = 0;
         foreach ($datas as $data) {
+            $id++;
             DB::table('proyectos')->insert([
                 'titulo' => $data['titulo'],
                 'fec_creacion' => $data['fec_creacion'],
@@ -53,7 +55,7 @@ class ProyectosSeeder extends Seeder
                 //'fec_creacion' => '2024-04-04 9:4:48' ,
                 'titulo' => 'Se te asigno un nuevo proyecto',
                 'mensaje' => 'Se creo un nuevo proyecto '.$data['titulo'].' y te fue asignado ',
-                'link' => 'proyecto.gestion',
+                'link' => route('proyecto.gestion',['id' => $id ]),
                 'id_link' => 1,
                 'tipo' => 'proyecto',
                 'accion' => 'creacion',

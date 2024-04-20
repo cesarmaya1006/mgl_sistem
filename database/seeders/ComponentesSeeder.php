@@ -96,7 +96,7 @@ class ComponentesSeeder extends Seeder
                 'fec_creacion' => $data['fec_creacion'] . ' ' . rand(8, 11) . ':' . rand(1, 59) . ':' . rand(1, 59) . '' ,
                 'titulo' => 'Se te asigno un nuevo componente',
                 'mensaje' => 'Se creo un nuevo componente '.$data['titulo'].' y te fue asignado ',
-                'link' => 'proyecto.gestion',
+                'link' => route('proyecto.gestion',['id' => $data['proyectos_id'] ]),
                 'id_link' => $data['proyectos_id'],
                 'tipo' => 'componente',
                 'accion' => 'creacion',
