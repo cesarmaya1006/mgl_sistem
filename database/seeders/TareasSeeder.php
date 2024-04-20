@@ -23,6 +23,7 @@ class TareasSeeder extends Seeder
 
         $proyectos = Proyecto::get();
         $datas = [];
+        $id =0;
         foreach ($proyectos as $proyecto) {
             $lideres1 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id', $proyecto->config_empresa_id)->where('estado', 1)
             ->whereHas('rol', function ($p) {
@@ -60,7 +61,9 @@ class TareasSeeder extends Seeder
                             break;
                     }
                     $config_usuario_id = intval(rand($empleados->min('id'), $empleados->max('id')));
+                    $id++;
                     array_push($datas, [
+                        'id' => $id,
                         'proy_componentes_id' => intval($componente->id),
                         'config_usuario_id' => $config_usuario_id,
                         'titulo' => 'Tarea de calibración impacto componente ' . $i . ' impacto: ' . $impacto . ' valor numerico: ' . $impacto_num,
@@ -102,7 +105,7 @@ class TareasSeeder extends Seeder
                     'fec_creacion' => $data['fec_creacion'] . ' ' . rand(8, 11) . ':' . rand(1, 59) . ':' . rand(1, 59) . '' ,
                     'titulo' => 'Se te asigno una nueva tarea',
                     'mensaje' => 'Se creo un nueva tarea '.$data['titulo'].' y te fue asignada',
-                    'link' => 'proyecto.gestion',
+                    'link' => route('tarea.gestion',['id'=>$data['id']]),
                     'id_link' => 1,
                     'tipo' => 'tarea',
                     'accion' => 'creacion',

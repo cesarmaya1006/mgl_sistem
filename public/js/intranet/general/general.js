@@ -760,7 +760,7 @@ function notificacionesUsuairo(){
                         var icono = 'far fa-thumbs-up';
                     }
                     if (cant_control < 4) {
-                        respuesta_html +='<a href="' + item.link + '/' + item.id + '" class="dropdown-item item_notificacion_link" data_id="' + item.id +'">';
+                        respuesta_html +='<a href="' + item.link + '" class="dropdown-item item_notificacion_link" data_id="' + item.id +'">';
                         respuesta_html +='    <i class="'  + icono + ' mr-1"></i> <span class="text-wrap"> ' + item.titulo + '</span>';
                         respuesta_html +='    <span class="float-right text-muted" style="float: right;font-size: 0.9em;">' + diferencia_final + '</span>';
                         respuesta_html +='</a>';
