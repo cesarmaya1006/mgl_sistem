@@ -38,8 +38,8 @@ class ConfigApariencia extends Seeder
                 'text_sm_brand_checkbox' => 'no',
                 'text_sm_sidebar_container' => 'no',
                 'text_sm_footer_checkbox' => 'no',
-                'fondo_barra_sup' => '',
-                'fondo_barra_lat' => '',
+                'fondo_barra_sup' => 'navbar-light',
+                'fondo_barra_lat' => 'bg-light',
             ],
             [
                 'config_empresa_id' => 1,
@@ -64,8 +64,8 @@ class ConfigApariencia extends Seeder
                 'text_sm_brand_checkbox' => 'no',
                 'text_sm_sidebar_container' => 'no',
                 'text_sm_footer_checkbox' => 'no',
-                'fondo_barra_sup' => '',
-                'fondo_barra_lat' => '',
+                'fondo_barra_sup' => 'navbar-light',
+                'fondo_barra_lat' => 'bg-light',
             ],
         ];
         DB::statement('SET FOREIGN_KEY_CHECKS = 0;');

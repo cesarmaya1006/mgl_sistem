@@ -9,7 +9,11 @@ use App\Http\Controllers\Configuracion\GrupoEmpresaController;
 use App\Http\Controllers\Empresa\EmpresaAreaController;
 use App\Http\Controllers\Empresa\EmpresaCargoController;
 use App\Http\Controllers\Empresa\EmpresaEmpleadoController;
+use App\Http\Controllers\Proyectos\ComponenteController;
+use App\Http\Controllers\Proyectos\HistorialController;
+use App\Http\Controllers\Proyectos\NotificacionController;
 use App\Http\Controllers\Proyectos\ProyectoController;
+use App\Http\Controllers\Proyectos\TareaController;
 use App\Http\Controllers\Seguridad\LoginController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -158,19 +162,47 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
 
     });
     Route::prefix('proyectos')->middleware(['Empleado'])->group(function (){
-        // Ruta Apariencias
+        // Ruta proyectos
         // ------------------------------------------------------------------------------------
         Route::controller(ProyectoController::class)->group(function () {
             Route::get('', 'index')->name('proyecto.index');
             Route::get('crear', 'create')->name('proyecto.create');
             Route::post('guardar', 'store')->name('proyecto.store');
             Route::get('detalle/{id}', 'show')->name('proyecto.detalle');
-            Route::get('gestion/{id}', 'gestion')->name('proyecto.gestion');
-
+            Route::get('gestion/{id}/{notificacion_id?}', 'gestion')->name('proyecto.gestion');
             Route::get('getproyectos/{estado}/{config_empresa_id}', 'getproyectos')->name('proyecto.getproyectos');
-
-
-
+            Route::get('getproyectos/{config_usuario_id}', 'getproyectosusuario')->name('proyecto.getproyectosusuario');
+        });
+        // ----------------------------------------------------------------------------------------
+        // Ruta proyectos
+        // ------------------------------------------------------------------------------------
+        Route::controller(ComponenteController::class)->prefix('componentes')->group(function () {
+            Route::get('crear/{proyectos_id}', 'create')->name('componente.create');
+            Route::post('guardar', 'store')->name('componente.store');
+        });
+        // ----------------------------------------------------------------------------------------
+        // Ruta tareas
+        // ------------------------------------------------------------------------------------
+        Route::controller(TareaController::class)->prefix('tareas')->group(function () {
+            Route::get('crear/{componente_id}', 'create')->name('tarea.create');
+            Route::post('guardar', 'store')->name('tarea.store');
+            Route::get('gestion/{id}', 'gestion')->name('tarea.gestion');
+            Route::get('gettareasusu/{config_usuario_id}', 'gettareasusu')->name('tarea.gettareasusu');
+        });
+        // ----------------------------------------------------------------------------------------
+        // Ruta historiales
+        // ------------------------------------------------------------------------------------
+        Route::controller(HistorialController::class)->prefix('historiales')->group(function () {
+            Route::get('crear/{proy_tareas_id}', 'create')->name('historial.create');
+            Route::post('guardar', 'store')->name('historial.store');
+            Route::get('gestion/{id}', 'gestion')->name('historial.gestion');
+        });
+        // ----------------------------------------------------------------------------------------
+        // Ruta Notificaciones
+        // ------------------------------------------------------------------------------------
+        Route::controller(NotificacionController::class)->prefix('notificaciones')->group(function () {
+            Route::get('getnotificaciones/{id}', 'getnotificaciones')->name('notificacion.getnotificaciones');
+            Route::get('readnotificaciones', 'readnotificaciones')->name('notificacion.readnotificaciones');
         });
         // ----------------------------------------------------------------------------------------
     });

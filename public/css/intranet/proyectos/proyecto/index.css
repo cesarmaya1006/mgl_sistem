@@ -1,6 +1,23 @@
-.link_item_card{
+.link_item_card {
     cursor: pointer;
 }
-.link_item_card_2{
+
+.link_item_card_2 {
     cursor: pointer;
+}
+
+.card-raised {
+    border: none;
+    box-shadow: 0px 4px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    --bs-border-opacity: 1;
+    font-size: 0.8em;
+}
+
+.icon-circle {
+    height: 3rem;
+    width: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }

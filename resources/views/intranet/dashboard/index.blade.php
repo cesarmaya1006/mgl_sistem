@@ -56,8 +56,9 @@ Dashboard
         <br>
     {{session('apariencia')}}
     <hr>
-
+    {{session('cant_notificaciones')}}
     <hr>
+    <p>cantidad de notificaciones: {{session('cant_notificaciones')}}</p>
 
     </div>
 </div>

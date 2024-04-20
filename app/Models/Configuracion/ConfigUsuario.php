@@ -3,7 +3,10 @@
 namespace App\Models\Configuracion;
 
 use App\Models\Empresa\EmpresaEmpleado;
+use App\Models\Proyectos\Componente;
+use App\Models\Proyectos\Notificacion;
 use App\Models\Proyectos\Proyecto;
+use App\Models\Proyectos\Tarea;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -43,6 +46,16 @@ class ConfigUsuario extends Authenticatable
         return $this->hasMany(Proyecto::class, 'config_usuario_id', 'id');
     }
     //----------------------------------------------------------------------------------
+    public function componentes()
+    {
+        return $this->hasMany(Componente::class, 'config_usuario_id', 'id');
+    }
+    //----------------------------------------------------------------------------------
+    public function tareas()
+    {
+        return $this->hasMany(Tarea::class, 'config_usuario_id', 'id');
+    }
+    //----------------------------------------------------------------------------------
     public function proyectos_miembro()
     {
         return $this->belongsToMany(Proyecto::class, 'proyecto_miembros', 'config_usuario_id', 'proyectos_id')->withPivot('estado');
@@ -72,6 +85,9 @@ class ConfigUsuario extends Authenticatable
             'estado' => $this->estado,
             'foto' => $this->foto,
             'rol' => $rol,
+        ]);
+        Session::put([
+            'cant_notificaciones' => Notificacion::where('config_usuario_id',5)->count(),
         ]);
 
         if ($this->empleado) {

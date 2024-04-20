@@ -103,30 +103,22 @@
             </div>
         </li>
         <!-- Notifications Dropdown Menu -->
+        <input type="hidden" id="input_notificaiones" data_url="{{route('notificacion.getnotificaciones',['id' => session('id_usuario')])}}">
+        <input type="hidden" id="readnotificaciones" data_url ="{{route('notificacion.readnotificaciones')}}">
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-bell"></i>
-                <span class="badge badge-warning navbar-badge">15</span>
+                <span class="badge badge-warning navbar-badge" id="badge_cant_notificaciones" data_cantidad="{{session('cant_notificaciones')}}">{{session('cant_notificaciones')}}</span>
             </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <span class="dropdown-item dropdown-header">15 Notifications</span>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="menu_badge_cant_notificaciones_2" style="font-size: 0.75em;">
+                <span class="dropdown-item dropdown-header" id="badge_cant_notificaciones_2">0 Notificaciones</span>
+                <div class="dropdown-divider" id="id_division_primera"></div>
+                <a href="#" class="dropdown-item item_notificacion_link">
                     <i class="fas fa-envelope mr-2"></i> 4 new messages
                     <span class="float-right text-muted text-sm">3 mins</span>
                 </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-users mr-2"></i> 8 friend requests
-                    <span class="float-right text-muted text-sm">12 hours</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-file mr-2"></i> 3 new reports
-                    <span class="float-right text-muted text-sm">2 days</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                <div class="dropdown-divider" id="id_division_segunda"></div>
+                <a href="#" class="dropdown-item dropdown-footer">Ver Todas las notificaciones</a>
             </div>
         </li>
         <li class="nav-item">
@@ -134,11 +126,13 @@
                 <i class="fas fa-expand-arrows-alt"></i>
             </a>
         </li>
+        @if (session('rol_id'<4))
         <li class="nav-item">
             <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
                 <i class="fas fa-th-large"></i>
             </a>
         </li>
+        @endif
         <li class="nav-item">
             <a class="nav-link text-danger" data-widget="Logout" href="{{route('logout')}}" role="button">
                 <i class="fas fa-power-off"></i>

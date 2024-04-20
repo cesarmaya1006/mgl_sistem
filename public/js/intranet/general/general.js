@@ -124,6 +124,8 @@ function menu_ul() {
 $(document).ready(function () {
     $('a.active').parents('li').addClass('menu-open');
 
+    setInterval(notificacionesUsuairo, 5000);
+
     $(".tabla-borrando").on("submit", ".form-eliminar", function () {
         event.preventDefault();
         const form = $(this);
@@ -459,29 +461,46 @@ $(document).ready(function () {
         });
     });
     //--------------------------------------------------------------------------------------------
+    $('.item_notificacion_link').on( "click", function() {
+        const data_id = $(this).attr('data_id');
+        const data_url = $("#readnotificaciones").attr('data_url');
+        var data = {
+            id: data_id,
+        };
+        $.ajax({
+            url: data_url,
+            type: 'GET',
+            data: data,
+            success: function(respuesta) {
+                console.log('sipi');
+                Sistema.notificaciones('Notificación leida', 'Sistema', 'info')
+            },
+            error: function() {}
+        });
+      });
+//--------------------------------------------------------------------------------------------
+
 
     $("#fondo_barra_lat").on("change", function () {
         const color = "bg-" + $(this).val().toLowerCase();
         color_fondo_hijos(color);
-        $(this)
-            .removeClass()
-            .addClass("custom-select mb-3 text-light border-0 " + color);
-            const data_url = $("#ruta_fondo_barra_lat").attr("data_url");
-            const bd_valor = color;
-            var data = {
-                bd_valor: bd_valor
-            };
-            $.ajax({
-                url: data_url,
-                type: "GET",
-                data: data,
-                success: function(respuesta) {
-                    Sistema.notificaciones(respuesta.respuesta, 'Sistema', respuesta.tipo);
-                },
-                error: function () {},
-            });
+        $(this).removeClass().addClass("custom-select mb-3 text-light border-0 " + color);
+        const data_url = $("#ruta_fondo_barra_lat").attr("data_url");
+        const bd_valor = color;
+        var data = {
+            bd_valor: bd_valor
+        };
+        $.ajax({
+            url: data_url,
+            type: "GET",
+            data: data,
+            success: function(respuesta) {
+                Sistema.notificaciones(respuesta.respuesta, 'Sistema', respuesta.tipo);
+            },
+            error: function () {},
+        });
     });
-
+    notificacionesUsuairo();
     sidebar_collapse();
     sidebar_mini_md_checkbox_input();
     sidebar_mini_xs_checkbox_input();
@@ -703,5 +722,58 @@ function color_fondo_hijos(color) {
             break;
     }
 }
+function notificacionesUsuairo(){
+    const data_url = $("#input_notificaiones").attr("data_url");
+    const data_cantidad = parseInt($("#badge_cant_notificaciones").attr("data_cantidad"));
+    $.ajax({
+        url: data_url,
+        type: "GET",
+        success: function(respuesta) {
+            var respuesta_html = "";
+            $('#badge_cant_notificaciones').html(respuesta.cant_notificaciones);
+            var cant_notificaciones = parseInt(respuesta.cant_notificaciones);
+            if (cant_notificaciones > 0) {
+                respuesta_html +='<span class="dropdown-item dropdown-header" id="badge_cant_notificaciones_2">' + cant_notificaciones + ' Notificaciones</span>';
+                respuesta_html +='<div class="dropdown-divider" id="id_division_primera"></div>';
+                var cant_control = 0;
+                $.each(respuesta.notificaciones, function (index, item) {
+                    cant_control++;
 
+                    var fechaInicio = new Date(item.fec_creacion).getTime();
+                    var fechaFin    = new Date().getTime();
+                    var diff = fechaFin - fechaInicio;
 
+                    var diferencia_minutos = parseInt(Math.round(diff/(1000*60)));
+                    var diferencia_horas = parseInt(Math.round(diff/(1000*60*60)));
+                    var diferencia_dias = parseInt(Math.round(diff/(1000*60*60*24)));
+
+                    if (diferencia_minutos < 60) {
+                        var diferencia_final = diferencia_minutos + ' Minutos';
+                    }else if(diferencia_horas < 24){
+                        var diferencia_final = diferencia_horas + ' Horas';
+                    }else{
+                        var diferencia_final = diferencia_dias + ' Dias';
+                    }
+                    if (item.accion == 'creacion') {
+                        var icono = 'fas fa-upload';
+                    }else{
+                        var icono = 'far fa-thumbs-up';
+                    }
+                    if (cant_control < 4) {
+                        respuesta_html +='<a href="' + item.link + '/' + item.id + '" class="dropdown-item item_notificacion_link" data_id="' + item.id +'">';
+                        respuesta_html +='    <i class="'  + icono + ' mr-1"></i> <span class="text-wrap"> ' + item.titulo + '</span>';
+                        respuesta_html +='    <span class="float-right text-muted" style="float: right;font-size: 0.9em;">' + diferencia_final + '</span>';
+                        respuesta_html +='</a>';
+                    }
+                });
+                respuesta_html +='<div class="dropdown-divider" id="id_division_segunda"></div>';
+                respuesta_html +='<a href="#" class="dropdown-item dropdown-footer">Ver Todas las notificaciones</a>';
+            }else{
+                respuesta_html +='<span class="dropdown-item dropdown-header" id="badge_cant_notificaciones_2">Sin  Notificaciones</span>';
+
+            }
+            $("#menu_badge_cant_notificaciones_2").html(respuesta_html);
+        },
+        error: function () {},
+    });
+}

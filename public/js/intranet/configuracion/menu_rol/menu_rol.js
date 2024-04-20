@@ -9,7 +9,7 @@ $('.menu_rol').on('change', function() {
     } else {
         data.estado = 0
     }
-    ajaxRequest('/dashboard/configuracion/menus_rol/guardar', data);
+    ajaxRequest('/dashboard/configuracion_sis/permisos_menus_rol/guardar', data);
 });
 
 function ajaxRequest(url, data) {

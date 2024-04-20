@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('config_usuario_id', 'fk_config_miembros_proyectos')->references('id')->on('config_usuario')->onDelete('restrict')->onUpdate('restrict');
             $table->unsignedBigInteger('proyectos_id');
             $table->foreign('proyectos_id', 'fk_proyectos_config_usuario')->references('id')->on('proyectos')->onDelete('restrict')->onUpdate('restrict');
-            $table->string('estado', 20)->default('activo');
+            $table->string('estado', 20)->default('Activo');
             $table->timestamps();
             $table->charset = 'utf8';
             $table->collation = 'utf8_spanish_ci';

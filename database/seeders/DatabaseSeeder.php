@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder
             ConfigEmpresaCargo::class,
             ConfigUsuarioSeeder::class,
             ProyectosSeeder::class,
+            ComponentesSeeder::class,
+            TareasSeeder::class,
 
         ]);
     }

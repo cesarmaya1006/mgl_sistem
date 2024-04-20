@@ -2,40 +2,32 @@
 
 namespace App\Models\Proyectos;
 
-use App\Models\Configuracion\ConfigEmpresa;
 use App\Models\Configuracion\ConfigUsuario;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class Proyecto extends Model
+class Tarea extends Model
 {
     use HasFactory,Notifiable;
-    protected $table = 'proyectos';
+    protected $table = 'proy_tareas';
     protected $guarded = [];
-
     //--------------------------------------------------------------------------------
-    public function empresa()
+    public function componente()
     {
-        return $this->belongsTo(ConfigEmpresa::class, 'config_empresa_id', 'id');
+        return $this->belongsTo(Componente::class, 'proy_componentes_id', 'id');
     }
     //--------------------------------------------------------------------------------
-    public function lider()
+    //--------------------------------------------------------------------------------
+    public function responsable()
     {
         return $this->belongsTo(ConfigUsuario::class, 'config_usuario_id', 'id');
     }
     //--------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------
-    public function miembros_proyecto()
+    public function historiales()
     {
-        return $this->belongsToMany(ConfigUsuario::class, 'proyecto_miembros','proyectos_id', 'config_usuario_id')->withPivot('estado');
+        return $this->hasMany(Historial::class, 'proy_tareas_id', 'id');
     }
     //----------------------------------------------------------------------------------
-    //----------------------------------------------------------------------------------
-    public function componentes()
-    {
-        return $this->hasMany(Componente::class, 'proyectos_id', 'id');
-    }
-    //----------------------------------------------------------------------------------
-
 }

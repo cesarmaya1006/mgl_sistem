@@ -42,14 +42,24 @@ class ProyectosSeeder extends Seeder
                 'config_usuario_id' => $data['config_usuario_id'],
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]);
-            $empleados = ConfigUsuario::where('id','>',3)->get();
-            foreach ($empleados as $empleado) {
-                DB::table('proyecto_miembros')->insert([
-                    'config_usuario_id' => $empleado->id,
-                    'proyectos_id' => 1,
-                    'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                ]);
-            }
+            DB::table('proyecto_miembros')->insert([
+                'config_usuario_id' => $data['config_usuario_id'],
+                'proyectos_id' => 1,
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            ]);
+            DB::table('proy_notificaciones')->insert([
+                'config_usuario_id' => $data['config_usuario_id'],
+                'fec_creacion' => $data['fec_creacion'] . ' ' . rand(8, 11) . ':' . rand(1, 59) . ':' . rand(1, 59) . '' ,
+                //'fec_creacion' => '2024-04-04 9:4:48' ,
+                'titulo' => 'Se te asigno un nuevo proyecto',
+                'mensaje' => 'Se creo un nuevo proyecto '.$data['titulo'].' y te fue asignado ',
+                'link' => 'proyecto.gestion',
+                'id_link' => 1,
+                'tipo' => 'proyecto',
+                'accion' => 'creacion',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            ]);
+
         }
     }
 }

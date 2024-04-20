@@ -40,7 +40,7 @@ class ConfigUsuarioSeeder extends Seeder
 
         //-------------------------------------------------------------------------------------------------------------------
 
-        $data = ['nombres' => 'Administrador', 'email' => 'admin@gmail.com', 'password' => bcrypt('123')];
+        $data = ['config_empresa_id' => 1,'nombres' => 'Administrador', 'email' => 'admin@gmail.com', 'password' => bcrypt('123')];
         $usuario = ConfigUsuario::create($data);
         $usuario->rol()->attach(3);
         $id++;

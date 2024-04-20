@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreign('config_empresa_id', 'fk_config_empresa_proyecto')->references('id')->on('config_empresa')->onDelete('restrict')->onUpdate('restrict');
             $table->unsignedBigInteger('config_usuario_id');
             $table->foreign('config_usuario_id', 'fk_config_usuario_proyecto')->references('id')->on('config_usuario')->onDelete('restrict')->onUpdate('restrict');
-            $table->string('estado', 20)->default('activo');
+            $table->string('estado', 20)->default('Activo');
             $table->double('progreso')->default(0);
             $table->timestamps();
             $table->charset = 'utf8';

@@ -17,7 +17,7 @@ class ConfigEmpresaCargo extends Seeder
         $datas = [
             [
                 'empresa_area_id' => 1,
-                'cargo' => 'Gerente',
+                'cargo' => 'Gerente General',
             ],
             [
                 'empresa_area_id' => 2,

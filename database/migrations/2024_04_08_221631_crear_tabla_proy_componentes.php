@@ -20,8 +20,9 @@ return new class extends Migration
             $table->string('titulo', 255);
             $table->date('fec_creacion');
             $table->longText('objetivo');
-            $table->string('estado', 20)->default('Nuevo');
+            $table->string('estado', 20)->default('Activo');
             $table->string('impacto', 10);
+            $table->integer('impacto_num')->default(0);
             $table->double('progreso')->default(0);
             $table->timestamps();
             $table->charset = 'utf8';

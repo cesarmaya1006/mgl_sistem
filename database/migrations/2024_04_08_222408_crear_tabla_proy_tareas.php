@@ -23,8 +23,9 @@ return new class extends Migration
             $table->date('fec_finalizacion')->nullable();
             $table->longText('objetivo');
             $table->bigInteger('progreso')->default(0);
-            $table->string('estado', 20)->default('Nueva');
+            $table->string('estado', 20)->default('Activa');
             $table->string('impacto', 10);
+            $table->integer('impacto_num')->default(0);
             $table->timestamps();
             $table->charset = 'utf8';
             $table->collation = 'utf8_spanish_ci';
