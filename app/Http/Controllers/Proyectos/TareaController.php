@@ -8,6 +8,7 @@ use App\Models\Proyectos\Componente;
 use App\Models\Proyectos\Notificacion;
 use App\Models\Proyectos\Proyecto;
 use App\Models\Proyectos\Tarea;
+use DateTime;
 use Illuminate\Http\Request;
 
 class TareaController extends Controller
@@ -78,20 +79,20 @@ class TareaController extends Controller
         $request['impacto_num'] = $impacto_num;
         $tarea = Tarea::create($request->all());
         $proyecto->miembros_proyecto()->sync(array_unique($miembros));
-        $this->modificarprogresos(0,$tarea->id);
+        $this->modificarprogresos(0, $tarea->id);
         //----------------------------------------------------------------------------------------------------
         $dia_hora = date('Y-m-d H:i:s');
         $notificacion['config_usuario_id'] =  $request['config_usuario_id'];
         $notificacion['fec_creacion'] =  $dia_hora;
         $notificacion['titulo'] =  'Se asigno una nueva tarea';
-        $notificacion['mensaje'] =  'Se creo una nueva tarea al proyecto ' .$proyecto->titulo. ' y te fue asignada -> ' .ucfirst($request['titulo']);
+        $notificacion['mensaje'] =  'Se creo una nueva tarea al proyecto ' . $proyecto->titulo . ' y te fue asignada -> ' . ucfirst($request['titulo']);
         $notificacion['link'] =  route('proyecto.gestion', ['id' => $proyecto->id]);
         $notificacion['id_link'] =  $proyecto->id;
         $notificacion['tipo'] =  'tarea';
         $notificacion['accion'] =  'creacion';
         Notificacion::create($notificacion);
         //----------------------------------------------------------------------------------------------------
-        return redirect('dashboard/proyectos/gestion/'.$proyecto->id)->with('mensaje', 'Tarea creada con éxito');
+        return redirect('dashboard/proyectos/gestion/' . $proyecto->id)->with('mensaje', 'Tarea creada con éxito');
     }
 
     public function modificarprogresos($progreso_request, $proy_tareas_id)
@@ -120,27 +121,88 @@ class TareaController extends Controller
         Proyecto::findOrFail($tareaFind->componente->proyecto->id)->update($ProyectoUpdate);
     }
 
-    public function gettareasusu(Request $request,$config_usuario_id){
+    public function gettareasusu(Request $request, $config_usuario_id)
+    {
         if ($request->ajax()) {
-            $tareas = Tarea::where('config_usuario_id',$config_usuario_id)->where('progreso','<', '100')->get();
+            $tareas = Tarea::where('config_usuario_id', $config_usuario_id)->where('progreso', '<', '100')->get();
             $array_events_calendario = [];
             foreach ($tareas as $tarea) {
                 if ($tarea->fec_limite < date('Y-m-d')) {
                     $backgroundColor = 'rgb(255,0,0)';
                 } else {
-                    $backgroundColor = 'rgb(0,'. rand(10,250) .','. rand(10,250) .')';
+                    $backgroundColor = 'rgb(0,' . rand(10, 250) . ',' . rand(10, 250) . ')';
                 }
                 $array_events_calendario[] = [
                     'title' => $tarea->titulo,
                     'start' => $tarea->fec_creacion,
                     'end' => $tarea->fec_limite,
-                    'url' => route('tarea.gestion',['id' => $tarea->id]),
+                    'url' => route('tarea.gestion', ['id' => $tarea->id]),
                     'backgroundColor' =>  $backgroundColor,
                     'borderColor' => 'rgb(0,0,0)',
                 ];
             }
 
             return response()->json($array_events_calendario);
+        } else {
+            abort(404);
+        }
+    }
+
+    public function gettareasusumodal(Request $request, $config_usuario_id, $estado)
+    {
+        if ($request->ajax()) {
+            $usuario = ConfigUsuario::findOrFail($config_usuario_id);
+            $tareas_vencidas = [];
+            $tareas_proxvencer = [];
+            $tareas_activas = [];
+            foreach ($usuario->proyectos_miembro->where('estado', 'Activo') as $proyecto) {
+                foreach ($proyecto->componentes as $componente) {
+                    foreach ($componente->tareas->where('progreso', '<', '100') as $tarea) {
+                        //-------------------------------------------------
+                        $date1 = new DateTime($tarea->fec_creacion);
+                        $date2 = new DateTime($tarea->fec_limite);
+                        $diff = date_diff($date1, $date2);
+                        $differenceFormat = '%a';
+                        $diasTotalTarea = $diff->format($differenceFormat);
+                        if ($diasTotalTarea == 0) {
+                            $diasTotalTarea = 1;
+                        }
+                        //-------------------------------------------------
+                        $date1 = new DateTime($tarea->fec_creacion);
+                        $date2 = new DateTime(date('Y-m-d'));
+                        $diff = date_diff($date1, $date2);
+                        $differenceFormat = '%a';
+                        $diasGestionTarea = $diff->format($differenceFormat);
+                        //---------------------------------------------------
+                        $porcVenc = ($diasGestionTarea * 100) / $diasTotalTarea;
+                        if ($usuario->lider && $tarea->componente->proyecto->config_usuario_id == $config_usuario_id) {
+                            if ($estado == 'vencidas' && ($tarea->fec_limite < date('Y-m-d'))) {
+                                array_push($tareas_vencidas, intval($tarea->id));
+                            } else if($estado == 'proxvencer' && ($porcVenc > 80 || $diasTotalTarea - $diasGestionTarea < 3) && ($tarea->fec_limite > date('Y-m-d'))) {
+                                array_push($tareas_proxvencer, intval($tarea->id));
+                            }else if($estado == 'activas'){
+                                array_push($tareas_activas, intval($tarea->id));
+                            }
+                        } else if($usuario->id == $tarea->config_usuario_id) {
+                            if ($estado == 'vencidas' && ($tarea->fec_limite < date('Y-m-d'))) {
+                                array_push($tareas_vencidas, intval($tarea->id));
+                            } else if($estado == 'proxvencer' && ($porcVenc > 80 || $diasTotalTarea - $diasGestionTarea < 3) && ($tarea->fec_limite > date('Y-m-d'))) {
+                                array_push($tareas_proxvencer, intval($tarea->id));# code...
+                            }else if($estado == 'activas' && ($porcVenc < 81 || $diasTotalTarea - $diasGestionTarea > 2)){
+                                array_push($tareas_activas, intval($tarea->id));
+                            }
+                        }
+                    }
+                }
+            }
+            if (count($tareas_vencidas ) > 0 && $estado == 'vencidas') {
+                $tareas_fin = $tareas_vencidas;
+            } elseif (count($tareas_proxvencer ) > 0 && $estado == 'proxvencer') {
+                $tareas_fin = $tareas_proxvencer;
+            } elseif (count($tareas_activas) > 0 && $estado == 'activas') {
+                $tareas_fin = $tareas_activas;
+            }
+            return response()->json(['tareas' => Tarea::whereIn('id', $tareas_fin)->get(), 'estado' => $estado]);
         } else {
             abort(404);
         }
@@ -153,7 +215,6 @@ class TareaController extends Controller
     {
         $tarea = Tarea::findOrfail($id);
         return view('intranet.proyectos.tarea.gestion', compact('tarea'));
-
     }
 
     /**

@@ -158,7 +158,12 @@ class ProyectoController extends Controller
 
     public function getproyectosusuario(Request $request,$config_usuario_id){
         if ($request->ajax()) {
-            return response()->json(['proyectos' => Proyecto::where('config_empresa_id',$config_empresa_id)->where('estado',$estado)->with('miembros_proyecto')->with('lider')->get()]);
+            $usuario = ConfigUsuario::findOrFail($config_usuario_id);
+            $proyectos_id = $usuario->proyectos_miembro->where('estado','Activo')->pluck('id');
+            return response()->json(['proyectos' => Proyecto::whereIn('id',$proyectos_id->toArray())
+                                                            ->with('miembros_proyecto')
+                                                            ->with('lider')
+                                                            ->get()]);
         } else {
             abort(404);
         }

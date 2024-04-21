@@ -94,25 +94,20 @@ $(document).ready(function () {
     });
     //===================================================================================================
     const proyectosModalUsuario = new bootstrap.Modal(document.getElementById("proyectosModalUsuario"));
-    $(".link_item_card").on("click", function () {
-        const data_id = $(this).attr("data_id");
+    $("#tarjetaProyectosUsuario").on("click", function () {
         const data_url = $(this).attr("data_url");
+        const data_url2 = $(this).attr("data_url2");
         const id = $(this).val();
-        var data = {
-            id: id,
-        };
         $.ajax({
             url: data_url,
             type: "GET",
-            data: data,
             success: function (respuesta) {
                 var respuesta_html = "";
-
                 $.each(respuesta.proyectos, function (index, proyecto) {
                     respuesta_html += '<tr>';
                     respuesta_html +='<td style="white-space:nowrap;">' + proyecto.id + '</td>';
                     respuesta_html +='<td style="white-space:nowrap;">';
-                    respuesta_html +='<button class="btn btn-link" style="text-decoration: none;" >' + proyecto.titulo + '</button >';
+                    respuesta_html +='<a href="'+  data_url2.replace("/gestion/1", '/gestion/' + proyecto.id ) +'" class="btn btn-link" style="text-decoration: none;" >' + proyecto.titulo + '</a>';
                     respuesta_html +='<br>';
                     respuesta_html +='<small class="ml-4">Creado ' + proyecto.fec_creacion + '</small>';
                     respuesta_html +='</td>';
@@ -185,6 +180,50 @@ $(document).ready(function () {
 
     $(".boton_cerrar_modal_pro_usu").on("click", function () {
         proyectosModalUsuario.toggle();
+    });
+
+    //===================================================================================================
+    const tareasModalUsuario = new bootstrap.Modal(document.getElementById("tareasModalUsuario"));
+    $(".tarjetaTareasUsuario").on("click", function () {
+        const data_url = $(this).attr("data_url");
+        const data_url2 = $(this).attr("data_url2");
+        const id = $(this).val();
+        $("#tbody_tareas_usuario").html('');
+        $.ajax({
+            url: data_url,
+            type: "GET",
+            success: function (respuesta) {
+                console.log(respuesta);
+                var respuesta_html = "";
+                $.each(respuesta.tareas, function (index, tarea) {
+                    respuesta_html += '<tr onclick="window.location=\''+  data_url2.replace("/gestion/1", '/gestion/' + tarea.id ) +'\'" style="cursor: pointer;">';
+                    respuesta_html +='<td style="white-space:nowrap;">' + tarea.id + '</td>';
+                    respuesta_html +='<td style="white-space:nowrap;">' + tarea.titulo + '</td>';
+                    respuesta_html +='<td class="text-center" style="white-space:nowrap;">';
+                    var d1 = new Date(tarea.fec_creacion);
+                    var d2 = new Date();
+                    var diff = d2.getTime() - d1.getTime();
+                    var daydiff = diff / (1000 * 60 * 60 * 24);
+                    respuesta_html += Math.round(daydiff)  + ' días';
+                    respuesta_html +='</td>';
+                    respuesta_html +='<td class="project_progress">';
+                    respuesta_html +='    <div class="progress progress-sm">';
+                    respuesta_html +='        <div class="progress-bar bg-green" role="progressbar" aria-volumenow="' + tarea.progreso + '" aria-volumemin="0" aria-volumemax="100" style="width: ' + tarea.progreso + '%"></div>';
+                    respuesta_html +='    </div>';
+                    respuesta_html +='    <small>' + parseInt(tarea.progreso).toFixed(2) + ' %</small>';
+                    respuesta_html +='</td>';
+                    respuesta_html += "</tr>";
+                });
+
+                $("#tbody_tareas_usuario").html(respuesta_html);
+            },
+            error: function () {},
+        });
+        tareasModalUsuario.show();
+    });
+
+    $(".boton_cerrar_modal_tarea_usu").on("click", function () {
+        tareasModalUsuario.toggle();
     });
 
     //===================================================================================================

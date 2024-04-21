@@ -188,6 +188,8 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
             Route::post('guardar', 'store')->name('tarea.store');
             Route::get('gestion/{id}', 'gestion')->name('tarea.gestion');
             Route::get('gettareasusu/{config_usuario_id}', 'gettareasusu')->name('tarea.gettareasusu');
+            Route::get('gettareasusumodal/{config_usuario_id}/{estado}', 'gettareasusumodal')->name('tarea.gettareasusumodal');
+
         });
         // ----------------------------------------------------------------------------------------
         // Ruta historiales

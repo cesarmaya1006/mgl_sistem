@@ -1,6 +1,10 @@
 <div class="row">
     <div class="col-12 col-md-3 mt-3 mb-3 mt-md-2 mb-md-2">
-        <div class="card card-raised border-start border-5 border-info">
+        <div class="card card-raised border-start border-5 border-info"
+        data_url = "{{route('proyecto.getproyectosusuario', ['config_usuario_id' => session('id_usuario')] )}}"
+        data_url2 = "{{route('proyecto.gestion', ['id' => 1] )}}"
+        id="tarjetaProyectosUsuario"
+        style="cursor: pointer;">
             <div class="card-body px-4">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="me-2 text-info">
@@ -74,7 +78,10 @@
     }
     @endphp
     <div class="col-12 col-md-3 mt-3 mb-3 mt-md-2 mb-md-2">
-        <div class="card card-raised border-start border-5 border-success">
+        <div class="card card-raised border-start border-5 border-success {{$tareasVige>0?'tarjetaTareasUsuario': ''}}"
+             style="{{$tareasVige>0?'cursor: pointer;': ''}}"
+             data_url = "{{route('tarea.gettareasusumodal', ['config_usuario_id' => session('id_usuario'),'estado'=>'activas'] )}}"
+             data_url2 = "{{route('tarea.gestion', ['id' => 1] )}}">
             <div class="card-body px-4">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="me-2 text-success">
@@ -92,7 +99,10 @@
         </div>
     </div>
     <div class="col-12 col-md-3 mt-3 mb-3 mt-md-2 mb-md-2">
-        <div class="card card-raised border-start border-5 border-warning">
+        <div class="card card-raised border-start border-5 border-warning {{$tareasProx>0?'tarjetaTareasUsuario': ''}}"
+            style="{{$tareasProx>0?'cursor: pointer;': ''}}"
+            data_url = "{{route('tarea.gettareasusumodal', ['config_usuario_id' => session('id_usuario'),'estado'=>'proxvencer'] )}}"
+            data_url2 = "{{route('tarea.gestion', ['id' => 1] )}}">
             <div class="card-body px-4">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="me-2 text-warning">
@@ -110,7 +120,10 @@
         </div>
     </div>
     <div class="col-12 col-md-3 mt-3 mb-3 mt-md-2 mb-md-2">
-        <div class="card card-raised border-start border-5 border-danger">
+        <div class="card card-raised border-start border-5 border-danger {{$tareasVenc>0?'tarjetaTareasUsuario': ''}}"
+             style="{{$tareasVenc>0?'cursor: pointer;': ''}}"
+             data_url = "{{route('tarea.gettareasusumodal', ['config_usuario_id' => session('id_usuario'),'estado'=>'vencidas'] )}}"
+             data_url2 = "{{route('tarea.gestion', ['id' => 1] )}}">
             <div class="card-body px-4">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="me-2 text-danger">
@@ -246,8 +259,10 @@
 </div>
 <!-- ============================================================================================================ -->
 <!-- Modales  -->
+<!-- ------------------------------------------------------------------------------------------------------------  -->
+<!-- Modal proyectos Usuario  -->
 <div class="modal fade" id="proyectosModalUsuario" tabindex="-1" aria-labelledby="proyectosModalUsuarioLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="proyectosModalUsuarioLabel">Modal title</h5>
@@ -255,6 +270,18 @@
             </div>
             <div class="modal-body table-responsive" style="font-size: 0.8em;">
                 <table class="table table-striped table-hover table-sm tabla_data_table_m projects">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Proyecto</th>
+                            <th>Lider</th>
+                            <th>Miembros de Equipo</th>
+                            <th>Gestión/Días</th>
+                            <th>Progreso proyecto</th>
+                            <th class="text-center">Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
                     <tbody id="tbody_proyectos_usuario">
 
                     </tbody>
@@ -262,6 +289,37 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-info boton_cerrar_modal_pro_usu">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ------------------------------------------------------------------------------------------------------------  -->
+<!-- Modal proyectos Usuario  -->
+<div class="modal fade" id="tareasModalUsuario" tabindex="-1" aria-labelledby="tareasModalUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tareasModalUsuarioLabel">Modal title</h5>
+                <button type="button" class="btn-close boton_cerrar_modal" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body table-responsive" style="font-size: 0.8em;">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tarea</th>
+                            <th>Gestión/Días</th>
+                            <th>Progreso tarea</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody_tareas_usuario">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info boton_cerrar_modal_tarea_usu">Cerrar</button>
             </div>
         </div>
     </div>
