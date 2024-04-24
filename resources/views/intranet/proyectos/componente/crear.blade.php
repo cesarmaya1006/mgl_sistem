@@ -47,7 +47,7 @@
                     <input type="hidden" name="proyectos_id" value="{{$proyecto->id}}">
                     <input type="hidden" name="fec_creacion" value="{{date('Y-m-d')}}">
                     <div class="col-12 col-md-2 form-group">
-                        <label for="fecha">Fecha</label>
+                        <label class="requerido" for="fecha">Fecha</label>
                         <span class="form-control form-control-sm text-center">{{date('Y-m-d')}}</span>
                         <small id="helpId" class="form-text text-muted">Fecha</small>
                     </div>
@@ -83,6 +83,38 @@
                         <textarea class="form-control form-control-sm" name="objetivo" id="objetivo" cols="30" rows="3" style="resize: none;" required></textarea>
                         <small id="helpId" class="form-text text-muted">Objetivo del componente</small>
                     </div>
+                    @if (intval($proyecto->presupuesto)>0)
+                    <div class="col-12">
+                        <hr>
+                        <div class="row">
+                            <div class="col-12">
+                                <h6><strong>Componente Financiero</strong></h6>
+                            </div>
+                            <input type="hidden" id="presupuesto_proyecto" value="{{intval($proyecto->presupuesto)}}">
+                            <input type="hidden" id="sum_presupuesto_componentes" value="{{intval($proyecto->componentes->sum('presupuesto'))}}">
+                            <input type="hidden" id="disponible_componentes" value="{{$proyecto->presupuesto - $proyecto->componentes->sum('presupuesto')}}">
+                            <div class="col-12 col-md-2 form-group">
+                                <label for="presupuesto">Presupuesto del Componente</label>
+                                <input type="number"
+                                       min="0"
+                                       max="{{$proyecto->presupuesto - $proyecto->componentes->sum('presupuesto')}}"
+                                       value="0.00"
+                                       step="0.01"
+                                       class="form-control form-control-sm text-end"
+                                       name="presupuesto"
+                                       id="presupuesto"
+                                       required>
+                                <small id="helpId" class="form-text text-muted">Presupuesto del componente</small>
+                            </div>
+                            <div class="col-12 col-md-3 ml-md-5">
+                                <span class="form-control form-control-sm">Presupuesto de total del proyecto: <strong class="float-end">$ {{number_format($proyecto->presupuesto,2)}}</strong></span>
+                                <span class="form-control form-control-sm">Presupuesto de asignado del proyecto: <strong class="float-end">$ {{number_format($proyecto->componentes->sum('presupuesto'),2)}}</strong></span>
+                                <span class="form-control form-control-sm">Presupuesto de disponible del proyecto: <strong class="float-end">$ {{number_format($proyecto->presupuesto - $proyecto->componentes->sum('presupuesto'),2)}}</strong></span>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    @endif
                     <div class="col-12 mt-3 mb-3 ml-5">
                         <button type="submit" class="btn btn-primary btn-xs pl-5 pr-5">Crear Componente</button>
                     </div>
@@ -95,6 +127,7 @@
 <!-- ************************************************************* -->
 <!-- script hoja -->
 @section('scripts_pagina')
-<script src="{{ asset('js/intranet/proyectos/proyecto/crear.js') }}"></script>
+<script src="{{ asset('js/intranet/proyectos/componente/crear.js') }}"></script>
+<script src="{{ asset('js/intranet/general/popper.min.js') }}"></script>
 @endsection
 <!-- ************************************************************* -->

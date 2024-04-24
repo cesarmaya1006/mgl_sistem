@@ -84,6 +84,30 @@
                                         <p class="text-capitalize" style="text-align: justify;"></p>
                                     </div>
                                   </div>
+                                  @if ($tarea->componente->proyecto->presupuesto>0)
+                                    <hr>
+                                    <div class="row" style="font-size: 0.9em">
+                                        <div class="col-12 col-md-4">
+                                            <div class="row">
+                                                <div class="col-8 col-md-5 text-right"><strong>Presupuesto del Proyecto:</strong></div>
+                                                <div class="col-4 col-md-7">{{ '$ ' . number_format($tarea->componente->proyecto->presupuesto, 2, ',', '.') }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="row">
+                                                <div class="col-8 col-md-5 text-right"><strong>Ejecución del presupuesto:</strong></div>
+                                                <div class="col-4 col-md-7">{{ '$ ' . number_format($tarea->componente->proyecto->ejecucion, 2, ',', '.') }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="row">
+                                                <div class="col-8 col-md-5 text-right"><strong>Porcentaje de ejecución:</strong></div>
+                                                <div class="col-4 col-md-7">{{ number_format($tarea->componente->proyecto->porc_ejecucion, 2, ',', '.') }} %</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    @endif
                                 </div>
                               </div>
                             </div>
@@ -111,6 +135,30 @@
                                     <div class="col-12 col-md-3 d-flex flex-row"><strong class="mr-3">Estado del componente:</strong><p class="text-capitalize" style="text-align: justify;">{{$tarea->componente->estado}}</p></div>
                                     <div class="col-12 d-flex flex-row"><strong class="mr-3">Objetivo del componente:</strong><p class="text-capitalize" style="text-align: justify;">{{$tarea->componente->objetivo}}</p></div>
                                   </div>
+                                  @if ($tarea->componente->proyecto->presupuesto>0)
+                                    <hr>
+                                    <div class="row" style="font-size: 0.9em">
+                                        <div class="col-12 col-md-4">
+                                            <div class="row">
+                                                <div class="col-8 col-md-5 text-right"><strong>Presupuesto del Componente:</strong></div>
+                                                <div class="col-4 col-md-7">{{ '$ ' . number_format($tarea->componente->presupuesto, 2, ',', '.') }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="row">
+                                                <div class="col-8 col-md-5 text-right"><strong>Ejecución del presupuesto:</strong></div>
+                                                <div class="col-4 col-md-7">{{ '$ ' . number_format($tarea->componente->ejecucion, 2, ',', '.') }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="row">
+                                                <div class="col-8 col-md-5 text-right"><strong>Porcentaje de ejecución:</strong></div>
+                                                <div class="col-4 col-md-7">{{ number_format($tarea->componente->porc_ejecucion, 2, ',', '.') }} %</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    @endif
                                 </div>
                               </div>
                             </div>
@@ -142,6 +190,9 @@
                                         <div class="col-12 col-md-3 d-flex flex-row"><strong class="mr-3">Impacto en el proyecto :</strong><p class="text-capitalize" style="text-align: justify;">{{round($impacto_proyecto,2)}} %</p></div>
                                         <div class="col-12 col-md-3 d-flex flex-row"><strong class="mr-3">Impacto en el componente:</strong><p class="text-capitalize" style="text-align: justify;">{{$tarea->impacto}}</p></div>
                                         <div class="col-12 col-md-3 d-flex flex-row"><strong class="mr-3">Estado de la tarea:</strong><p class="text-capitalize" style="text-align: justify;">{{$tarea->estado}}</p></div>
+                                        @if ($tarea->componente->presupuesto > 0)
+                                        <div class="col-12 col-md-3 d-flex flex-row"><strong class="mr-3">Costo total de la tarea:</strong><p class="text-capitalize" style="text-align: justify;">$ {{ number_format($tarea->costo,2)}}</p></div>
+                                        @endif
                                         <div class="col-12 d-flex flex-row"><strong class="mr-3">Objetivo de la tarea:</strong><p class="text-capitalize" style="text-align: justify;">{{$tarea->objetivo}}</p></div>
                                     </div>
                                 </div>
@@ -169,6 +220,9 @@
                                     <td>Usuario historial</td>
                                     <td>Usuario asignado</td>
                                     <td>Avance Progresivo</td>
+                                    @if ($tarea->componente->presupuesto > 0)
+                                    <td>Costo</td>
+                                    @endif
                                     <td>Resumen</td>
                                     <td>Documentos</td>
                                     <td></td>
@@ -182,10 +236,15 @@
                                         <td>{{ $historial->fecha }}</td>
                                         <td class="text-left">{{ $historial->responsable->nombres . ' ' . $historial->responsable->apellidos }}</td>
                                         <td class="text-left">{{ $historial->asignado->nombres . ' ' . $historial->asignado->apellidos }}</td>
-                                        <td>{{ $historial->progreso }} %</td>
-                                        <td class="text-left">{{ $historial->resumen }}</td>
+                                        <td class="text-center">{{ $historial->progreso }} %</td>
+                                        @if ($tarea->componente->presupuesto > 0)
+                                            <td class="text-right"> $ {{ number_format($historial->costo , 2) }}</td>
+                                        @endif
+                                        <td width="25%" class="text-left text-wrap">{{ $historial->resumen }}</td>
                                         <td class="d-flex flex-column">
-
+                                            @foreach ($historial->documentos as $documento)
+                                                <span><a href="{{ asset('documentos/folder_doc_historial/' . $documento->url) }}"target="_blank">{{ $documento->titulo }}</a></span>
+                                            @endforeach
                                         </td>
                                         <td>
                                             <a href="#"class="btn btn-accion-tabla btn-xs text-success">

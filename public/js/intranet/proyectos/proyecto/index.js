@@ -1,4 +1,6 @@
 $(document).ready(function () {
+
+
     $('#flush-collapseCalendario').addClass('collapse');
     const proyectosModal = new bootstrap.Modal(document.getElementById("proyectosModal"));
     $(".link_item_card").on("click", function () {

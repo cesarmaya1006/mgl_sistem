@@ -44,7 +44,7 @@
                         <form action="{{ route('proyecto.store') }}" class="form-horizontal row" method="POST" autocomplete="off" enctype="multipart/form-data">
                             @csrf
                             @method('post')
-                            @if (session('rol_id')<3)
+                            @if (intval(session('rol.id'))<3)
                             <div class="row">
                                <div class="col-5 col-md-3 form-group">
                                     <label class="requerido" for="config_grupo_empresas_id">Grupo Empresarial</label>
@@ -59,14 +59,14 @@
                                 </div>
                                 <div class="col-5 col-md-3 form-group d-none" id="caja_empresas">
                                     <label class="requerido" for="config_empresa_id">Empresa</label>
-                                    <select id="config_empresa_id" class="form-control form-control-sm" data_url="{{route('empleado.getLideresPorEmpresa')}}" name="config_empresa_id" required>
+                                    <select id="config_empresa_id" class="form-control form-control-sm" data_url="{{route('empleado.getlideresporempresa')}}" name="config_empresa_id" required>
                                         <option value="">Elija grupo</option>
                                     </select>
                                 </div>
                             </div>
                             <hr>
                             @else
-                            <input type="hidden" id="config_empresa_id_2" name="config_empresa_id" value="{{session('config_empresa_id')}}" data_url="{{route('empleado.getLideresPorEmpresa')}}">
+                            <input type="hidden" id="config_empresa_id_2" name="config_empresa_id" value="{{session('config_empresa_id')}}" data_url="{{route('empleado.getlideresporempresa')}}">
                             @endif
                             <div class="row">
                                 <div class="col-12 col-md-2 form-group">
@@ -79,7 +79,11 @@
                                     <label for="titulo">Lider Proyecto</label>
                                     <select class="form-control form-control-sm" name="config_usuario_id" id="lider_id" required>
                                         <option value="">Seleccione un Lider</option>
-
+                                        @if (intval(session('rol.id'))>2)
+                                            @foreach ($lideres as $lider)
+                                                <option value="{{$lider->id}}">{{$lider->nombres . ' ' . $lider->apellidos . ' ( ' . $lider->empleado->cargo->cargo . ' )'}} {{$usuario->config_empresa_id!= $lider->config_empresa_id?' - ' . $lider->empleado->cargo->area->empresa->nombres:''}}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                     <small id="helpId" class="form-text text-muted">Lider Proyecto</small>
                                 </div>
@@ -96,6 +100,18 @@
                                     <small id="helpId" class="form-text text-muted">Objetivo del Proyecto</small>
                                 </div>
                             </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6><strong>Componente Financiero</strong> (opcional)</h6>
+                                </div>
+                                <div class="col-12 col-md-2 form-group">
+                                    <label for="presupuesto">Presupuesto</label>
+                                    <input type="number" min="0" value="0.00" step="0.01" class="form-control form-control-sm text-end" name="presupuesto" id="presupuesto">
+                                    <small id="helpId" class="form-text text-muted">Presupuesto inicial del proyecto</small>
+                                </div>
+                            </div>
+                            <hr>
                             <!-- /.card-body -->
                             <div class="row mt-5">
                                 <div class="col-12">

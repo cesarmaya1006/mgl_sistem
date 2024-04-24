@@ -23,6 +23,9 @@ return new class extends Migration
             $table->foreign('config_usuario_id', 'fk_config_usuario_proyecto')->references('id')->on('config_usuario')->onDelete('restrict')->onUpdate('restrict');
             $table->string('estado', 20)->default('Activo');
             $table->double('progreso')->default(0);
+            $table->double('presupuesto')->default(0);
+            $table->double('ejecucion')->default(0);
+            $table->double('porc_ejecucion')->default(0);
             $table->timestamps();
             $table->charset = 'utf8';
             $table->collation = 'utf8_spanish_ci';

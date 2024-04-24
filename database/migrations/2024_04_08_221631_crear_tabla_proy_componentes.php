@@ -24,6 +24,9 @@ return new class extends Migration
             $table->string('impacto', 10);
             $table->integer('impacto_num')->default(0);
             $table->double('progreso')->default(0);
+            $table->double('presupuesto')->default(0);
+            $table->double('ejecucion')->default(0);
+            $table->double('porc_ejecucion')->default(0);
             $table->timestamps();
             $table->charset = 'utf8';
             $table->collation = 'utf8_spanish_ci';

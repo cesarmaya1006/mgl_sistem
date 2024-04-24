@@ -124,6 +124,29 @@
                                 </div>
                             </div>
                         </div>
+                        @if ($proyecto->presupuesto>0)
+                        <hr>
+                            <div class="row" style="font-size: 0.9em">
+                                <div class="col-12 col-md-4">
+                                     <div class="row">
+                                        <div class="col-8 col-md-5 text-right"><strong>Presupuesto del Proyecto:</strong></div>
+                                        <div class="col-4 col-md-7">{{ '$ ' . number_format($proyecto->presupuesto, 2, ',', '.') }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                     <div class="row">
+                                        <div class="col-8 col-md-5 text-right"><strong>Ejecución del presupuesto:</strong></div>
+                                        <div class="col-4 col-md-7">{{ '$ ' . number_format($proyecto->ejecucion, 2, ',', '.') }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                     <div class="row">
+                                        <div class="col-8 col-md-5 text-right"><strong>Porcentaje de ejecución:</strong></div>
+                                        <div class="col-4 col-md-7">{{ number_format($proyecto->porc_ejecucion, 2, ',', '.') }} %</div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <hr>
@@ -191,12 +214,24 @@
                 <div class="row" style="background-color: rgba(0, 0, 0, 0.05)">
                     <div class="col-12 card card-outline card-secondary collapsed-card">
                         <div class="card-header">
-                            <h6 class="card-title" style="font-size: 0.98em;"><strong>Componentes del proyecto</strong></h6>
-                            <div class="card-tools">
-                                <a href="{{route('componente.create',['proyectos_id'=> $proyecto->id])}}" class="btn btn-primary btn-sm text-center mr-4" style="font-size: 0.8em;"><i class="fas fa-plus-circle mr-2"></i> Nuevo componente</a>
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                            <div class="row">
+                                <div class="col-11">
+                                    <div class="row">
+                                        <div class="col-12 col-md-7">
+                                            <h6 class="card-title" style="font-size: 0.98em;"><strong>Componentes del proyecto</strong></h6>
+                                        </div>
+                                        <div class="col-12 col-md-5 text-md-right mt-2 mt-md-0">
+                                            <a href="{{route('componente.create',['proyectos_id'=> $proyecto->id])}}" class="btn btn-primary btn-sm text-center" style="font-size: 0.8em;"><i class="fas fa-plus-circle mr-2"></i> Nuevo componente</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <div class="card-tools float-end">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body" style="font-size: 0.9em;">
@@ -261,6 +296,29 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            @if ($proyecto->presupuesto>0)
+                                            <hr>
+                                            <div class="row" style="font-size: 0.9em">
+                                                <div class="col-12 col-md-4">
+                                                    <div class="row">
+                                                        <div class="col-7 col-md-5 text-right"><strong>Presupuesto del Componente:</strong></div>
+                                                        <div class="col-5 col-md-7 text-right text-md-left">{{ '$ ' . number_format($componente->presupuesto, 2, ',', '.') }}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-4">
+                                                    <div class="row">
+                                                        <div class="col-7 col-md-5 text-right"><strong>Ejecución del presupuesto:</strong></div>
+                                                        <div class="col-5 col-md-7 text-right text-md-left">{{ '$ ' . number_format($componente->ejecucion, 2, ',', '.') }}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-4">
+                                                    <div class="row">
+                                                        <div class="col-7 col-md-5 text-right"><strong>Porcentaje de ejecución:</strong></div>
+                                                        <div class="col-5 col-md-7 text-right text-md-left">{{ number_format($componente->porc_ejecucion, 2, ',', '.') }} %</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endif
                                             <hr>
                                             <div class="row mb-4 pl-4 w-100">
                                                 <div class="col-12">

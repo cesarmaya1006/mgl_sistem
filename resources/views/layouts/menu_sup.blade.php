@@ -27,28 +27,13 @@
             <a class="nav-link" data-widget="navbar-search" href="#" role="button">
                 <i class="fas fa-search"></i>
             </a>
-            <div class="navbar-search-block">
-                <form class="form-inline">
-                    <div class="input-group input-group-sm">
-                        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-navbar" type="submit">
-                                <i class="fas fa-search"></i>
-                            </button>
-                            <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
         </li>
 
         <!-- Messages Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-comments"></i>
-                <span class="badge badge-danger navbar-badge">3</span>
+                <span class="badge badge-info navbar-badge">3</span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <a href="#" class="dropdown-item">
@@ -104,11 +89,11 @@
         </li>
         <!-- Notifications Dropdown Menu -->
         <input type="hidden" id="input_notificaiones" data_url="{{route('notificacion.getnotificaciones',['id' => session('id_usuario')])}}">
-        <input type="hidden" id="readnotificaciones" data_url ="{{route('notificacion.readnotificaciones')}}">
+        <input type="hidden" id="readnotificaciones" data_url="{{route('notificacion.readnotificaciones')}}">
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-bell"></i>
-                <span class="badge badge-warning navbar-badge" id="badge_cant_notificaciones" data_cantidad="{{session('cant_notificaciones')}}">{{session('cant_notificaciones')}}</span>
+                <span class="badge {{session('cant_notificaciones')<3?'badge-primary':(session('cant_notificaciones')<5?'badge-success':'badge-danger')}} navbar-badge" id="badge_cant_notificaciones" data_cantidad="{{session('cant_notificaciones')}}">{{session('cant_notificaciones')}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="menu_badge_cant_notificaciones_2" style="font-size: 0.75em;">
                 <span class="dropdown-item dropdown-header" id="badge_cant_notificaciones_2">0 Notificaciones</span>
@@ -118,7 +103,7 @@
                     <span class="float-right text-muted text-sm">3 mins</span>
                 </a>
                 <div class="dropdown-divider" id="id_division_segunda"></div>
-                <a href="#" class="dropdown-item dropdown-footer">Ver Todas las notificaciones</a>
+                <a href="#" class="dropdown-item dropdown-footer ver_todas_notif">Ver Todas las notificaciones</a>
             </div>
         </li>
         <li class="nav-item">
@@ -126,18 +111,40 @@
                 <i class="fas fa-expand-arrows-alt"></i>
             </a>
         </li>
-        @if (session('rol_id'<4))
-        <li class="nav-item">
+        @if (session('rol.id'<4)) <li class="nav-item">
             <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
                 <i class="fas fa-th-large"></i>
             </a>
-        </li>
-        @endif
-        <li class="nav-item">
-            <a class="nav-link text-danger" data-widget="Logout" href="{{route('logout')}}" role="button">
-                <i class="fas fa-power-off"></i>
-            </a>
-        </li>
+            </li>
+            @endif
+            <li class="nav-item">
+                <a class="nav-link text-danger" data-widget="Logout" href="{{route('logout')}}" role="button">
+                    <i class="fas fa-power-off"></i>
+                </a>
+            </li>
     </ul>
 </nav>
+<!-- /.navbar -->
+<!-- /.modales -->
+<!-- /.modal notificaciones -->
+<div class="modal fade" id="notificacionesMenuSupModal" tabindex="-1" aria-labelledby="notificacionesMenuSupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notificacionesMenuSupModalLabel">Notificaciones</h5>
+            </div>
+            <div class="modal-body table-responsive" style="font-size: 0.8em;">
+                <table class="table table-striped table-hover table-borderless">
+                    <tbody id="tbody_notificacionesMenuSupModal">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info boton_cerrar_modal_notif">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.modales -->
 <!-- /.navbar -->

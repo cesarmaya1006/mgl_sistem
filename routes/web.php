@@ -155,7 +155,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
             Route::put('actualizar/{id}', 'update')->name('empleado.update');
             Route::delete('eliminar/{id}', 'destroy')->name('empleado.destroy');
             Route::get('getCargos', 'getCargos')->name('empleado.getCargos');
-            Route::get('getLideresPorEmpresa', 'getLideresPorEmpresa')->name('empleado.getLideresPorEmpresa');
+            Route::get('getlideresporempresa', 'getlideresporempresa')->name('empleado.getlideresporempresa');
 
         });
         // ----------------------------------------------------------------------------------------
@@ -186,7 +186,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::controller(TareaController::class)->prefix('tareas')->group(function () {
             Route::get('crear/{componente_id}', 'create')->name('tarea.create');
             Route::post('guardar', 'store')->name('tarea.store');
-            Route::get('gestion/{id}', 'gestion')->name('tarea.gestion');
+            Route::get('gestion/{id}/{notificacion_id?}', 'gestion')->name('tarea.gestion');
             Route::get('gettareasusu/{config_usuario_id}', 'gettareasusu')->name('tarea.gettareasusu');
             Route::get('gettareasusumodal/{config_usuario_id}/{estado}', 'gettareasusumodal')->name('tarea.gettareasusumodal');
 

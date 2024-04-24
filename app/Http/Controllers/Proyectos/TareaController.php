@@ -211,8 +211,12 @@ class TareaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function gestion($id)
+    public function gestion($id ,$notificacion_id = null)
     {
+        if ($notificacion_id) {
+            $notificacion_update['estado'] = 0;
+            Notificacion::findOrFail($notificacion_id)->update($notificacion_update);
+        }
         $tarea = Tarea::findOrfail($id);
         return view('intranet.proyectos.tarea.gestion', compact('tarea'));
     }

@@ -30,4 +30,12 @@ class Historial extends Model
         return $this->belongsTo(ConfigUsuario::class, 'usuarioasignado_id', 'id');
     }
     //--------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------
+    public function documentos()
+    {
+        return $this->hasMany(HistorialDoc::class, 'proy_historiales_id', 'id');
+    }
+    //----------------------------------------------------------------------------------
+
+
 }

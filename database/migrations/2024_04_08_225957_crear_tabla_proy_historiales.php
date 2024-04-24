@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('fecha');
             $table->longText('resumen');
             $table->bigInteger('progreso')->default(0);
+            $table->double('costo')->default(0);
             $table->timestamps();
             $table->charset = 'utf8';
             $table->collation = 'utf8_spanish_ci';

@@ -79,7 +79,15 @@ class ProyectoController extends Controller
             $grupos = GrupoEmpresa::get();
             return view('intranet.proyectos.proyecto.crear',compact('grupos'));
         } else {
-            # code...
+            $usuario = ConfigUsuario::findOrFail(session('id_usuario'));
+            $config_empresa_id = $usuario->config_empresa_id;
+            $lideres1 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id',$config_empresa_id)->where('estado',1)->where('lider',1)->get();
+            $lideres2 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id','!=',$config_empresa_id)->where('estado',1)->where('lider',1)->
+            whereHas('empresas_tranv', function ($q) use ($config_empresa_id) {
+                $q->where('config_empresa_id', $config_empresa_id);
+            })->get();
+            $lideres = $lideres1->concat($lideres2);
+            return view('intranet.proyectos.proyecto.crear',compact('usuario','lideres'));
         }
     }
 
@@ -89,6 +97,9 @@ class ProyectoController extends Controller
     public function store(Request $request)
     {
         $proyecto = Proyecto::create($request->all());
+        //-----------------------------------------------------------------------------------
+        $this->actualizar_miembros_proyecto($proyecto,$request['config_usuario_id']);
+        //-----------------------------------------------------------------------------------
         $dia_hora = date('Y-m-d H:i:s');
         $notificacion['config_usuario_id'] =  $request['config_usuario_id'];
         $notificacion['fec_creacion'] =  $dia_hora;
@@ -182,5 +193,21 @@ class ProyectoController extends Controller
         $notificacion['accion'] =  'creacion';
         Notificacion::create($notificacion);
         //----------------------------------------------------------------------------------------------------
+    }
+
+    public function actualizar_miembros_proyecto($proyecto,$config_usuario_id){
+        $miembros[] = intval($config_usuario_id);
+        if ($proyecto->componentes->count() > 0) {
+            foreach ($proyecto->componentes as $componente) {
+                $miembros[] = $componente->config_usuario_id;
+                if ($componente->tareas->count() > 0) {
+                    foreach ($componente->tareas as $tarea) {
+                        $miembros[] = $tarea->config_usuario_id;
+                    }
+                }
+            }
+        }
+        $miembros = array_unique($miembros);
+        $proyecto->miembros_proyecto()->sync(array_unique($miembros));
     }
 }

@@ -33,6 +33,7 @@ class ComponentesSeeder extends Seeder
                 $p->where('config_rol_id', '>', 3);
             })->get();
             $lideres = $lideres1->concat($lideres2);
+            $presupuesto_proyecto_asignado = 0;
             for ($i = 1; $i < 6; $i++) {
                 switch ($i) {
                     case 5:
@@ -57,14 +58,31 @@ class ComponentesSeeder extends Seeder
                         break;
                 }
                 $config_usuario_id = intval(rand($lideres->min('id'), $lideres->max('id')));
+                $presupuesto = 0;
+                $titulo = 'Calibración impacto componente ' . $i;
+                $objetivo = 'Calibrar el proyecto, los componentes y las tareas segun el impacto';
+                $fec_creacion = '2024-04-' . rand(1, 11);
+
+                if ($proyecto->presupuesto > 0) {
+                    if ($i == 5) {
+                        $presupuesto = $proyecto->presupuesto -$presupuesto_proyecto_asignado;
+                    } else {
+                        $presupuesto = rand(1,5) * 0.1 *($proyecto->presupuesto -$presupuesto_proyecto_asignado);
+                    }
+                    $presupuesto_proyecto_asignado += $presupuesto;
+                    $titulo = 'Calibración presupuestos ' . $i . ' presupuesto: $ ' . number_format($presupuesto,2);
+                    $objetivo = 'Verificar el manejo de los presupuesto del componente '. $i . 'asociados al valor de presupuesto : $ '.  number_format($presupuesto,2);
+                    $fec_creacion = '2024-04-' . rand(14, 23);
+                }
                 array_push($datas, [
                     'proyectos_id' => intval($proyecto->id),
                     'config_usuario_id' => $config_usuario_id,
-                    'titulo' => 'Calibración impacto componente ' . $i,
-                    'fec_creacion' => '2024-04-' . rand(1, 11),
-                    'objetivo' => 'Calibrar el proyecto, los componentes y las tareas segun el impacto ',
+                    'titulo' => $titulo,
+                    'fec_creacion' => $fec_creacion,
+                    'objetivo' => $objetivo,
                     'impacto' => $impacto,
                     'impacto_num' => $impacto_num,
+                    'presupuesto' => $presupuesto,
                 ]);
             }
         }
@@ -77,6 +95,7 @@ class ComponentesSeeder extends Seeder
                 'objetivo' => $data['objetivo'],
                 'impacto' => $data['impacto'],
                 'impacto_num' => $data['impacto_num'],
+                'presupuesto' => $data['presupuesto'],
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]);
             $miembros[] = $data['config_usuario_id'];

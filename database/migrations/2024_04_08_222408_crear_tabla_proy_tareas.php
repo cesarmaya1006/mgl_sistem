@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('estado', 20)->default('Activa');
             $table->string('impacto', 10);
             $table->integer('impacto_num')->default(0);
+            $table->double('costo')->default(0);
             $table->timestamps();
             $table->charset = 'utf8';
             $table->collation = 'utf8_spanish_ci';

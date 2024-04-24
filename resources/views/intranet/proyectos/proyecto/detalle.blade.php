@@ -107,6 +107,25 @@ foreach ($proyecto->componentes as $componente) {
                                 </p>
                             </div>
                         </div>
+                        @if ($proyecto->presupuesto>0)
+                            <div class="row d-flex justify-content-around">
+                                <div class="col-4 col-md-3">
+                                    <p class="text-sm">Presupuesto del Proyecto
+                                        <b class="d-block text-capitalize">{{ '$ ' . number_format($proyecto->presupuesto, 2, ',', '.') }}</b>
+                                    </p>
+                                </div>
+                                <div class="col-4 col-md-3">
+                                    <p class="text-sm">Ejecución del presupuesto
+                                        <b class="d-block">{{ '$ ' . number_format($proyecto->ejecucion, 2, ',', '.') }}</b>
+                                    </p>
+                                </div>
+                                <div class="col-4 col-md-3">
+                                    <p class="text-sm">Porcentaje de ejecución
+                                        <b class="d-block">{{ number_format($proyecto->porc_ejecucion, 2, ',', '.') }} %</b>
+                                    </p>
+                                </div>
+                            </div>
+                        @endif
                         <div class="row">
                             <div class="col-12 col-sm-4">
                                 <div class="info-box bg-light">

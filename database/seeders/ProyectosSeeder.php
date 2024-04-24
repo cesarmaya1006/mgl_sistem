@@ -31,6 +31,15 @@ class ProyectosSeeder extends Seeder
                 'objetivo' => 'Objetivo de prueba para proyecto seeder',
                 'config_empresa_id' => 1,
                 'config_usuario_id' => 4,
+                'presupuesto' => 0,
+            ],
+            [
+                'titulo' => 'Manejo de Presupuestos',
+                'fec_creacion' => '2024-04-14',
+                'objetivo' => 'Proyecto para monimoterear los presupuestos',
+                'config_empresa_id' => 1,
+                'config_usuario_id' => 4,
+                'presupuesto' => 30000000,
             ],
         ];
         $id = 0;
@@ -42,6 +51,7 @@ class ProyectosSeeder extends Seeder
                 'objetivo' => $data['objetivo'],
                 'config_empresa_id' => $data['config_empresa_id'],
                 'config_usuario_id' => $data['config_usuario_id'],
+                'presupuesto' => $data['presupuesto'],
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]);
             DB::table('proyecto_miembros')->insert([
