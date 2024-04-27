@@ -89,6 +89,8 @@
                         <input type="number" step="0.01" min="0" max="{{$tarea->componente->presupuesto - $tarea->componente->ejecucion}}" value="0.00" class="form-control form-control-sm text-right" name="costo" id="costo" required>
                         <small id="helpId" class="form-text text-muted">Costo asociado a la tarea</small>
                     </div>
+                    @else
+                    <input type="hidden" name="costo" value="0">
                     @endif
                     <hr>
                     <div class="col-12">

@@ -71,6 +71,11 @@ class TareaController extends Controller
                 if ($componente->tareas->count() > 0) {
                     foreach ($componente->tareas as $tarea) {
                         $miembros[] = $tarea->config_usuario_id;
+                        /*if ($tarea->subtareas->count() > 0) {
+                            foreach ($tarea->subtareas as $subtarea) {
+                                $miembros[] = $subtarea->config_usuario_id;
+                            }
+                        }*/
                     }
                 }
             }
@@ -93,6 +98,47 @@ class TareaController extends Controller
         Notificacion::create($notificacion);
         //----------------------------------------------------------------------------------------------------
         return redirect('dashboard/proyectos/gestion/' . $proyecto->id)->with('mensaje', 'Tarea creada con éxito');
+    }
+
+    public function subtareas_store(Request $request){
+
+        //dd($request->all());
+        $tarea_ini  = Tarea::findOrFail($request['proy_tareas_id']);
+        $proyecto = $tarea_ini->componente->proyecto;
+        /*$miembros[] = intval($request['config_usuario_id']);
+        if ($proyecto->componentes->count() > 0) {
+            foreach ($proyecto->componentes as $componente) {
+                $miembros[] = $componente->config_usuario_id;
+                if ($componente->tareas->count() > 0) {
+                    foreach ($componente->tareas as $tarea) {
+                        $miembros[] = $tarea->config_usuario_id;
+                        if ($tarea->subtareas->count() > 0) {
+                            foreach ($tarea->subtareas as $subtarea) {
+                                $miembros[] = $subtarea->config_usuario_id;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        $miembros = array_unique($miembros);
+        */
+        $tarea = Tarea::create($request->all());
+
+        //$proyecto->miembros_proyecto()->sync(array_unique($miembros));
+        //----------------------------------------------------------------------------------------------------
+        $dia_hora = date('Y-m-d H:i:s');
+        $notificacion['config_usuario_id'] =  $request['config_usuario_id'];
+        $notificacion['fec_creacion'] =  $dia_hora;
+        $notificacion['titulo'] =  'Se asigno una nueva sub-tarea';
+        $notificacion['mensaje'] =  'Se creo una nueva sub-tarea a la tarea ' . $tarea->titulo . ' y te fue asignada -> ' . ucfirst($request['titulo']);
+        $notificacion['link'] =  route('subtareas.gestion', ['id' => $tarea->id]);
+        $notificacion['id_link'] =  $tarea->id;
+        $notificacion['tipo'] =  'sub-tarea';
+        $notificacion['accion'] =  'creacion';
+        Notificacion::create($notificacion);
+        //----------------------------------------------------------------------------------------------------
+        return redirect('dashboard/proyectos/tareas/gestion/' . $request['proy_tareas_id'])->with('mensaje', 'Sub-Tarea creada con éxito');
     }
 
     public function modificarprogresos($progreso_request, $proy_tareas_id)
@@ -224,9 +270,22 @@ class TareaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Tarea $tarea)
+    public function subtareas_create($proy_tareas_id)
     {
-        //
+        $tarea = Tarea::findOrFail($proy_tareas_id);
+        $componente = $tarea->componente;
+        $proyecto = $tarea->componente->proyecto;
+        $usuarios1 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id', $proyecto->config_empresa_id)->where('estado', 1)->whereHas('rol', function ($p) {
+            $p->where('config_rol_id', 4);
+        })->get();
+        $usuarios2 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id', '!=', $proyecto->config_empresa_id)->where('estado', 1)->whereHas('empresas_tranv', function ($q) use ($proyecto) {
+            $q->where('config_empresa_id', $proyecto->config_empresa_id);
+        })->whereHas('rol', function ($p) {
+            $p->where('config_rol_id', 4);
+        })->get();
+        $usuarios = $usuarios1->concat($usuarios2);
+        return view('intranet.proyectos.subtarea.crear', compact('tarea', 'usuarios'));
+
     }
 
     /**

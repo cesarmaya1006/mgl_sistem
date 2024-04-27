@@ -51,6 +51,8 @@ Dashboard
         <br>
         {{session('mgl')}}
         <br>
+        Lider: {{session('lider')}}
+        <br>
         <hr>
         <h3>Apariencia:</h3>
         <br>

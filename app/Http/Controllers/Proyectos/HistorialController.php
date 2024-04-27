@@ -40,6 +40,8 @@ class HistorialController extends Controller
      */
     public function store(Request $request)
     {
+        $tarea = Tarea::findOrFail($request['proy_tareas_id']);
+
         $historialNew['proy_tareas_id'] = $request['proy_tareas_id'];
         $historialNew['fecha'] = $request['fecha'];
         $historialNew['config_usuario_id'] = $request['config_usuario_id'];
@@ -47,27 +49,29 @@ class HistorialController extends Controller
         $historialNew['usuarioasignado_id'] = $request['usuarioasignado_id'];
         $historialNew['progreso'] = $request['progreso'];
         $historialNew['resumen'] = $request['resumen'];
-        $historialNew['costo'] = $request['costo'];
+        if ($tarea->componente->presupuesto > 0) {
+            $historialNew['costo'] = $request['costo'];
+        }
 
         $historial = Historial::create($historialNew);
+
         if ($request->hasFile('doc_historial')) {
-            $this->guardar_archivos($request['doc_historial'],$historial->id);
+            $this->guardar_archivos($request['doc_historial'], $historial->id);
         }
-        $tarea = Tarea::findOrFail($request['proy_tareas_id']);
-        $tareaUpdate['costo'] = $request['costo'] + $tarea->costo;
-        Tarea::findOrFail($request['proy_tareas_id'])->update($tareaUpdate);
+        if ($tarea->componente->presupuesto > 0) {
+            $tareaUpdate['costo'] = $request['costo'] + $tarea->costo;
+            Tarea::findOrFail($request['proy_tareas_id'])->update($tareaUpdate);
 
-        $componente = Componente::findOrFail($tarea->proy_componentes_id);
-        $componenteUpdate['ejecucion'] = $request['costo'] + $componente->ejecucion;
-        $componenteUpdate['porc_ejecucion'] = (($request['costo'] + $componente->ejecucion) * 100)/$componente->presupuesto;
-        Componente::findOrFail($tarea->proy_componentes_id)->update($componenteUpdate);
+            $componente = Componente::findOrFail($tarea->proy_componentes_id);
+            $componenteUpdate['ejecucion'] = $request['costo'] + $componente->ejecucion;
+            $componenteUpdate['porc_ejecucion'] = (($request['costo'] + $componente->ejecucion) * 100) / $componente->presupuesto;
+            Componente::findOrFail($tarea->proy_componentes_id)->update($componenteUpdate);
 
-        $proyecto = Proyecto::findOrFail($componente->proyectos_id);
-        $proyectoUpdate['ejecucion'] = $request['costo'] + $proyecto->ejecucion;
-        $proyectoUpdate['porc_ejecucion'] = (($request['costo'] + $proyecto->ejecucion) * 100)/$proyecto->presupuesto;
-        Proyecto::findOrFail($componente->proyectos_id)->update($proyectoUpdate);
-
-
+            $proyecto = Proyecto::findOrFail($componente->proyectos_id);
+            $proyectoUpdate['ejecucion'] = $request['costo'] + $proyecto->ejecucion;
+            $proyectoUpdate['porc_ejecucion'] = (($request['costo'] + $proyecto->ejecucion) * 100) / $proyecto->presupuesto;
+            Proyecto::findOrFail($componente->proyectos_id)->update($proyectoUpdate);
+        }
         $this->modificarprogresos($request['progreso'], $request['proy_tareas_id']);
         $this->crearNotificacion('historial', $request['usuarioasignado_id'], $tarea->componente->proyecto, $request['proy_tareas_id']);
         return redirect('dashboard/proyectos/tareas/gestion/' . $request['proy_tareas_id'])->with('mensaje', 'historial creado con éxito');
@@ -127,8 +131,9 @@ class HistorialController extends Controller
         //----------------------------------------------------------------------------------------------------
     }
 
-    public function guardar_archivos($doc_historial, $proy_historiales_id){
-        $i= 0;
+    public function guardar_archivos($doc_historial, $proy_historiales_id)
+    {
+        $i = 0;
         //dd($doc_historial);
         foreach ($doc_historial as $archivo) {
             $i++;
@@ -136,7 +141,7 @@ class HistorialController extends Controller
             $titulo = utf8_encode(utf8_decode($archivo->getClientOriginalName()));
             $tipo = $this->mime_content_type($titulo);
             $url = time() . '-' . utf8_encode(utf8_decode($archivo->getClientOriginalName()));
-            $peso = filesize($archivo)/1000000;
+            $peso = filesize($archivo) / 1000000;
             $new_proy_historialdoc['proy_historiales_id'] = $proy_historiales_id;
             $new_proy_historialdoc['titulo'] = $titulo;
             $new_proy_historialdoc['tipo'] = $tipo;
@@ -150,7 +155,6 @@ class HistorialController extends Controller
             // - - - - - - - - - - - - - - - - - - - - - - - -
             HistorialDoc::create($new_proy_historialdoc);
         }
-
     }
 
     /**
@@ -198,7 +202,8 @@ class HistorialController extends Controller
         return  $usuarios1->concat($usuarios2);
     }
 
-    public function mime_content_type($filename) {
+    public function mime_content_type($filename)
+    {
 
         $mime_types = array(
 
@@ -263,14 +268,12 @@ class HistorialController extends Controller
         $ext = $file_extension = pathinfo($filename, PATHINFO_EXTENSION);;
         if (array_key_exists($file_extension, $mime_types)) {
             return $mime_types[$file_extension];
-        }
-        elseif (function_exists('finfo_open')) {
+        } elseif (function_exists('finfo_open')) {
             $finfo = finfo_open(FILEINFO_MIME);
             $mimetype = finfo_file($finfo, $filename);
             finfo_close($finfo);
             return $mimetype;
-        }
-        else {
+        } else {
             return 'application/octet-stream';
         }
     }

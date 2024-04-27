@@ -84,6 +84,7 @@ class ConfigUsuario extends Authenticatable
             'direccion' => $this->direccion,
             'estado' => $this->estado,
             'foto' => $this->foto,
+            'lider' => $this->lider,
             'rol' => $rol,
         ]);
         Session::put([

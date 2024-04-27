@@ -184,56 +184,65 @@ foreach ($proyecto->componentes as $componente) {
                                     </div>
                                     <?php $cantBorde = 0; ?>
                                     @foreach ($componente->tareas as $tarea)
-                                        <?php $cantBorde++; ?>
-                                        <div class="col-12 pl-3 pt-3 {{ $cantBorde > 1 ? 'border-top' : '' }}">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <h6>{{ $tarea->titulo }}</h6>
-                                                    <div class="project_progress" style="width: 25%;">
-                                                        <div class="progress progress-sm">
-                                                            <div class="progress-bar bg-gradient-blue"
-                                                                role="progressbar"
-                                                                aria-volumenow="{{ $tarea->progreso }}"
-                                                                aria-volumemin="0" aria-volumemax="100"
-                                                                style="width: {{ $tarea->progreso }}%">
-                                                            </div>
-                                                        </div>
-                                                        <small>
-                                                            {{ number_format($tarea->progreso, 2, ',', '.') }} %
-                                                        </small>
-                                                    </div>
-                                                </div>
-                                                @if ($tarea->historiales->count() > 0)
-                                                    <?php $cantHistoriales = 1; ?>
-                                                    @foreach ($tarea->historiales as $historial)
-                                                        @if ($cantHistoriales < 2)
+                                        @if ($tarea->proy_tareas_id == null)
+                                            <?php $cantBorde++; ?>
+                                            <div class="col-12 pl-3 pt-3 {{ $cantBorde > 1 ? 'border-top' : '' }}">
+                                                <div class="row">
+                                                    <div class="col-11">
+                                                        <div class="row">
                                                             <div class="col-12">
-                                                                <div class="post">
-                                                                    <div class="user-block">
-                                                                        <img class="img-circle img-bordered-sm"
-                                                                             title="{{ $historial->responsable->nombres . ' ' . $historial->responsable->apellidos }}"
-                                                                             src="{{ asset('imagenes/hojas_de_vida/' . $historial->responsable->foto) }}"
-                                                                             alt="{{ $historial->responsable->nombres . ' ' . $historial->responsable->apellidos }}">
-                                                                        <span
-                                                                            class="username">{{ $historial->responsable->nombres . ' ' . $historial->responsable->apellidos }}</span>
-                                                                        <span
-                                                                            class="description">{{ $historial->titulo }}
-                                                                            -
-                                                                            {{ $historial->fecha . '  ' . Date('H:i:s', strtotime($historial->created_at)) }}</span>
-                                                                        <span class="description">
-                                                                            {{ $historial->resumen }}
-                                                                        </span>
+                                                                <h6>{{ $tarea->titulo }}</h6>
+                                                                <div class="project_progress" style="width: 25%;">
+                                                                    <div class="progress progress-sm">
+                                                                        <div class="progress-bar bg-gradient-blue"
+                                                                            role="progressbar"
+                                                                            aria-volumenow="{{ $tarea->progreso }}"
+                                                                            aria-volumemin="0" aria-volumemax="100"
+                                                                            style="width: {{ $tarea->progreso }}%">
+                                                                        </div>
                                                                     </div>
+                                                                    <small>
+                                                                        {{ number_format($tarea->progreso, 2, ',', '.') }} %
+                                                                    </small>
                                                                 </div>
                                                             </div>
-                                                        @endif
-                                                        <?php $cantHistoriales++; ?>
-                                                    @endforeach
-                                                @else
-                                                    <div class="col-12">Tarea sin historial</div>
-                                                @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <span class="badge bg-info">{{$tarea->subtareas->count()}}</span>
+                                                    </div>
+                                                    @if ($tarea->historiales->count() > 0)
+                                                        <?php $cantHistoriales = 1; ?>
+                                                        @foreach ($tarea->historiales as $historial)
+                                                            @if ($cantHistoriales < 2)
+                                                                <div class="col-12">
+                                                                    <div class="post">
+                                                                        <div class="user-block">
+                                                                            <img class="img-circle img-bordered-sm"
+                                                                                title="{{ $historial->responsable->nombres . ' ' . $historial->responsable->apellidos }}"
+                                                                                src="{{ asset('imagenes/hojas_de_vida/' . $historial->responsable->foto) }}"
+                                                                                alt="{{ $historial->responsable->nombres . ' ' . $historial->responsable->apellidos }}">
+                                                                            <span
+                                                                                class="username">{{ $historial->responsable->nombres . ' ' . $historial->responsable->apellidos }}</span>
+                                                                            <span
+                                                                                class="description">{{ $historial->titulo }}
+                                                                                -
+                                                                                {{ $historial->fecha . '  ' . Date('H:i:s', strtotime($historial->created_at)) }}</span>
+                                                                            <span class="description">
+                                                                                {{ $historial->resumen }}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            @endif
+                                                            <?php $cantHistoriales++; ?>
+                                                        @endforeach
+                                                    @else
+                                                        <div class="col-12">Tarea sin historial</div>
+                                                    @endif
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     @endforeach
                                 </div>
                                 @endforeach

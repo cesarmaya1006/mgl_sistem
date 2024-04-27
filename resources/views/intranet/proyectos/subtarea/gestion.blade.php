@@ -202,136 +202,59 @@
                     </div>
                 </div>
                 <hr>
-                <div class="accordion" id="accordionSubTareasHistoriales">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingHistorial">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHistorial" aria-expanded="false" aria-controls="collapseHistorial">
-                                Historiales de la tarea
-                            </button>
-                        </h2>
-                        <div id="collapseHistorial" class="accordion-collapse collapse" aria-labelledby="headingHistorial" data-bs-parent="#accordionSubTareasHistoriales">
-                            <div class="accordion-body">
-                                <div class="row">
-                                    <div class="col-12 mb-3">
-                                        <a href="{{route('historial.create',['proy_tareas_id'=>$tarea->id])}}" class="btn btn-success btn-xs btn-sombra text-center pl-3 pr-3 float-md-end mt-3 mt-md-0" style="font-size: 0.9em;">
-                                            <i class="fas fa-plus-circle mr-2"></i>
-                                            Nuevo historial
-                                        </a>
-                                    </div>
-                                    <div class="col-12 table-responsive">
-                                        <table class="table table-striped table-hover table-sm tabla_data_table_l w-100">
-                                            <thead class="thead-light">
-                                                <tr>
-                                                    <td>id</td>
-                                                    <td>Titulo</td>
-                                                    <td>Fecha</td>
-                                                    <td>Usuario historial</td>
-                                                    <td>Usuario asignado</td>
-                                                    <td>Avance Progresivo</td>
-                                                    @if ($tarea->componente->presupuesto > 0)
-                                                    <td>Costo</td>
-                                                    @endif
-                                                    <td>Resumen</td>
-                                                    <td>Documentos</td>
-                                                    <td></td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($tarea->historiales as $historial)
-                                                    <tr>
-                                                        <td>{{ $historial->id }}</td>
-                                                        <td class="text-left">{{ $historial->titulo }}</td>
-                                                        <td>{{ $historial->fecha }}</td>
-                                                        <td class="text-left">{{ $historial->responsable->nombres . ' ' . $historial->responsable->apellidos }}</td>
-                                                        <td class="text-left">{{ $historial->asignado->nombres . ' ' . $historial->asignado->apellidos }}</td>
-                                                        <td class="text-center">{{ $historial->progreso }} %</td>
-                                                        @if ($tarea->componente->presupuesto > 0)
-                                                            <td class="text-right"> $ {{ number_format($historial->costo , 2) }}</td>
-                                                        @endif
-                                                        <td width="25%" class="text-left text-wrap">{{ $historial->resumen }}</td>
-                                                        <td class="d-flex flex-column">
-                                                            @foreach ($historial->documentos as $documento)
-                                                                <span><a href="{{ asset('documentos/folder_doc_historial/' . $documento->url) }}"target="_blank">{{ $documento->titulo }}</a></span>
-                                                            @endforeach
-                                                        </td>
-                                                        <td>
-                                                            <a href="#"class="btn btn-accion-tabla btn-xs text-success">
-                                                                <i class="fas fa-file-upload" aria-hidden="true"></i>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="row mt-3">
+                    <div class="col-12 mb-3 d-md-flex justify-content-md-between">
+                        <h6><strong>Historiales de la tarea</strong></h6>
+                        <a href="{{route('historial.create',['proy_tareas_id'=>$tarea->id])}}" class="btn btn-success btn-xs btn-sombra text-center pl-3 pr-3 float-md-end mt-3 mt-md-0" style="font-size: 0.9em;">
+                            <i class="fas fa-plus-circle mr-2"></i>
+                            Nuevo historial
+                        </a>
                     </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingSubTarea">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSubTarea" aria-expanded="false" aria-controls="collapseSubTarea">
-                                Sub - tareas
-                            </button>
-                        </h2>
-                        <div id="collapseSubTarea" class="accordion-collapse collapse" aria-labelledby="headingSubTarea" data-bs-parent="#accordionSubTareasHistoriales">
-                            <div class="accordion-body">
-                                <div class="row">
-                                    <div class="col-12 mb-3">
-                                        <a href="{{route('subtareas.create',['proy_tareas_id'=>$tarea->id])}}" class="btn btn-info btn-xs btn-sombra text-center pl-3 pr-3 float-md-end mt-3 mt-md-0 ml-md-4" style="font-size: 0.9em;">
-                                            <i class="fas fa-plus-circle mr-2"></i>
-                                            Crear Subtarea
-                                        </a>
-                                    </div>
-                                    <div class="col-12 table-responsive">
-                                        <table class="table table-striped table-hover table-sm tabla_data_table_l w-100">
-                                            <thead class="thead-light">
-                                                <tr>
-                                                    <td></td>
-                                                    <td>Título</td>
-                                                    <td>Fecha Inicial</td>
-                                                    <td>Fecha Límite</td>
-                                                    <td>Estado</td>
-                                                    <td>Usuario sub-tarea</td>
-                                                    <td>Usuario Asignado</td>
-                                                    <td>Objetivo</td>
-                                                    <td>Documentos</td>
-                                                    <td></td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($tarea->subtareas as $subtarea)
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#" class="btn btn-outline-primary btn-xs pl-3 pr-3">Gestionar la sub-tarea</a>
-                                                        </td>
-                                                        <td class="text-left">{{ $subtarea->titulo }}</td>
-                                                        <td>{{ $subtarea->fec_creacion }}</td>
-                                                        <td>{{ $subtarea->fec_limite }}</td>
-                                                        <td>{{ $subtarea->estado }}</td>
-                                                        <td class="text-left">{{ $subtarea->responsable->nombres . ' ' . $subtarea->responsable->apellidos }}</td>
-                                                        <td class="text-left">{{ $subtarea->asignado!=null? $subtarea->asignado->nombres . ' ' . $subtarea->asignado->apellidos : ''}}</td>
-                                                        <td width="25%" class="text-left text-wrap">{{ $subtarea->objetivo }}</td>
-                                                        <td class="d-flex flex-column">
-                                                            @foreach ($subtarea->historiales as $historial)
-                                                                @foreach ($historial->documentos as $documento)
-                                                                    <span><a href="{{ asset('documentos/folder_doc_historial/' . $documento->url) }}"target="_blank">{{ $documento->titulo }}</a></span>
-                                                                @endforeach
-                                                            @endforeach
-                                                        </td>
-                                                        <td>
-                                                            <a href="#"class="btn btn-accion-tabla btn-xs text-success">
-                                                                <i class="fas fa-file-upload" aria-hidden="true"></i>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-12 table-responsive">
+                        <table class="table table-striped table-hover table-sm tabla_data_table_l">
+                            <thead class="thead-light">
+                                <tr>
+                                    <td>id</td>
+                                    <td>Titulo</td>
+                                    <td>Fecha</td>
+                                    <td>Usuario historial</td>
+                                    <td>Usuario asignado</td>
+                                    <td>Avance Progresivo</td>
+                                    @if ($tarea->componente->presupuesto > 0)
+                                    <td>Costo</td>
+                                    @endif
+                                    <td>Resumen</td>
+                                    <td>Documentos</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($tarea->historiales as $historial)
+                                    <tr>
+                                        <td>{{ $historial->id }}</td>
+                                        <td class="text-left">{{ $historial->titulo }}</td>
+                                        <td>{{ $historial->fecha }}</td>
+                                        <td class="text-left">{{ $historial->responsable->nombres . ' ' . $historial->responsable->apellidos }}</td>
+                                        <td class="text-left">{{ $historial->asignado->nombres . ' ' . $historial->asignado->apellidos }}</td>
+                                        <td class="text-center">{{ $historial->progreso }} %</td>
+                                        @if ($tarea->componente->presupuesto > 0)
+                                            <td class="text-right"> $ {{ number_format($historial->costo , 2) }}</td>
+                                        @endif
+                                        <td width="25%" class="text-left text-wrap">{{ $historial->resumen }}</td>
+                                        <td class="d-flex flex-column">
+                                            @foreach ($historial->documentos as $documento)
+                                                <span><a href="{{ asset('documentos/folder_doc_historial/' . $documento->url) }}"target="_blank">{{ $documento->titulo }}</a></span>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            <a href="#"class="btn btn-accion-tabla btn-xs text-success">
+                                                <i class="fas fa-file-upload" aria-hidden="true"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

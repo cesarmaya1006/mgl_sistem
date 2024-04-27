@@ -18,55 +18,57 @@ class ProyectoController extends Controller
      */
     public function index()
     {
-        if (session('rol_id')<3) {
+        if (session('rol_id') < 3) {
             $grupos = GrupoEmpresa::get();
-            return view('intranet.proyectos.proyecto.index',compact('grupos'));
+            return view('intranet.proyectos.proyecto.index', compact('grupos'));
         } else {
             $usuario = ConfigUsuario::findOrfail(session('id_usuario'));
-            $tareas = Tarea::where('config_usuario_id',session('id_usuario'))->where('progreso','<', '100')->get();
+            $tareas = Tarea::where('config_usuario_id', session('id_usuario'))->where('progreso', '<', '100')->get();
             $array_events_calendario = [];
             foreach ($tareas as $tarea) {
-                //-------------------------------------------------
-                $date1 = new DateTime($tarea->fec_creacion);
-                $date2 = new DateTime($tarea->fec_limite);
-                $diff = date_diff($date1, $date2);
-                $differenceFormat = '%a';
-                $diasTotalTarea = $diff->format($differenceFormat);
-                if ($diasTotalTarea == 0) {
-                    $diasTotalTarea = 1;
-                }
-                //-------------------------------------------------
-                $date1 = new DateTime($tarea->fec_creacion);
-                $date2 = new DateTime(date('Y-m-d'));
-                $diff = date_diff($date1, $date2);
-                $differenceFormat = '%a';
-                $diasGestionTarea = $diff->format($differenceFormat);
-                //---------------------------------------------------
-                $porcVenc=($diasGestionTarea * 100) / $diasTotalTarea;
-                if ($tarea->fec_limite < date('Y-m-d')) {
-                    $backgroundColor = 'rgb(255,0,0)';
-                } else {
-                    if ($porcVenc> 80 || $diasTotalTarea - $diasGestionTarea < 3) {
-                        $backgroundColor = 'rgb(255,150,0)';
+                if ($tarea->proy_tareas_id == null) {
+                    //-------------------------------------------------
+                    $date1 = new DateTime($tarea->fec_creacion);
+                    $date2 = new DateTime($tarea->fec_limite);
+                    $diff = date_diff($date1, $date2);
+                    $differenceFormat = '%a';
+                    $diasTotalTarea = $diff->format($differenceFormat);
+                    if ($diasTotalTarea == 0) {
+                        $diasTotalTarea = 1;
+                    }
+                    //-------------------------------------------------
+                    $date1 = new DateTime($tarea->fec_creacion);
+                    $date2 = new DateTime(date('Y-m-d'));
+                    $diff = date_diff($date1, $date2);
+                    $differenceFormat = '%a';
+                    $diasGestionTarea = $diff->format($differenceFormat);
+                    //---------------------------------------------------
+                    $porcVenc = ($diasGestionTarea * 100) / $diasTotalTarea;
+                    if ($tarea->fec_limite < date('Y-m-d')) {
+                        $backgroundColor = 'rgb(255,0,0)';
                     } else {
-                        if (((($tarea->impacto_num/10) + $tarea->id) % 2) != 0) {
-                            $backgroundColor = 'rgb(0,'. rand(60,250) - $tarea->impacto_num .','. rand(10,180) + $tarea->impacto_num .')';
+                        if ($porcVenc > 80 || $diasTotalTarea - $diasGestionTarea < 3) {
+                            $backgroundColor = 'rgb(255,150,0)';
                         } else {
-                            $backgroundColor = 'rgb(0,'. rand(10,180) + $tarea->impacto_num .','. rand(60,250) - $tarea->impacto_num .')';
+                            if (((($tarea->impacto_num / 10) + $tarea->id) % 2) != 0) {
+                                $backgroundColor = 'rgb(0,' . rand(60, 250) - $tarea->impacto_num . ',' . rand(10, 180) + $tarea->impacto_num . ')';
+                            } else {
+                                $backgroundColor = 'rgb(0,' . rand(10, 180) + $tarea->impacto_num . ',' . rand(60, 250) - $tarea->impacto_num . ')';
+                            }
                         }
                     }
+                    $array_events_calendario[] = [
+                        'title' => utf8_encode($tarea->titulo),
+                        'start' => $tarea->fec_creacion,
+                        'end' => $tarea->fec_limite,
+                        'url' => route('tarea.gestion', ['id' => $tarea->id]),
+                        'backgroundColor' =>  $backgroundColor,
+                        'borderColor' => 'rgb(0,0,0)',
+                    ];
                 }
-                $array_events_calendario[] = [
-                    'title' => utf8_encode($tarea->titulo),
-                    'start' => $tarea->fec_creacion,
-                    'end' => $tarea->fec_limite,
-                    'url' => route('tarea.gestion',['id' => $tarea->id]),
-                    'backgroundColor' =>  $backgroundColor,
-                    'borderColor' => 'rgb(0,0,0)',
-                ];
             }
 
-            return view('intranet.proyectos.proyecto.index',compact('usuario','array_events_calendario'));
+            return view('intranet.proyectos.proyecto.index', compact('usuario', 'array_events_calendario'));
         }
     }
 
@@ -75,19 +77,18 @@ class ProyectoController extends Controller
      */
     public function create()
     {
-        if (session('rol_id')<3) {
+        if (session('rol_id') < 3) {
             $grupos = GrupoEmpresa::get();
-            return view('intranet.proyectos.proyecto.crear',compact('grupos'));
+            return view('intranet.proyectos.proyecto.crear', compact('grupos'));
         } else {
             $usuario = ConfigUsuario::findOrFail(session('id_usuario'));
             $config_empresa_id = $usuario->config_empresa_id;
-            $lideres1 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id',$config_empresa_id)->where('estado',1)->where('lider',1)->get();
-            $lideres2 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id','!=',$config_empresa_id)->where('estado',1)->where('lider',1)->
-            whereHas('empresas_tranv', function ($q) use ($config_empresa_id) {
-                $q->where('config_empresa_id', $config_empresa_id);
-            })->get();
+            $lideres1 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id', $config_empresa_id)->where('estado', 1)->where('lider', 1)->get();
+            $lideres2 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id', '!=', $config_empresa_id)->where('estado', 1)->where('lider', 1)->whereHas('empresas_tranv', function ($q) use ($config_empresa_id) {
+                    $q->where('config_empresa_id', $config_empresa_id);
+                })->get();
             $lideres = $lideres1->concat($lideres2);
-            return view('intranet.proyectos.proyecto.crear',compact('usuario','lideres'));
+            return view('intranet.proyectos.proyecto.crear', compact('usuario', 'lideres'));
         }
     }
 
@@ -98,13 +99,13 @@ class ProyectoController extends Controller
     {
         $proyecto = Proyecto::create($request->all());
         //-----------------------------------------------------------------------------------
-        $this->actualizar_miembros_proyecto($proyecto,$request['config_usuario_id']);
+        $this->actualizar_miembros_proyecto($proyecto, $request['config_usuario_id']);
         //-----------------------------------------------------------------------------------
         $dia_hora = date('Y-m-d H:i:s');
         $notificacion['config_usuario_id'] =  $request['config_usuario_id'];
         $notificacion['fec_creacion'] =  $dia_hora;
         $notificacion['titulo'] =  'Se creo un nuevo proyecto y te fue asignado ';
-        $notificacion['mensaje'] =  'Se creo un nuevo proyecto Proyecto de Prueba y te fue asignado -> ' .ucfirst($request['titulo']);
+        $notificacion['mensaje'] =  'Se creo un nuevo proyecto Proyecto de Prueba y te fue asignado -> ' . ucfirst($request['titulo']);
         $notificacion['link'] =  route('proyecto.gestion', ['id' => $proyecto->id]);
         $notificacion['id_link'] =  $proyecto->id;
         $notificacion['tipo'] =  'proyecto';
@@ -119,7 +120,7 @@ class ProyectoController extends Controller
     public function show(Request $request, $id)
     {
         $proyecto = Proyecto::findOrfail($id);
-        return view('intranet.proyectos.proyecto.detalle',compact('proyecto'));
+        return view('intranet.proyectos.proyecto.detalle', compact('proyecto'));
     }
 
     /**
@@ -146,47 +147,51 @@ class ProyectoController extends Controller
         //
     }
 
-    public function gestion($id,$notificacion_id = null){
+    public function gestion($id, $notificacion_id = null)
+    {
         if ($notificacion_id) {
             $notificacion_update['estado'] = 0;
             Notificacion::findOrFail($notificacion_id)->update($notificacion_update);
         }
         $proyecto = Proyecto::findOrFail($id);
-        return view('intranet.proyectos.proyecto.gestionar',compact('proyecto'));
+        return view('intranet.proyectos.proyecto.gestionar', compact('proyecto'));
     }
 
-    public function getproyectos(Request $request,$estado,$config_empresa_id){
+    public function getproyectos(Request $request, $estado, $config_empresa_id)
+    {
         if ($request->ajax()) {
-            if ($estado =='todos') {
-                return response()->json(['proyectos' => Proyecto::where('config_empresa_id',$config_empresa_id)->with('miembros_proyecto')->with('lider')->get()]);
+            if ($estado == 'todos') {
+                return response()->json(['proyectos' => Proyecto::where('config_empresa_id', $config_empresa_id)->with('miembros_proyecto')->with('lider')->get()]);
             } else {
-                return response()->json(['proyectos' => Proyecto::where('config_empresa_id',$config_empresa_id)->where('estado',$estado)->with('miembros_proyecto')->with('lider')->get()]);
+                return response()->json(['proyectos' => Proyecto::where('config_empresa_id', $config_empresa_id)->where('estado', $estado)->with('miembros_proyecto')->with('lider')->get()]);
             }
         } else {
             abort(404);
         }
     }
 
-    public function getproyectosusuario(Request $request,$config_usuario_id){
+    public function getproyectosusuario(Request $request, $config_usuario_id)
+    {
         if ($request->ajax()) {
             $usuario = ConfigUsuario::findOrFail($config_usuario_id);
-            $proyectos_id = $usuario->proyectos_miembro->where('estado','Activo')->pluck('id');
-            return response()->json(['proyectos' => Proyecto::whereIn('id',$proyectos_id->toArray())
-                                                            ->with('miembros_proyecto')
-                                                            ->with('lider')
-                                                            ->get()]);
+            $proyectos_id = $usuario->proyectos_miembro->where('estado', 'Activo')->pluck('id');
+            return response()->json(['proyectos' => Proyecto::whereIn('id', $proyectos_id->toArray())
+                ->with('miembros_proyecto')
+                ->with('lider')
+                ->get()]);
         } else {
             abort(404);
         }
     }
 
-    public function storeNotificacion ($config_usuario_id,$proyectoTitulo,$proyectoId){
+    public function storeNotificacion($config_usuario_id, $proyectoTitulo, $proyectoId)
+    {
         //----------------------------------------------------------------------------------------------------
         $dia_hora = date('Y-m-d H:i:s');
         $notificacion['config_usuario_id'] =  $config_usuario_id;
         $notificacion['fec_creacion'] =  $dia_hora;
         $notificacion['titulo'] =  'Se asigno un nuevo proyecto';
-        $notificacion['mensaje'] =  'Se creo una nuevo proyecto y te fue asignada -> ' .ucfirst($proyectoTitulo);
+        $notificacion['mensaje'] =  'Se creo una nuevo proyecto y te fue asignada -> ' . ucfirst($proyectoTitulo);
         $notificacion['link'] =  route('proyecto.gestion', ['id' => $proyectoId]);
         $notificacion['id_link'] =  $proyectoId;
         $notificacion['tipo'] =  'proyecto';
@@ -195,7 +200,8 @@ class ProyectoController extends Controller
         //----------------------------------------------------------------------------------------------------
     }
 
-    public function actualizar_miembros_proyecto($proyecto,$config_usuario_id){
+    public function actualizar_miembros_proyecto($proyecto, $config_usuario_id)
+    {
         $miembros[] = intval($config_usuario_id);
         if ($proyecto->componentes->count() > 0) {
             foreach ($proyecto->componentes as $componente) {

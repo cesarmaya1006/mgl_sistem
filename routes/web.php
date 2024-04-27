@@ -13,6 +13,7 @@ use App\Http\Controllers\Proyectos\ComponenteController;
 use App\Http\Controllers\Proyectos\HistorialController;
 use App\Http\Controllers\Proyectos\NotificacionController;
 use App\Http\Controllers\Proyectos\ProyectoController;
+use App\Http\Controllers\Proyectos\SubTareaController;
 use App\Http\Controllers\Proyectos\TareaController;
 use App\Http\Controllers\Seguridad\LoginController;
 use Illuminate\Support\Facades\Artisan;
@@ -189,6 +190,17 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
             Route::get('gestion/{id}/{notificacion_id?}', 'gestion')->name('tarea.gestion');
             Route::get('gettareasusu/{config_usuario_id}', 'gettareasusu')->name('tarea.gettareasusu');
             Route::get('gettareasusumodal/{config_usuario_id}/{estado}', 'gettareasusumodal')->name('tarea.gettareasusumodal');
+
+        });
+        // ----------------------------------------------------------------------------------------
+        // Ruta sub-tareas
+        // ------------------------------------------------------------------------------------
+        Route::controller(TareaController::class)->prefix('subtareas')->group(function () {
+            Route::get('crear/{proy_tareas_id}', 'subtareas_create')->name('subtareas.create');
+            Route::post('guardar', 'subtareas_store')->name('subtareas.store');
+            Route::get('gestion/{id}/{notificacion_id?}', 'subtareas_gestion')->name('subtareas.gestion');
+            Route::get('getsubtareasusu/{config_usuario_id}', 'subtareas_getsubtareasusu')->name('tarea.getsubtareasusu');
+            Route::get('getsubtareasusumodal/{config_usuario_id}/{estado}', 'subtareas_getsubtareasusumodal')->name('tarea.getsubtareasusumodal');
 
         });
         // ----------------------------------------------------------------------------------------

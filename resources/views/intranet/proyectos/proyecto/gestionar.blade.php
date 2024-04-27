@@ -347,7 +347,11 @@
                                                             @foreach ($componente->tareas as $tarea)
                                                             <tr>
                                                                 <td>
-                                                                    <a href="{{route('tarea.gestion',['id'=>$tarea->id])}}" class="btn-accion-tabla text-primary" title="Gestionar tarea"><i class="fas fa-eye mr-2"></i></a>
+                                                                    @if ($tarea->responsable->id == session('id_usuario') || Session('lider')==1)
+                                                                    <a href="{{route('tarea.gestion',['id'=>$tarea->id])}}" class="btn-accion-tabla {{$tarea->responsable->id == session('id_usuario')?'text-primary':'text-secondary'}}" title="Gestionar tarea"><i class="fas fa-eye mr-2"></i></a>
+                                                                    @else
+                                                                    <i class="fas fa-eye-slash"></i>
+                                                                    @endif
                                                                 </td>
                                                                 <td>{{ ucfirst(strtolower($tarea->responsable->nombres)) . ' ' . ucfirst(strtolower($tarea->responsable->apellidos)) }}
                                                                 </td>
