@@ -1,5 +1,6 @@
 <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="{{asset('imagenes/sistema/').'/'.session('apariencia.logo_empresa')}}" sizes="500x500">
   <title>MGL - Tech</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">

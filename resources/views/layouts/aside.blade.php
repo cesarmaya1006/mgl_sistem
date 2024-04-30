@@ -9,8 +9,8 @@
     <a href="#" class="brand-link
                 {{session('apariencia.text_sm_brand_checkbox')=='si'? 'text-sm':''}}
                 pt-3 pb-4">
-        <img src="{{asset('imagenes/sistema/mgl_logo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8;">
-        <span class="brand-text font-weight-light">Mgl - Tech</span>
+        <img src="{{asset('imagenes/sistema/').'/'.session('apariencia.logo_empresa')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8;">
+        <span class="brand-text font-weight-light">{{session('apariencia.nombre_empresa')}}</span>
     </a>
 
     <!-- Sidebar -->

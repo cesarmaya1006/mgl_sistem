@@ -38,6 +38,8 @@ return new class extends Migration
             $table->string('text_sm_footer_checkbox', 100)->nullable();
             $table->string('fondo_barra_sup', 100)->nullable();
             $table->string('fondo_barra_lat', 100)->nullable();
+            $table->string('nombre_empresa', 255);
+            $table->string('logo_empresa', 255);
 
 
             $table->timestamps();

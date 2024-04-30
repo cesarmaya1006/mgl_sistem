@@ -48,3 +48,7 @@ label.requerido:after {
 tr{
     white-space:nowrap;
 }
+
+.card-outline{
+    border-image: linear-gradient(45deg, rgb(0,95,131), rgb(0,188,181)) 1;
+}

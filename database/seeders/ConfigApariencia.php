@@ -40,6 +40,9 @@ class ConfigApariencia extends Seeder
                 'text_sm_footer_checkbox' => 'no',
                 'fondo_barra_sup' => 'navbar-light',
                 'fondo_barra_lat' => 'bg-light',
+                'nombre_empresa' => 'Mgl - Tech',
+                'logo_empresa' =>'logo_img.png'
+
             ],
             [
                 'config_empresa_id' => 1,
@@ -66,6 +69,9 @@ class ConfigApariencia extends Seeder
                 'text_sm_footer_checkbox' => 'no',
                 'fondo_barra_sup' => 'navbar-light',
                 'fondo_barra_lat' => 'bg-light',
+                'nombre_empresa' => 'Empucol - ESP',
+                'logo_empresa' =>'logo_empucol.png'
+
             ],
         ];
         DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
@@ -98,6 +104,8 @@ class ConfigApariencia extends Seeder
                 'text_sm_footer_checkbox' => $data['text_sm_footer_checkbox'],
                 'fondo_barra_sup' => $data['fondo_barra_sup'],
                 'fondo_barra_lat' => $data['fondo_barra_lat'],
+                'nombre_empresa' => $data['nombre_empresa'],
+                'logo_empresa' => $data['logo_empresa'],
 
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]);

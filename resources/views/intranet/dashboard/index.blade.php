@@ -14,6 +14,7 @@ Dashboard
 @endsection
 <!-- ************************************************************* -->
 @section('contenido')
+<!--
 <div class="row">
     <div class="col-12">
         <h1>Pagina Principal</h1>
@@ -62,6 +63,12 @@ Dashboard
     <hr>
     <p>cantidad de notificaciones: {{session('cant_notificaciones')}}</p>
 
+    </div>
+</div>
+-->
+<div class="row d-flex justify-content-center mt-3 mb-5">
+    <div class="col-12 col-md-4" style="border-radius: 5px;">
+        <img src="{{asset('imagenes/sistema/').'/'.session('apariencia.logo_empresa')}}" class="img-fluid" alt="...">
     </div>
 </div>
 @endsection
