@@ -388,6 +388,41 @@
                         </div>
                     </div>
                 </div>
+                <div class="row" style="background-color: rgba(0, 0, 0, 0.05)">
+                    <div class="col-12 card card-outline card-secondary collapsed-card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-11">
+                                    <div class="row">
+                                        <div class="col-12 col-md-7">
+                                            <h6 class="card-title" style="font-size: 0.98em;"><strong>Estadísticas del proyecto</strong></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <div class="card-tools float-end">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body" style="font-size: 0.9em;">
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <div class="row">
+                                        <div class="col-12"><h5><strong>Ponderacíon de Componentes</strong></h5></div>
+                                        <div class="col-12">
+                                            <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 764px;" width="764" height="250" class="chartjs-render-monitor"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Fin Sistema Cards  -->
             </div>
         </div>
@@ -402,6 +437,9 @@
 <!-- ************************************************************* -->
 <!-- script hoja -->
 @section('scripts_pagina')
+<!-- ChartJS -->
+<script src="{{asset('js/intranet/general/chart.js')}}"></script>
+<!-- ============================================================= -->
 <script src="{{ asset('js/intranet/proyectos/proyecto/gestionar.js') }}"></script>
 @endsection
 <!-- ************************************************************* -->

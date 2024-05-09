@@ -219,7 +219,7 @@
                                         </a>
                                     </div>
                                     <div class="col-12 table-responsive">
-                                        <table class="table table-striped table-hover table-sm tabla_data_table_l w-100">
+                                        <table class="table table-striped table-hover table-sm tabla_data_table_l w-100" style="font-size: 0.8em;">
                                             <thead class="thead-light">
                                                 <tr>
                                                     <td>id</td>
@@ -255,7 +255,7 @@
                                                             @endforeach
                                                         </td>
                                                         <td>
-                                                            <a href="#"class="btn btn-accion-tabla btn-xs text-success">
+                                                            <a href="{{route('doc_historial.create',['proy_historiales_id' => $historial->id])}}"class="btn btn-accion-tabla btn-xs text-success">
                                                                 <i class="fas fa-file-upload" aria-hidden="true"></i>
                                                             </a>
                                                         </td>
@@ -301,14 +301,14 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($tarea->subtareas as $subtarea)
-                                                    <tr>
+                                                    <tr class="{{$subtarea->progreso < 100?'table-info':'table-success'}}"">
                                                         <td>
-                                                            <a href="#" class="btn btn-outline-primary btn-xs pl-3 pr-3">Gestionar la sub-tarea</a>
+                                                            <a href="{{route('subtareas.gestion',['id' => $subtarea->id])}}" class="btn btn-outline-primary btn-xs pl-3 pr-3">Gestionar la sub-tarea</a>
                                                         </td>
                                                         <td class="text-left">{{ $subtarea->titulo }}</td>
                                                         <td>{{ $subtarea->fec_creacion }}</td>
                                                         <td>{{ $subtarea->fec_limite }}</td>
-                                                        <td>{{ $subtarea->estado }}</td>
+                                                        <td>{{ $subtarea->progreso < 100?$subtarea->estado:'Completada' }}</td>
                                                         <td class="text-left">{{ $subtarea->responsable->nombres . ' ' . $subtarea->responsable->apellidos }}</td>
                                                         <td class="text-left">{{ $subtarea->asignado!=null? $subtarea->asignado->nombres . ' ' . $subtarea->asignado->apellidos : ''}}</td>
                                                         <td width="25%" class="text-left text-wrap">{{ $subtarea->objetivo }}</td>

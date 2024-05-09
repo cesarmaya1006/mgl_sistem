@@ -35,11 +35,32 @@ class HistorialController extends Controller
         return view('intranet.proyectos.historial.crear', compact('tarea', 'usuarios', 'usuario'));
     }
 
+
+    public function historialessubtarea_store(Request $request){
+        $tarea = Tarea::findOrFail($request['proy_tareas_id']);
+        $historialNew['proy_tareas_id'] = $request['proy_tareas_id'];
+        $historialNew['fecha'] = $request['fecha'];
+        $historialNew['config_usuario_id'] = $request['config_usuario_id'];
+        $historialNew['titulo'] = $request['titulo'];
+        $historialNew['usuarioasignado_id'] = $request['usuarioasignado_id'];
+        $historialNew['progreso'] = $request['progreso'];
+        $historialNew['resumen'] = $request['resumen'];
+
+        $historial = Historial::create($historialNew);
+
+        if ($request->hasFile('doc_historial')) {
+            $this->guardar_archivos($request['doc_historial'], $historial->id);
+        }
+
+        $this->crearNotificacion('historial', $request['usuarioasignado_id'], $tarea->tarea->componente->proyecto, $request['proy_tareas_id']);
+        return redirect('dashboard/proyectos/subtareas/gestion/' . $request['proy_tareas_id'])->with('mensaje', 'historial creado con éxito');
+    }
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $tarea = Tarea::findOrFail($request['proy_tareas_id']);
 
         $historialNew['proy_tareas_id'] = $request['proy_tareas_id'];
@@ -102,6 +123,10 @@ class HistorialController extends Controller
         $ProyectoUpdate['estado'] = 'Activo';
         Proyecto::findOrFail($tareaFind->componente->proyecto->id)->update($ProyectoUpdate);
     }
+
+
+
+
     public function crearNotificacion($elemento, $config_usuario_id, $proyecto, $id_link)
     {
         switch ($elemento) {

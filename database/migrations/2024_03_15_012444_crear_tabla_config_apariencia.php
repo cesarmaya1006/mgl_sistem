@@ -40,7 +40,7 @@ return new class extends Migration
             $table->string('fondo_barra_lat', 100)->nullable();
             $table->string('nombre_empresa', 255);
             $table->string('logo_empresa', 255);
-
+            $table->string('logo_shake', 255);
 
             $table->timestamps();
             $table->charset = 'utf8';

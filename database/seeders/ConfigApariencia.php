@@ -41,7 +41,8 @@ class ConfigApariencia extends Seeder
                 'fondo_barra_sup' => 'navbar-light',
                 'fondo_barra_lat' => 'bg-light',
                 'nombre_empresa' => 'Mgl - Tech',
-                'logo_empresa' =>'logo_img.png'
+                'logo_empresa' =>'logo_img.png',
+                'logo_shake' => 'mgl_logo.png'
 
             ],
             [
@@ -70,7 +71,8 @@ class ConfigApariencia extends Seeder
                 'fondo_barra_sup' => 'navbar-light',
                 'fondo_barra_lat' => 'bg-light',
                 'nombre_empresa' => 'Empucol - ESP',
-                'logo_empresa' =>'logo_empucol.png'
+                'logo_empresa' =>'logo_empucol.png',
+                'logo_shake' => 'logo_empucol2.png'
 
             ],
         ];
@@ -106,6 +108,7 @@ class ConfigApariencia extends Seeder
                 'fondo_barra_lat' => $data['fondo_barra_lat'],
                 'nombre_empresa' => $data['nombre_empresa'],
                 'logo_empresa' => $data['logo_empresa'],
+                'logo_shake' => $data['logo_shake'],
 
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]);

@@ -11,6 +11,7 @@ use App\Http\Controllers\Empresa\EmpresaCargoController;
 use App\Http\Controllers\Empresa\EmpresaEmpleadoController;
 use App\Http\Controllers\Proyectos\ComponenteController;
 use App\Http\Controllers\Proyectos\HistorialController;
+use App\Http\Controllers\Proyectos\HistorialDocController;
 use App\Http\Controllers\Proyectos\NotificacionController;
 use App\Http\Controllers\Proyectos\ProyectoController;
 use App\Http\Controllers\Proyectos\SubTareaController;
@@ -199,8 +200,6 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
             Route::get('crear/{proy_tareas_id}', 'subtareas_create')->name('subtareas.create');
             Route::post('guardar', 'subtareas_store')->name('subtareas.store');
             Route::get('gestion/{id}/{notificacion_id?}', 'subtareas_gestion')->name('subtareas.gestion');
-            Route::get('getsubtareasusu/{config_usuario_id}', 'subtareas_getsubtareasusu')->name('tarea.getsubtareasusu');
-            Route::get('getsubtareasusumodal/{config_usuario_id}/{estado}', 'subtareas_getsubtareasusumodal')->name('tarea.getsubtareasusumodal');
 
         });
         // ----------------------------------------------------------------------------------------
@@ -210,6 +209,19 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
             Route::get('crear/{proy_tareas_id}', 'create')->name('historial.create');
             Route::post('guardar', 'store')->name('historial.store');
             Route::get('gestion/{id}', 'gestion')->name('historial.gestion');
+        });
+        // ----------------------------------------------------------------------------------------
+        // Ruta historiales subtareas
+        // ------------------------------------------------------------------------------------
+        Route::controller(HistorialController::class)->prefix('historialessubtarea')->group(function () {
+            Route::post('guardar', 'historialessubtarea_store')->name('historialessubtarea.store');
+        });
+        // ----------------------------------------------------------------------------------------
+        // Ruta Documentos historiales
+        // ------------------------------------------------------------------------------------
+        Route::controller(HistorialDocController::class)->prefix('doc_historiales')->group(function () {
+            Route::get('crear/{proy_historiales_id}', 'create')->name('doc_historial.create');
+            Route::post('guardar', 'store')->name('doc_historial.store');
         });
         // ----------------------------------------------------------------------------------------
         // Ruta Notificaciones

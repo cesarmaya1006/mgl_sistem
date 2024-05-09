@@ -54,36 +54,7 @@ class TareaController extends Controller
             $num_repeticiones = intval($request['num_repeticiones']);
             $periodo_repeticion = $request['periodo_repeticion'];
 
-            $clase_dia_semana = $request['clase_dia_semana'][0];
-            switch ($request['clase_dia_semana'][0]) {
-                case 'lunes':
-                    $clase_dia_semana = 1;
-                    break;
 
-                case 'martes':
-                    $clase_dia_semana = 2;
-                    break;
-
-                case 'miercoles':
-                    $clase_dia_semana = 3;
-                    break;
-
-                case 'jueves':
-                    $clase_dia_semana = 4;
-                    break;
-
-                case 'viernes':
-                    $clase_dia_semana = 5;
-                    break;
-
-                case 'sabado':
-                    $clase_dia_semana = 6;
-                    break;
-
-                default:
-                    $clase_dia_semana = 0;
-                    break;
-            }
 
             $tipo_termino = $request['termina_radio'];
             $cant_repeticiones = intval($request['cant_repeticiones']);
@@ -180,6 +151,7 @@ class TareaController extends Controller
                 //----------------------------------------------------------------------------------------------------
             }
         } else {
+            unset($request['num_repeticiones'],$request['cant_repeticiones'],$request['periodo_repeticion'],$request['termina_radio'],$request['termina_radio'],$request['fec_termino_repeticion']);
             $componente = Componente::findOrFail($request['proy_componentes_id']);
             $proyecto = $componente->proyecto;
             switch ($request['impacto']) {
@@ -239,27 +211,8 @@ class TareaController extends Controller
     public function subtareas_store(Request $request)
     {
 
-        //dd($request->all());
         $tarea_ini  = Tarea::findOrFail($request['proy_tareas_id']);
         $proyecto = $tarea_ini->componente->proyecto;
-        /*$miembros[] = intval($request['config_usuario_id']);
-        if ($proyecto->componentes->count() > 0) {
-            foreach ($proyecto->componentes as $componente) {
-                $miembros[] = $componente->config_usuario_id;
-                if ($componente->tareas->count() > 0) {
-                    foreach ($componente->tareas as $tarea) {
-                        $miembros[] = $tarea->config_usuario_id;
-                        if ($tarea->subtareas->count() > 0) {
-                            foreach ($tarea->subtareas as $subtarea) {
-                                $miembros[] = $subtarea->config_usuario_id;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        $miembros = array_unique($miembros);
-        */
         $tarea = Tarea::create($request->all());
 
 
@@ -277,6 +230,28 @@ class TareaController extends Controller
         Notificacion::create($notificacion);
         //----------------------------------------------------------------------------------------------------
         return redirect('dashboard/proyectos/tareas/gestion/' . $request['proy_tareas_id'])->with('mensaje', 'Sub-Tarea creada con éxito');
+    }
+
+    public function subtareas_gestion($id, $notificacion_id = null){
+        if ($notificacion_id) {
+            $notificacion_update['estado'] = 0;
+            Notificacion::findOrFail($notificacion_id)->update($notificacion_update);
+        }
+        $sub_tarea = Tarea::findOrfail($id);
+        $tarea = $sub_tarea->tarea;
+        $componente = $sub_tarea->tarea->componente;
+        $proyecto = $sub_tarea->tarea->componente->proyecto;
+        $usuarios1 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id', $proyecto->config_empresa_id)->where('estado', 1)->whereHas('rol', function ($p) {
+            $p->where('config_rol_id', 4);
+        })->get();
+        $usuarios2 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id', '!=', $proyecto->config_empresa_id)->where('estado', 1)->whereHas('empresas_tranv', function ($q) use ($proyecto) {
+            $q->where('config_empresa_id', $proyecto->config_empresa_id);
+        })->whereHas('rol', function ($p) {
+            $p->where('config_rol_id', 4);
+        })->get();
+        $usuarios = $usuarios1->concat($usuarios2);
+
+        return view('intranet.proyectos.historial.crear2', compact('tarea','usuarios','sub_tarea'));
     }
 
     public function modificarprogresos($progreso_request, $proy_tareas_id)
@@ -424,6 +399,7 @@ class TareaController extends Controller
         $usuarios = $usuarios1->concat($usuarios2);
         return view('intranet.proyectos.subtarea.crear', compact('tarea', 'usuarios'));
     }
+
 
     /**
      * Update the specified resource in storage.

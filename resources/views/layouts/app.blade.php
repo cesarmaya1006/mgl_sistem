@@ -31,7 +31,7 @@ onload="menu_ul()">
     <div class="wrapper">
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="{{ asset('imagenes/sistema/mgl_logo.png') }}" alt="AdminLTELogo" height="60" width="60">
+            <img class="animation__shake" src="{{asset('imagenes/sistema/').'/'.session('apariencia.logo_shake')}}" alt="AdminLTELogo" height="150" width="auto">
         </div>
         <!-- pagina menu superior -->
         @include("layouts.menu_sup")
