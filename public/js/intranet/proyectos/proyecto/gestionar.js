@@ -1,39 +1,123 @@
 $(document).ready(function () {
-    //-------------
-    //- PIE CHART -
-    //-------------
-    //Data
-    var donutData        = {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange',],
-        datasets: [
-          {
-            data: [700,500,400,600,300,100],
-            backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-          }
-        ]
-      }
-    //-------------
-    // Get context with jQuery - using jQuery's .get() method.
-    var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-    var pieData        = donutData;
-    var pieOptions     = {
-      maintainAspectRatio : true,
-      responsive : true,
-      plugins: {
-        legend: {
-          onHover: handleHover,
-          onLeave: handleLeave
-        }
-      }
-    }
-    //Create pie or douhnut chart
-    // You can switch between pie and douhnut using the method below.
-    new Chart(pieChartCanvas, {
-      type: 'pie',
-      data: pieData,
-      options: pieOptions
-    })
+    renderizar_ponnderacion_componentes();
+    renderizar_proyecto_avance_comp();
+
 });
+
+function renderizar_proyecto_avance_comp(){
+    const pieChartCanvas = $('#avanceComponentesChart').get(0).getContext('2d');
+    const pieOptions     = {
+        maintainAspectRatio : true,
+        responsive : true,
+        plugins: {
+          legend: {
+            position: 'top',
+            usePointStyle: true,
+          },
+          subtitle: {
+            display: true,
+            align : 'start',
+            text: 'Valores en %',
+            color: 'black',
+            font: {
+              size: 12,
+              family: 'tahoma',
+              weight: 'normal',
+              style: 'italic'
+            },
+            padding: {
+              bottom: 10
+            }
+          }
+        }
+      };
+    const data_url = $('#proyecto_avance_comp').attr("data_url");
+    $.ajax({
+        url: data_url,
+        type: "GET",
+        success: function (respuesta) {
+            var locations2 = [];
+            var location = respuesta.data_ponderacion_comp.datasets.data;
+            for (var i = 0; i < respuesta.data_ponderacion_comp.datasets.data.length; i++) {
+                locations2.push(parseFloat(respuesta.data_ponderacion_comp.datasets.data[i]));
+
+            }
+
+            var datapondComp        = {
+                labels: respuesta.data_ponderacion_comp.labels,
+                datasets: [
+                  {
+                    label: 'Valores en porcentaje de avance',
+                    data: locations2,
+                    backgroundColor: respuesta.data_ponderacion_comp.datasets.backgroundColor,
+                    borderColor: respuesta.data_ponderacion_comp.datasets.backgroundColor,
+                    borderWidth: 1
+                  }
+                ]
+              }
+            new Chart(pieChartCanvas, {
+                type: 'bar',
+                data: datapondComp,
+                options: pieOptions
+              })
+        },
+        error: function () {},
+    });
+
+}
+
+function renderizar_ponnderacion_componentes(){
+    const pieChartCanvas = $('#pieChart').get(0).getContext('2d');
+    const pieOptions     = {
+        maintainAspectRatio : true,
+        responsive : true,
+        plugins: {
+          legend: {
+            position: 'top',
+            usePointStyle: true,
+            onHover: handleHover,
+            onLeave: handleLeave
+          },
+          subtitle: {
+            display: true,
+            align : 'start',
+            text: 'Valores en %',
+            color: 'black',
+            font: {
+              size: 12,
+              family: 'tahoma',
+              weight: 'normal',
+              style: 'italic'
+            },
+            padding: {
+              bottom: 10
+            }
+          }
+        }
+      };
+    const data_url = $('#proyecto_mostrar_proyecto').attr("data_url");
+    $.ajax({
+        url: data_url,
+        type: "GET",
+        success: function (respuesta) {
+            var datapondComp        = {
+                labels: respuesta.data_ponderacion_comp.labels,
+                datasets: [
+                  {
+                    data: respuesta.data_ponderacion_comp.datasets.data,
+                    backgroundColor : respuesta.data_ponderacion_comp.datasets.backgroundColor,
+                  }
+                ]
+              }
+            new Chart(pieChartCanvas, {
+                type: 'pie',
+                data: datapondComp,
+                options: pieOptions
+              })
+        },
+        error: function () {},
+    });
+}
 
 function handleHover(evt, item, legend) {
     legend.chart.data.datasets[0].backgroundColor.forEach((color, index, colors) => {

@@ -174,6 +174,9 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
             Route::get('gestion/{id}/{notificacion_id?}', 'gestion')->name('proyecto.gestion');
             Route::get('getproyectos/{estado}/{config_empresa_id}', 'getproyectos')->name('proyecto.getproyectos');
             Route::get('getproyectos/{config_usuario_id}', 'getproyectosusuario')->name('proyecto.getproyectosusuario');
+            Route::get('proyecto_ponderacion_comp/{id}', 'proyecto_ponderacion_comp')->name('proyecto.proyecto_ponderacion_comp');
+            Route::get('proyecto_avance_comp/{id}', 'proyecto_avance_comp')->name('proyecto.proyecto_avance_comp');
+
         });
         // ----------------------------------------------------------------------------------------
         // Ruta proyectos

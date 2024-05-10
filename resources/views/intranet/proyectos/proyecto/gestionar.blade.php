@@ -414,11 +414,20 @@
                                     <div class="row">
                                         <div class="col-12"><h5><strong>Ponderacíon de Componentes</strong></h5></div>
                                         <div class="col-12">
-                                            <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 764px;" width="764" height="250" class="chartjs-render-monitor"></canvas>
+                                            <input type="hidden" id="proyecto_mostrar_proyecto" data_url="{{route('proyecto.proyecto_ponderacion_comp',['id' => $proyecto->id])}}">
+                                            <canvas id="pieChart" class="chartjs-render-monitor"></canvas>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-4"></div>
+                                <div class="col-12 col-md-6">
+                                    <div class="row">
+                                        <div class="col-12"><h5><strong>Avance de los Componentes</strong></h5></div>
+                                        <div class="col-12">
+                                            <input type="hidden" id="proyecto_avance_comp" data_url="{{route('proyecto.proyecto_avance_comp',['id' => $proyecto->id])}}">
+                                            <canvas id="avanceComponentesChart" class="chartjs-render-monitor"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -437,6 +446,8 @@
 <!-- ************************************************************* -->
 <!-- script hoja -->
 @section('scripts_pagina')
+
+<!-- ============================================================= -->
 <!-- ChartJS -->
 <script src="{{asset('js/intranet/general/chart.js')}}"></script>
 <!-- ============================================================= -->

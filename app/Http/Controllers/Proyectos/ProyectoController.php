@@ -18,6 +18,7 @@ class ProyectoController extends Controller
      */
     public function index()
     {
+
         if (session('rol_id') < 3) {
             $grupos = GrupoEmpresa::get();
             return view('intranet.proyectos.proyecto.index', compact('grupos'));
@@ -85,8 +86,8 @@ class ProyectoController extends Controller
             $config_empresa_id = $usuario->config_empresa_id;
             $lideres1 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id', $config_empresa_id)->where('estado', 1)->where('lider', 1)->get();
             $lideres2 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id', '!=', $config_empresa_id)->where('estado', 1)->where('lider', 1)->whereHas('empresas_tranv', function ($q) use ($config_empresa_id) {
-                    $q->where('config_empresa_id', $config_empresa_id);
-                })->get();
+                $q->where('config_empresa_id', $config_empresa_id);
+            })->get();
             $lideres = $lideres1->concat($lideres2);
             return view('intranet.proyectos.proyecto.crear', compact('usuario', 'lideres'));
         }
@@ -146,6 +147,79 @@ class ProyectoController extends Controller
     {
         //
     }
+    public function randomColor()
+    {
+        $str = "#";
+        for ($i = 0; $i < 6; $i++) {
+            $randNum = rand(0, 15);
+            switch ($randNum) {
+                case 10:
+                    $randNum = "A";
+                    break;
+                case 11:
+                    $randNum = "B";
+                    break;
+                case 12:
+                    $randNum = "C";
+                    break;
+                case 13:
+                    $randNum = "D";
+                    break;
+                case 14:
+                    $randNum = "E";
+                    break;
+                case 15:
+                    $randNum = "F";
+                    break;
+            }
+            $str .= $randNum;
+        }
+        return $str;
+    }
+
+    public function randomColorRGBA(){
+        return 'rgba('.rand(10,250).','.rand(10,250).','.rand(10,250).',0.5)';
+    }
+
+    public function proyecto_avance_comp (Request $request, $id){
+        if ($request->ajax()) {
+            $proyecto = Proyecto::findOrFail($id);
+            $labels = [];
+            $data = [];
+            $backgroundColor = [];
+            foreach ($proyecto->componentes as $componente) {
+                $labels[] = substr($componente->titulo, 0, 25) . ' - ' . number_format(intval($componente->progreso),2,',','') . ' %';
+                $data[] = number_format(intval($componente->progreso),2,',','');
+                $backgroundColor[] = $this->randomColorRGBA();
+            }
+            $datasets = ['data' => $data, 'backgroundColor' => $backgroundColor];
+            $data_ponderacion_comp = ['labels' => $labels, 'datasets' => $datasets];
+            return response()->json(['data_ponderacion_comp' => $data_ponderacion_comp]);
+        } else {
+            abort(404);
+        }
+    }
+
+    public function proyecto_ponderacion_comp(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $proyecto = Proyecto::findOrFail($id);
+            $labels = [];
+            $data = [];
+            $backgroundColor = [];
+            foreach ($proyecto->componentes as $componente) {
+                $labels[] = substr($componente->titulo, 0, 250) . ' - ' . number_format((intval($componente->impacto_num) * 100) / intval($proyecto->componentes->sum('impacto_num')), 2, ',', '.') . ' %';
+                $data[] = round((intval($componente->impacto_num) * 100) / intval($proyecto->componentes->sum('impacto_num')), 2);
+                $backgroundColor[] = $this->randomColor();
+            }
+            $datasets = ['data' => $data, 'backgroundColor' => $backgroundColor];
+            $data_ponderacion_comp = ['labels' => $labels, 'datasets' => $datasets];
+            return response()->json(['data_ponderacion_comp' => $data_ponderacion_comp]);
+        } else {
+            abort(404);
+        }
+    }
+
 
     public function gestion($id, $notificacion_id = null)
     {
