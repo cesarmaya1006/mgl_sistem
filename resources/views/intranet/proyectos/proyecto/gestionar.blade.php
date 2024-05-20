@@ -147,6 +147,17 @@
                                 </div>
                             </div>
                         @endif
+                        @if ($proyecto->config_usuario_id == session('id_usuario') || session('lider') == 1)
+                            <hr>
+                            <div class="row">
+                                <div class="col-12">
+                                    <a href="{{route('proyecto.expotar_informeproyecto',['id' => $proyecto->id])}}" target="_blank" class="btn btn-success btn-xs btn-sombra pl-3 pr-5 float-md-end">
+                                        <i class="fas fa-file-download mr-3" aria-hidden="true"></i>
+                                        Exportar Informe
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <hr>
@@ -413,7 +424,7 @@
                                 <div class="col-12 col-md-4">
                                     <div class="row">
                                         <div class="col-12"><h5><strong>Ponderacíon de Componentes</strong></h5></div>
-                                        <div class="col-12">
+                                        <div class="col-12 text-center">
                                             <input type="hidden" id="proyecto_mostrar_proyecto" data_url="{{route('proyecto.proyecto_ponderacion_comp',['id' => $proyecto->id])}}">
                                             <canvas id="pieChart" class="chartjs-render-monitor"></canvas>
                                         </div>
@@ -422,13 +433,29 @@
                                 <div class="col-12 col-md-6">
                                     <div class="row">
                                         <div class="col-12"><h5><strong>Avance de los Componentes</strong></h5></div>
-                                        <div class="col-12">
+                                        <div class="col-12 text-center">
                                             <input type="hidden" id="proyecto_avance_comp" data_url="{{route('proyecto.proyecto_avance_comp',['id' => $proyecto->id])}}">
                                             <canvas id="avanceComponentesChart" class="chartjs-render-monitor"></canvas>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <input type="hidden" id="valor_presupuesto" value="{{$proyecto->presupuesto}}">
+                            @if ($proyecto->presupuesto> 0)
+                            <br>
+                            <br>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-12"><h5><strong>Detalles de presupuesto</strong></h5></div>
+                                        <div class="col-12 text-center">
+                                            <input type="hidden" id="proyecto_presupuesto_comp" data_url="{{route('proyecto.proyecto_presupuesto_comp',['id' => $proyecto->id])}}">
+                                            <canvas id="chart_proyecto_presupuesto_comp" class="chartjs-render-monitor" style="max-height: 350px;"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>

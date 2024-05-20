@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Proyectos;
 
 use App\Http\Controllers\Controller;
+use App\Models\Configuracion\ConfigApariencia;
 use App\Models\Configuracion\ConfigUsuario;
 use App\Models\Configuracion\GrupoEmpresa;
 use App\Models\Proyectos\Notificacion;
 use App\Models\Proyectos\Proyecto;
 use App\Models\Proyectos\Tarea;
+use Barryvdh\DomPDF\Facade\Pdf;
 use DateTime;
 use Illuminate\Http\Request;
+use QuickChart;
 
 class ProyectoController extends Controller
 {
@@ -177,20 +180,39 @@ class ProyectoController extends Controller
         return $str;
     }
 
-    public function randomColorRGBA(){
-        return 'rgba('.rand(10,250).','.rand(10,250).','.rand(10,250).',0.5)';
+    public function randomColorRGBA($s)
+    {
+        if ($s == 1) {
+            $color = 'rgba(' . rand(200, 250) . ',' . rand(10, 200) . ',' . rand(10, 200) . ',0.5)'; # code...
+        } elseif ($s == 2) {
+            $color = 'rgba(' . rand(10, 200) . ',' . rand(200, 250) . ',' . rand(10, 200) . ',0.5)'; # code...
+        } else {
+            $color = 'rgba(' . rand(10, 200) . ',' . rand(10, 200) . ',' . rand(200, 250) . ',0.5)';
+        }
+        return $color;
+    }
+    public function randomColorRGB()
+    {
+        return 'rgb(' . rand(10, 250) . ',' . rand(10, 250) . ',' . rand(10, 250) . ')';
     }
 
-    public function proyecto_avance_comp (Request $request, $id){
+    public function proyecto_avance_comp(Request $request, $id)
+    {
         if ($request->ajax()) {
             $proyecto = Proyecto::findOrFail($id);
             $labels = [];
             $data = [];
             $backgroundColor = [];
+            $s = 1;
             foreach ($proyecto->componentes as $componente) {
-                $labels[] = substr($componente->titulo, 0, 25) . ' - ' . number_format(intval($componente->progreso),2,',','') . ' %';
-                $data[] = number_format(intval($componente->progreso),2,',','');
-                $backgroundColor[] = $this->randomColorRGBA();
+                $labels[] = substr($componente->titulo, 0, 25) . ' - ' . number_format(intval($componente->progreso), 2, ',', '') . ' %';
+                $data[] = number_format(intval($componente->progreso), 2, ',', '');
+                $backgroundColor[] = $this->randomColorRGBA($s);
+                if ($s < 3) {
+                    $s++;
+                } else {
+                    $s = 1;
+                }
             }
             $datasets = ['data' => $data, 'backgroundColor' => $backgroundColor];
             $data_ponderacion_comp = ['labels' => $labels, 'datasets' => $datasets];
@@ -215,6 +237,25 @@ class ProyectoController extends Controller
             $datasets = ['data' => $data, 'backgroundColor' => $backgroundColor];
             $data_ponderacion_comp = ['labels' => $labels, 'datasets' => $datasets];
             return response()->json(['data_ponderacion_comp' => $data_ponderacion_comp]);
+        } else {
+            abort(404);
+        }
+    }
+
+    public function proyecto_presupuesto_comp(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $proyecto = Proyecto::findOrFail($id);
+            $labels = [];
+            $data_presupuesto = [];
+            $data_ejecutado = [];
+            foreach ($proyecto->componentes as $componente) {
+                $labels[] = substr($componente->titulo, 0, 250);
+                $data_presupuesto[] = intval($componente->presupuesto);
+                $data_ejecutado[] = intval($componente->ejecucion);
+            }
+            $datos = ['labels' => $labels, 'data_presupuesto' => $data_presupuesto, 'data_ejecutado' => $data_ejecutado];
+            return response()->json(['datos' => $datos]);
         } else {
             abort(404);
         }
@@ -289,5 +330,156 @@ class ProyectoController extends Controller
         }
         $miembros = array_unique($miembros);
         $proyecto->miembros_proyecto()->sync(array_unique($miembros));
+    }
+
+    public function expotar_informeproyecto($id)
+    {
+        $proyecto = Proyecto::findOrFail($id);
+        $usuario = ConfigUsuario::findOrFail(session('id_usuario'));
+        $apariencia = ConfigApariencia::where('config_empresa_id', $usuario->config_empresa_id)->first();
+        //----------------------------------------------------------------------------------------------
+        $backgroundColor = "[";
+        $s = 1;
+        foreach ($proyecto->componentes as $componente) {
+            $backgroundColor .= "'" . $this->randomColorRGBA($s) . "',";
+            if ($s < 3) {
+                $s++;
+            } else {
+                $s = 1;
+            }
+        }
+        $backgroundColor = substr($backgroundColor, 0, -1);
+        $backgroundColor .= "],";
+        //----------------------------------------------------------------------------------------------
+        $datasets = "{
+            type: 'pie',
+            data: {
+              datasets: [
+                {
+                  data: [";
+
+        foreach ($proyecto->componentes as $componente) {
+            $datasets .= round((intval($componente->impacto_num) * 100) / intval($proyecto->componentes->sum('impacto_num')), 2) . ",";
+        }
+        $datasets = substr($datasets, 0, -1);
+        $datasets .= "],
+        backgroundColor: " . $backgroundColor .
+            "label: 'Dataset 1',
+                },
+                ],
+                labels: [";
+        foreach ($proyecto->componentes as $componente) {
+            $datasets .= "'" . substr($componente->titulo, 0, 30) . "',";
+        }
+        $datasets = substr($datasets, 0, -1);
+        $datasets .= "],
+                    },
+                }";
+
+        $chart = new QuickChart(array(
+            'width' => 500,
+            'height' => 300
+        ));
+
+        $chart->setConfig($datasets);
+
+        //----------------------------------------------------------------------------------------------
+        $strChartAvance = "{
+        type: 'bar',
+        data: {
+          labels: [";
+
+        foreach ($proyecto->componentes as $componente) {
+            $strChartAvance .= "'" . substr($componente->titulo, 0, 30) . "',";
+        }
+        $strChartAvance = substr($strChartAvance, 0, -1);
+
+        $strChartAvance .= "],
+              datasets: [{
+                label: 'Datos en porcentaje',
+                backgroundColor: " . $backgroundColor . "
+                data: [";
+        foreach ($proyecto->componentes as $componente) {
+            $strChartAvance .= $componente->progreso . ",";
+        }
+        $strChartAvance = substr($strChartAvance, 0, -1);
+        $strChartAvance .= "]
+                        }]
+                    }
+                }";
+        $urlChartAvance = new QuickChart(array(
+            'width' => 500,
+            'height' => 300
+        ));
+        $urlChartAvance->setConfig($strChartAvance);
+        //================================================================================================
+        $strlabels = "[";
+        $strEjecutado = "[";
+        $strTotal = "[";
+        foreach ($proyecto->componentes as $componente) {
+            $strlabels .= "'" . substr($componente->titulo, 0, 30) . "',";
+            $strEjecutado .= $componente->ejecucion . ",";
+            $strTotal .= $componente->presupuesto . ",";
+
+        }
+        $strlabels = substr($strlabels, 0, -1);
+        $strlabels .= "],";
+
+        $strEjecutado = substr($strEjecutado, 0, -1);
+        $strEjecutado .= "]";
+
+        $strTotal = substr($strTotal, 0, -1);
+        $strTotal .= "]";
+
+        $strChartresupuesto = "{
+            type: 'bar',
+            data: {
+              labels: " . $strlabels . "
+              datasets: [
+                {
+                  label: 'Presupuesto Ejecutado',
+                  backgroundColor: 'rgb(0, 220, 20)',
+                  data: ".$strEjecutado."
+                },
+                {
+                  label: 'Presupuesto Total Componente',
+                  backgroundColor: 'rgb(0, 175, 255)',
+                  data: ".$strTotal."
+                }
+              ],
+            },
+            options: {
+              title: {
+                display: true,
+                text: 'Movimientos por Componente',
+              },
+              scales: {
+                xAxes: [
+                  {
+                    stacked: true,
+                  },
+                ],
+                yAxes: [
+                  {
+                    stacked: true,
+                  },
+                ],
+              },
+            },
+          }
+          ";
+        //dd($strChartresupuesto);
+        $urlChartPresupuesto = new QuickChart(array(
+            'width' => 500,
+            'height' => 300
+        ));
+        $urlChartPresupuesto->setConfig($strChartresupuesto);
+        //================================================================================================
+        //dd($chart->getUrl());
+
+        $data = ['apariencia' => $apariencia, 'proyecto' => $proyecto, 'usuario' => $usuario, 'strUrlChart' => $chart->getUrl(), 'urlChartAvance' => $urlChartAvance->getUrl(), 'urlChartPresupuesto' => $urlChartPresupuesto->getUrl()];
+        $pdf = Pdf::loadView('intranet.proyectos.pdf.informe_proyecto', $data);
+        $pdf->setBasePath(public_path());
+        return $pdf->download('Informe proyecto ' . $proyecto->titulo . '.pdf');
     }
 }

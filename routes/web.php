@@ -176,6 +176,8 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
             Route::get('getproyectos/{config_usuario_id}', 'getproyectosusuario')->name('proyecto.getproyectosusuario');
             Route::get('proyecto_ponderacion_comp/{id}', 'proyecto_ponderacion_comp')->name('proyecto.proyecto_ponderacion_comp');
             Route::get('proyecto_avance_comp/{id}', 'proyecto_avance_comp')->name('proyecto.proyecto_avance_comp');
+            Route::get('proyecto_presupuesto_comp/{id}', 'proyecto_presupuesto_comp')->name('proyecto.proyecto_presupuesto_comp');
+            Route::get('expotar_informeproyecto/{id}', 'expotar_informeproyecto')->name('proyecto.expotar_informeproyecto');
 
         });
         // ----------------------------------------------------------------------------------------

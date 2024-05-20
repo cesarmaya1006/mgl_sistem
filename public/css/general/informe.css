@@ -1,0 +1,18 @@
+.cabecera{
+    width: 100%;
+}
+.logo_cabecera{
+    width: 20%;
+}
+.titulo_empresa{
+    width: 80%;
+    font-size: 2em;
+}
+
+hr{
+    width: 100%;
+}
+
+strong{
+    background-color: red;
+}
