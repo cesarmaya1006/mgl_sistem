@@ -71,8 +71,8 @@ class ConfigApariencia extends Seeder
                 'fondo_barra_sup' => 'navbar-light',
                 'fondo_barra_lat' => 'bg-light',
                 'nombre_empresa' => 'Empucol - ESP',
-                'logo_empresa' =>'logo_mini_maya.png',
-                'logo_shake' => 'logo_maya.png'
+                'logo_empresa' =>'logo_img.png',
+                'logo_shake' => 'mgl_logo.png'
 
             ],
         ];
