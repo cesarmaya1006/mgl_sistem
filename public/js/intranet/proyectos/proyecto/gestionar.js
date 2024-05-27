@@ -2,6 +2,22 @@ $(document).ready(function () {
     renderizar_ponnderacion_componentes();
     renderizar_proyecto_avance_comp();
     proyecto_presupuesto_comp();
+    //------------------------------------------------------------------------------------------------------------------------
+    $('.tablaTarea_selector').on("click", function () {
+        const data_url = $(this).attr("data_url");
+        const tabla_id = $(this).attr("data_id");
+        $('#'+tabla_id).DataTable().ajax.url(data_url).load();
+
+        $.ajax({
+            url: data_url,
+            type: "GET",
+            success: function (respuesta) {
+                console.log(respuesta);
+            },
+            error: function () {},
+        });
+    });
+    //------------------------------------------------------------------------------------------------------------------------
 });
 
 function proyecto_presupuesto_comp() {
@@ -21,7 +37,7 @@ function proyecto_presupuesto_comp() {
         type: "GET",
         success: function (respuesta) {
             //----------------------------------------------------------------------
-            console.log(respuesta);
+            //console.log(respuesta);
             var labels = [];
             var presupuesto = [];
             var ejecucion = [];

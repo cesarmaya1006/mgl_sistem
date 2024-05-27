@@ -337,13 +337,39 @@
                                                     <a href="{{route('tarea.create',['componente_id'=>$componente->id])}}" class="btn btn-success btn-xs btn-sombra text-center pl-3 pr-3 float-md-right"><i class="fas fa-plus-circle mr-2"></i> Nueva
                                                         tarea</a>
                                                 </div>
+                                                <div class="col-12 d-flex flex-row">
+                                                    <div class="form-check mr-2">
+                                                        <input class="form-check-input" type="checkbox" value="todas" id="check_Todas" data_componente="{{$componente->id}}">
+                                                        <label class="form-check-label" for="flexCheckDefault">
+                                                          Todas
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mr-2">
+                                                        <input class="form-check-input tablaTarea_selector" type="checkbox" value="Activa" data_id="tabla_tareas_componente_{{$componente->id}}" data_url="{{route('tarea.getapitareas',['proy_componentes_id'=>$componente->id,'estado'=>'Activa'])}}" id="check_Activas" data_componente="{{$componente->id}}" checked>
+                                                        <label class="form-check-label" for="flexCheckChecked">
+                                                          Activas
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mr-2">
+                                                        <input class="form-check-input tablaTarea_selector" type="checkbox" value="Inactiva" data_id="tabla_tareas_componente_{{$componente->id}}" data_url="{{route('tarea.getapitareas',['proy_componentes_id'=>$componente->id,'estado'=>'Inactiva'])}}" id="check_Inactivas" data_componente="{{$componente->id}}">
+                                                        <label class="form-check-label" for="flexCheckDefault">
+                                                          Inactivas
+                                                        </label>
+                                                    </div>
+                                                      <div class="form-check mr-2">
+                                                        <input class="form-check-input tablaTarea_selector" type="checkbox" value="Cerrada" data_id="tabla_tareas_componente_{{$componente->id}}" data_url="{{route('tarea.getapitareas',['proy_componentes_id'=>$componente->id,'estado'=>'Cerrada'])}}" id="check_Cerradas" data_componente="{{$componente->id}}" >
+                                                        <label class="form-check-label" for="flexCheckChecked">
+                                                          Cerradas
+                                                        </label>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-12 table-responsive">
-                                                    <table class="table table-striped table-hover table-sm">
+                                                    <table class="table table-striped table-hover table-sm" id="tabla_tareas_componente_{{$componente->id}}">
                                                         <thead>
                                                             <tr>
-                                                                <th class="text-center"></th>
+                                                                <th class="text-center">Id</th>
                                                                 <th class="text-center" scope="col">Responsable</th>
                                                                 <th class="text-center" scope="col">Titulo</th>
                                                                 <th class="text-center" scope="col">Fecha de creación</th>
@@ -355,7 +381,7 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @foreach ($componente->tareas as $tarea)
+                                                            @foreach ($componente->tareas->where('estado','Activa') as $tarea)
                                                             <tr>
                                                                 <td>
                                                                     @if ($tarea->responsable->id == session('id_usuario') || Session('lider')==1)
@@ -456,6 +482,169 @@
                                 </div>
                             </div>
                             @endif
+                            <br><br>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-12"><h5><strong>Diagrama de Gantt ->  tareas</strong></h5></div>
+                                        <div class="col-12 table-responsive">
+                                            @php
+
+                                                //----------------------------------------------------------
+                                                foreach ($proyecto->componentes as $componente) {
+                                                    $minFecha[] = $componente->tareas->min('fec_creacion');
+                                                    $maxFecha[] = $componente->tareas->max('fec_limite');
+                                                }
+                                                $minFecha = collect($minFecha);
+                                                $maxFecha = collect($maxFecha);
+                                                //----------------------------------------------------------
+                                                $datetime1 = date_create($minFecha->min());
+                                                $datetime2 = date_create($maxFecha->max());
+                                                $contador = date_diff($datetime1, $datetime2);
+                                                $differenceFormat = '%a';
+                                                $cantDiasProyecto = $contador->format($differenceFormat)+1;
+                                                //----------------------------------------------------------
+                                                //----------------------------------------------------------
+                                                $fecha_Ant = date("d-m-Y",strtotime($minFecha->min()."+ 1 days"));
+                                                $fechaminComoEntero = strtotime($fecha_Ant);
+                                                $dia_min = date("d", $fechaminComoEntero)-1;
+                                                $mes_min = date("m", $fechaminComoEntero);
+                                                $anio_min = date("Y", $fechaminComoEntero);
+                                                $mes_array_1 = [['mes' => $mes_min,'anio' => $anio_min,'colspan' => (cal_days_in_month(CAL_GREGORIAN, $mes_min, $anio_min)),'marca'=>strtotime($anio_min.'-'.$mes_min.'-'.$dia_min)]];
+                                                $diasUsados =(cal_days_in_month(CAL_GREGORIAN, $mes_min, $anio_min) );
+                                                $numColspan =0;
+                                                $sumDias = 0;
+                                                for ($i=1; $i < $cantDiasProyecto; $i++) {
+                                                    $fechaminComoEntero = strtotime($fecha_Ant);
+                                                    $mes_dia_ant = date("m", $fechaminComoEntero);
+
+                                                    $fecha_Sig = date("Y-m-d",strtotime($fecha_Ant."+ " . 1 ." days"));
+                                                    $fechaminComoEntero_sig = strtotime($fecha_Sig);
+                                                    $dia_dia_sig = date("d", $fechaminComoEntero_sig);
+                                                    $mes_dia_sig = date("m", $fechaminComoEntero_sig);
+                                                    $anio_sig = date("Y", $fechaminComoEntero_sig);
+                                                    if ($mes_dia_ant!=$mes_dia_sig) {
+                                                        $dias_mes = cal_days_in_month(CAL_GREGORIAN, $mes_dia_sig, $anio_sig);
+                                                        if (($dias_mes + $diasUsados) > $cantDiasProyecto) {
+                                                            $numColspan = ($cantDiasProyecto - $diasUsados);
+                                                        } else {
+                                                            $numColspan = $dias_mes;
+                                                        }
+                                                        $mes_array_1[] = ['mes' => $mes_dia_sig,'anio' => $anio_sig,'colspan' => $numColspan,'marca'=>strtotime($anio_sig.'-'.$mes_dia_sig.'-'.$dia_dia_sig)];
+                                                        $diasUsados += $dias_mes;
+                                                    }
+                                                    //-------------------------------------------------------------------
+
+                                                    $fecha_Ant = $fecha_Sig;
+                                                }
+                                                //----------------------------------------------------------
+                                                date_default_timezone_set("America/Bogota");
+                                                setlocale(LC_TIME, 'es_VE.UTF-8','esp');
+                                            @endphp
+                                            <table class="table table-hover table-sm table-bordered tabla_data_table_gantt" style="font-size: 0.85em; max-height: 500px;">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col" rowspan="2" >
+
+                                                        </th>
+                                                        @foreach ($mes_array_1 as $mes)
+                                                            <th class="text-center" colspan="{{$mes['colspan']}}" scope="col">
+                                                                {{  ucwords(utf8_encode(strftime('%B', $mes['marca'])))}}
+                                                            </th>
+                                                        @endforeach
+                                                    </tr>
+                                                    <tr>
+                                                        @for ($i = 1; $i < ($cantDiasProyecto+1); $i++)
+                                                            <td class="text-center pl-3 pr-5" scope="col">
+                                                                @php
+                                                                date_default_timezone_set("America/Caracas");
+                                                                setlocale(LC_TIME, 'es_VE.UTF-8','esp');
+                                                                $marca = strtotime(date("Y-m-d",strtotime($minFecha->min() ."+ ".($i-1)." days")));
+                                                                @endphp
+                                                                <strong>{{  ucfirst(utf8_encode(strftime('%A', $marca)))}}</strong>
+                                                                <br>
+                                                                {{  utf8_encode(strftime('%e %b', $marca))}}
+                                                            </td>
+                                                        @endfor
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($proyecto->componentes as $componente)
+                                                        @foreach ($componente->tareas as $tarea)
+                                                            <tr>
+                                                                <td class="pl-1">
+                                                                    <span class="d-flex flex-row">
+                                                                        <i class="fas fa-play mr-1 mt-1" aria-hidden="true"></i><h6><strong>{{$componente->titulo}}</strong></h6>
+                                                                    </span>
+                                                                    <i class="fa fa-caret-right mr-1" aria-hidden="true"></i> {{$tarea->titulo}}
+                                                                </td>
+                                                                @php
+                                                                    $x = 1;
+                                                                    $date_tarea_lim = date_create($tarea->fec_limite);
+                                                                    $date_tarea_cre = date_create($tarea->fec_creacion);
+                                                                    $diasTarea = date_diff($date_tarea_lim, $date_tarea_cre);
+                                                                    $differenceFormat = '%a';
+                                                                    $diferencia_dias = $diasTarea->format($differenceFormat)+1;
+                                                                    $totalFor = ($cantDiasProyecto-$diferencia_dias)+1;
+                                                                    //---------------------------------------------------------
+                                                                    $date_start = strtotime($tarea->fec_creacion);
+                                                                    $date_end = strtotime($tarea->fec_limite);
+                                                                @endphp
+                                                                @for ($i = 1; $i < ($cantDiasProyecto+1); $i++)
+                                                                    @php
+                                                                        $date_now = strtotime(date("Y-m-d",strtotime($minFecha->min() ."+ ".($i-1)." days")));
+                                                                        $date_hoy = strtotime(date("Y-m-d"));
+
+                                                                    @endphp
+                                                                    @if (($date_now >= $date_start) && ($date_now <= $date_end))
+                                                                        @php
+                                                                            $color='';
+                                                                            if ($tarea->impacto_num == 10) {
+                                                                                $color = 'rgba(' . rand(200, 250) . ',' . rand(10, 200) . ',' . rand(10, 200) . ',0.5)'; # code...
+                                                                            } elseif ($tarea->impacto_num == 20) {
+                                                                                $color = 'rgba(' . rand(10, 200) . ',' . rand(200, 250) . ',' . rand(10, 200) . ',0.5)'; # code...
+                                                                            } elseif ($tarea->impacto_num == 30) {
+                                                                                $color = 'rgba(' . rand(10, 200) . ',' . rand(200, 250) . ',' . rand(10, 200) . ',0.5)'; # code...
+                                                                            } elseif ($tarea->impacto_num == 40) {
+                                                                                $color = 'rgba(' . rand(200, 250) . ',' . rand(10, 200) . ',' . rand(10, 200) . ',0.5)'; # code...
+                                                                            } else {
+                                                                                $color = 'rgba(' . rand(10, 200) . ',' . rand(200, 250) . ',' . rand(10, 200) . ',0.5)';
+                                                                            }
+                                                                        @endphp
+                                                                        <td class="pl-3 pr-5 pt-2 pb-2" colspan="{{$diferencia_dias}}" style="background-color: {{$color}};">
+                                                                            <div class="progress-group m-2">
+                                                                                <span >
+                                                                                    <ul>
+                                                                                        <li style="list-style-type: none;"><h6><strong>{{$tarea->titulo}}</strong></h6></li>
+                                                                                        <li style="list-style-type: none;"><strong>Responsable: {{$tarea->responsable->nombres . ' ' . $tarea->responsable->apellidos}}</strong></li>
+                                                                                        <li style="list-style-type: none;"><strong>Avance: {{$tarea->progreso . '%'}}</strong></li>
+                                                                                        <li style="list-style-type: none;"><strong>Estado: <h6> <span class="badge {{$date_hoy < $date_end?'bg-info':'bg-danger'}}" style="min-width: 20px; min-height: 5px;">{{$date_hoy < $date_end?'Activa':'Vencida'}}</span></h6></strong></li>
+                                                                                    </ul>
+                                                                                </span>
+                                                                                <div class="progress progress-sm">
+                                                                                    <div class="progress-bar bg-primary" style="width: {{$tarea->progreso}}%"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        @for ($a = 1; $a < $diferencia_dias; $a++)
+                                                                            <td style="display:none;"></td>
+                                                                        @endfor
+                                                                        @php
+                                                                            $i+=$diferencia_dias-1;
+                                                                        @endphp
+                                                                    @else
+                                                                        <td ></td>
+                                                                    @endif
+                                                                @endfor
+                                                            </tr>
+                                                        @endforeach
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -400,6 +400,29 @@ class TareaController extends Controller
         return view('intranet.proyectos.subtarea.crear', compact('tarea', 'usuarios'));
     }
 
+    public function getapitareas(Request $request, $proy_componentes_id, $estado){
+        if ($request->ajax()) {
+            $tareas = Tarea::where('proy_componentes_id',$proy_componentes_id)->where('estado',$estado)->get();
+            $data =[];
+            foreach ($tareas as $key => $tarea) {
+                $data[] = [
+                    'Id' =>$tarea->id,
+                    'Responsable' =>ucfirst(strtolower($tarea->responsable->nombres)) . ' ' . ucfirst(strtolower($tarea->responsable->apellidos)) ,
+                    'Titulo' =>$tarea->titulo,
+                    'Fecha de creación' =>$tarea->fec_creacion,
+                    'Fecha límite' =>$tarea->fec_limite,
+                    'Progreso' =>$tarea->progreso,
+                    'Estado' =>$tarea->estado,
+                    'Impacto' =>$tarea->impacto,
+                    'Objetivo' =>$tarea->objetivo,
+                ];
+            }
+            return response()->json(['data' => $data]);
+        } else {
+            abort(404);
+        }
+    }
+
 
     /**
      * Update the specified resource in storage.

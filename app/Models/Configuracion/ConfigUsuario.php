@@ -4,6 +4,7 @@ namespace App\Models\Configuracion;
 
 use App\Models\Empresa\EmpresaEmpleado;
 use App\Models\Proyectos\Componente;
+use App\Models\Proyectos\Mensaje;
 use App\Models\Proyectos\Notificacion;
 use App\Models\Proyectos\Proyecto;
 use App\Models\Proyectos\Tarea;
@@ -65,6 +66,18 @@ class ConfigUsuario extends Authenticatable
     public function empresas_tranv()
     {
         return $this->belongsToMany(ConfigEmpresa::class, 'usuario_tranv_empresa', 'config_usuario_id', 'config_empresa_id');
+    }
+    //----------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------
+    public function remitentemensajes()
+    {
+        return $this->hasMany(Mensaje::class, 'remitente_id', 'id');
+    }
+    //----------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------
+    public function destinatariomensajes()
+    {
+        return $this->hasMany(Mensaje::class, 'destinatario_id', 'id');
     }
     //----------------------------------------------------------------------------------
 

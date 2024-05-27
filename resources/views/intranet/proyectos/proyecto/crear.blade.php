@@ -89,8 +89,7 @@
                                 </div>
                                 <div class="col-12 col-md-4 form-group">
                                     <label for="titulo">Titulo Proyecto</label>
-                                    <input type="text" class="form-control form-control-sm" name="titulo" id="titulo"
-                                        aria-describedby="helpId" onkeyup="mayus(this);" required>
+                                    <input type="text" class="form-control form-control-sm" name="titulo" id="titulo" aria-describedby="helpId" onkeyup="mayus(this);" required>
                                     <small id="helpId" class="form-text text-muted">Titulo Proyecto</small>
                                 </div>
                                 <div class="col-12 form-group">

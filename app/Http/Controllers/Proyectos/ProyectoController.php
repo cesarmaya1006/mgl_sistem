@@ -14,6 +14,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use QuickChart;
 
+
 class ProyectoController extends Controller
 {
     /**
@@ -268,6 +269,10 @@ class ProyectoController extends Controller
             $notificacion_update['estado'] = 0;
             Notificacion::findOrFail($notificacion_id)->update($notificacion_update);
         }
+        //-------------------------------------------------------------------------------------------------------------------
+
+
+        //-------------------------------------------------------------------------------------------------------------------
         $proyecto = Proyecto::findOrFail($id);
         return view('intranet.proyectos.proyecto.gestionar', compact('proyecto'));
     }
@@ -420,7 +425,6 @@ class ProyectoController extends Controller
             $strlabels .= "'" . substr($componente->titulo, 0, 30) . "',";
             $strEjecutado .= $componente->ejecucion . ",";
             $strTotal .= $componente->presupuesto . ",";
-
         }
         $strlabels = substr($strlabels, 0, -1);
         $strlabels .= "],";
@@ -439,12 +443,12 @@ class ProyectoController extends Controller
                 {
                   label: 'Presupuesto Ejecutado',
                   backgroundColor: 'rgb(0, 220, 20)',
-                  data: ".$strEjecutado."
+                  data: " . $strEjecutado . "
                 },
                 {
                   label: 'Presupuesto Total Componente',
                   backgroundColor: 'rgb(0, 175, 255)',
-                  data: ".$strTotal."
+                  data: " . $strTotal . "
                 }
               ],
             },

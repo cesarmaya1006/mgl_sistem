@@ -12,6 +12,7 @@ use App\Http\Controllers\Empresa\EmpresaEmpleadoController;
 use App\Http\Controllers\Proyectos\ComponenteController;
 use App\Http\Controllers\Proyectos\HistorialController;
 use App\Http\Controllers\Proyectos\HistorialDocController;
+use App\Http\Controllers\Proyectos\MensajeController;
 use App\Http\Controllers\Proyectos\NotificacionController;
 use App\Http\Controllers\Proyectos\ProyectoController;
 use App\Http\Controllers\Proyectos\SubTareaController;
@@ -196,6 +197,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
             Route::get('gestion/{id}/{notificacion_id?}', 'gestion')->name('tarea.gestion');
             Route::get('gettareasusu/{config_usuario_id}', 'gettareasusu')->name('tarea.gettareasusu');
             Route::get('gettareasusumodal/{config_usuario_id}/{estado}', 'gettareasusumodal')->name('tarea.gettareasusumodal');
+            Route::get('getapitareas/{proy_componentes_id}/{estado}', 'getapitareas')->name('tarea.getapitareas');
 
         });
         // ----------------------------------------------------------------------------------------
@@ -205,6 +207,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
             Route::get('crear/{proy_tareas_id}', 'subtareas_create')->name('subtareas.create');
             Route::post('guardar', 'subtareas_store')->name('subtareas.store');
             Route::get('gestion/{id}/{notificacion_id?}', 'subtareas_gestion')->name('subtareas.gestion');
+
 
         });
         // ----------------------------------------------------------------------------------------
@@ -234,6 +237,19 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::controller(NotificacionController::class)->prefix('notificaciones')->group(function () {
             Route::get('getnotificaciones/{id}', 'getnotificaciones')->name('notificacion.getnotificaciones');
             Route::get('readnotificaciones', 'readnotificaciones')->name('notificacion.readnotificaciones');
+        });
+        // ----------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------
+        // Ruta Mensajes
+        // ------------------------------------------------------------------------------------
+        Route::controller(MensajeController::class)->prefix('mensajes')->group(function () {
+            Route::get('getmensajes/{id}', 'getmensajes')->name('mensajes.getmensajes');
+            Route::get('getusuarios/{id}', 'getusuarios')->name('mensajes.getusuarios');
+            Route::post('guardar', 'store')->name('mensajes.store');
+            Route::get('getmensajes_dest_rem', 'getmensajes_dest_rem')->name('mensajes.getmensajes_dest_rem');
+            Route::get('getmensajes_dest_rem_ult', 'getmensajes_dest_rem_ult')->name('mensajes.getmensajes_dest_rem_ult');
+            Route::get('get_all_nuevos_mensajes', 'get_all_nuevos_mensajes')->name('mensajes.get_all_nuevos_mensajes');
+
         });
         // ----------------------------------------------------------------------------------------
     });
