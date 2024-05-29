@@ -1,0 +1,120 @@
+@extends("layouts.app")
+<!-- ************************************************************* -->
+<!-- Funciones php -->
+@section('funciones_php')
+
+@endsection
+<!-- Pagina CSS -->
+@section('estilosHojas')
+
+@endsection
+<!-- ************************************************************* -->
+@section('titulo_panel')
+<i class="fas fa-project-diagram ml-4" aria-hidden="true"></i> Módulo de Proyectos
+@endsection
+<!-- ************************************************************* -->
+@section('contenido')
+<div class="row">
+    <div class="col-12">
+        <div class="card card-outline card-info">
+            <div class="card-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 col-md-6 mb-4 mb-md-0">
+                            <h4 class="card-title">
+                                <strong>Editar Proyecto</strong>
+                            </h4>
+                        </div>
+                        <div class="col-12 col-md-6 mb-4 mb-md-0">
+                            <a href="{{ route('proyecto.index') }}" class="btn btn-info btn-sm btn-sombra text-center pl-3 pr-3 float-end" style="font-size: 0.9em;">
+                                <i class="fas fa-reply mr-2"></i>
+                                Volver
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-12">
+                        @include('includes.mensaje')
+                        @include('includes.error-form')
+                    </div>
+                    <div class="col-12">
+                        <form action="{{ route('proyecto.update',['id' => $proyecto->id]) }}" class="form-horizontal row" method="POST" autocomplete="off" enctype="multipart/form-data">
+                            @csrf
+                            @method('put')
+                            <div class="row">
+                                <div class="col-12 col-md-2 form-group">
+                                    <label for="fec_creacion">Fecha Proyecto</label>
+                                    <span class="form-control form-control-sm">{{$proyecto->fec_creacion}}</span>
+                                    <small id="helpId" class="form-text text-muted">Fecha creación proyecto</small>
+                                </div>
+                                <div class="col-12 col-md-4 form-group">
+                                    <label class="requerido" for="titulo">Lider Proyecto</label>
+                                    <select class="form-control form-control-sm" name="config_usuario_id" id="lider_id" required>
+                                        <option value="">Seleccione un Lider</option>
+                                        @if (intval(session('rol.id'))>2)
+                                            @foreach ($lideres as $lider)
+                                                <option value="{{$lider->id}}" {{$lider->id == $proyecto->config_usuario_id?'selected':''}}>{{$lider->nombres . ' ' . $lider->apellidos . ' ( ' . $lider->empleado->cargo->cargo . ' )'}} {{$usuario->config_empresa_id!= $lider->config_empresa_id?' - ' . $lider->empleado->cargo->area->empresa->nombres:''}}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <small id="helpId" class="form-text text-muted">Lider Proyecto</small>
+                                </div>
+                                <div class="col-12 col-md-4 form-group">
+                                    <label class="requerido" for="titulo">Titulo Proyecto</label>
+                                    <input type="text" class="form-control form-control-sm" name="titulo" id="titulo" value="{{ old('titulo', $proyecto->titulo ?? '') }}" aria-describedby="helpId" onkeyup="mayus(this);" required>
+                                    <small id="helpId" class="form-text text-muted">Titulo Proyecto</small>
+                                </div>
+                                <div class="col-12 form-group">
+                                    <label class="requerido" for="titulo">Objetivo del Proyecto</label>
+                                    <textarea class="form-control form-control-sm" id="objetivo" name="objetivo" rows="3"
+                                        placeholder="Ingrese el objetivo de proyecto" required>{{ old('objetivo', $proyecto->objetivo ?? '') }}</textarea>
+                                    <small id="helpId" class="form-text text-muted">Objetivo del Proyecto</small>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6><strong>Componente Financiero</strong> (opcional)</h6>
+                                </div>
+                                <div class="col-12 col-md-2 form-group">
+                                    <label for="presupuesto">Presupuesto</label>
+                                    <span class="form-control form-control-sm text-end">$ {{number_format($proyecto->presupuesto,2,',','.')}}</span>
+                                    <small id="helpId" class="form-text text-muted">Presupuesto inicial del proyecto</small>
+                                </div>
+                                <div class="col-12 col-md-2 form-group">
+                                    <label for="adicion">Modificación Presupuestal</label>
+                                    <input type="number" value="0.00" step="0.01" class="form-control form-control-sm text-end" name="adicion" id="adicion">
+                                    <small id="helpId" class="form-text text-muted">Cambio Presupuestal</small>
+                                </div>
+                                <div class="col-12 col-md-4 form-group d-none" id="caja_justificacion">
+                                    <label for="justificacion">Justificación de la adición</label>
+                                    <textarea class="form-control form-control-sm" id="justificacion" name="justificacion" rows="2"
+                                        placeholder="Ingrese la justificación de la adicion" style="resize: none;"></textarea>
+                                    <small id="helpId" class="form-text text-muted">Justificación de la adición</small>
+                                </div>
+                            </div>
+                            <hr>
+                            <!-- /.card-body -->
+                            <div class="row mt-5">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary btn-sm btn-sombra pl-4 pr-4">Guardar</button>
+                                </div>
+                            </div>
+                            <!-- /.card-footer -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+<!-- ************************************************************* -->
+<!-- script hoja -->
+@section('scripts_pagina')
+<script src="{{ asset('js/intranet/proyectos/proyecto/editar.js') }}"></script>
+@endsection
+<!-- ************************************************************* -->

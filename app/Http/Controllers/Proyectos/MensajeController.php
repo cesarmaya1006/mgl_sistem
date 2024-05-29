@@ -18,8 +18,8 @@ class MensajeController extends Controller
                 $usuarios = ConfigUsuario::get();
             } else {
                 $config_empresa_id = $usuario->config_empresa_id;
-                $usuarios1 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id', $config_empresa_id)->where('estado', 1)->where('lider', 1)->get();
-                $usuarios2 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id', '!=', $config_empresa_id)->where('estado', 1)->where('lider', 1)->whereHas('empresas_tranv', function ($q) use ($config_empresa_id) {
+                $usuarios1 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id', $config_empresa_id)->where('estado', 1)->get();
+                $usuarios2 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id', '!=', $config_empresa_id)->where('estado', 1)->whereHas('empresas_tranv', function ($q) use ($config_empresa_id) {
                     $q->where('config_empresa_id', $config_empresa_id);
                 })->get();
                 $usuarios = $usuarios1->concat($usuarios2);

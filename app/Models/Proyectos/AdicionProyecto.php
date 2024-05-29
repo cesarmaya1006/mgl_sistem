@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class Componente extends Model
+class AdicionProyecto extends Model
 {
     use HasFactory,Notifiable;
-    protected $table = 'proy_componentes';
+    protected $table = 'adicionpresproy';
     protected $guarded = [];
     //--------------------------------------------------------------------------------
     public function proyecto()
@@ -21,19 +21,7 @@ class Componente extends Model
     //--------------------------------------------------------------------------------
     public function responsable()
     {
-        return $this->belongsTo(ConfigUsuario::class, 'config_usuario_id', 'id');
+        return $this->belongsTo(ConfigUsuario::class, 'usuario_id', 'id');
     }
     //--------------------------------------------------------------------------------
-    //----------------------------------------------------------------------------------
-    public function tareas()
-    {
-        return $this->hasMany(Tarea::class, 'proy_componentes_id', 'id');
-    }
-    //----------------------------------------------------------------------------------
-    //----------------------------------------------------------------------------------
-    public function adiciones()
-    {
-        return $this->hasMany(AdicionComponente::class, 'componente_id', 'id');
-    }
-    //----------------------------------------------------------------------------------
 }

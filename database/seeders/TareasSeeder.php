@@ -62,13 +62,16 @@ class TareasSeeder extends Seeder
                     }
                     $config_usuario_id = intval(rand($empleados->min('id'), $empleados->max('id')));
                     $id++;
+
+                    $fec_creacion = '2024-'.rand(date("m", strtotime($componente->fec_creacion)), date("m", strtotime(date('Y-m-d')))).'-'.rand(date("m", strtotime($componente->fec_creacion)),28) ;
+
                     array_push($datas, [
                         'id' => $id,
                         'proy_componentes_id' => intval($componente->id),
                         'config_usuario_id' => $config_usuario_id,
                         'titulo' => 'Tarea de calibración impacto componente ' . $i . ' impacto: ' . $impacto . ' valor numerico: ' . $impacto_num,
-                        'fec_creacion' => '2024-04-' . rand(1, 11),
-                        'fec_limite' => '2024-' . rand(4, 5) . '-' . rand(12, 28),
+                        'fec_creacion' => $fec_creacion,
+                        'fec_limite' => date("Y-m-d",strtotime($fec_creacion."+ ".rand(10,50)." days")) ,
                         'objetivo' => 'Calibrar las tareas del proyecto, los componentes y las tareas segun el impacto ' . 'Tarea de calibración impacto componente ' . $i . ' impacto: ' . $impacto . ' valor numerico: ' . $impacto_num,
                         'impacto' => $impacto,
                         'impacto_num' => $impacto_num,

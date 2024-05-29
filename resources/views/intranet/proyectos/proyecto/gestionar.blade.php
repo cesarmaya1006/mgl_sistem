@@ -128,21 +128,36 @@
                         <hr>
                             <div class="row" style="font-size: 0.9em">
                                 <div class="col-12 col-md-4">
+                                    @if ($proyecto->adiciones->count()>0)
+                                        <div class="row">
+                                            <div class="col-7 col-md-8 text-right"><strong>Presupuesto total del proyecto:</strong></div>
+                                            <div class="col-5 col-md-4 text-right text-md-left">{{ '$ ' . number_format(($proyecto->presupuesto + $proyecto->adiciones->sum('adicion')), 2, ',', '.') }}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-7 col-md-8 text-right"><strong>Presupuesto inicial del proyecto:</strong></div>
+                                            <div class="col-5 col-md-4 text-right text-md-left">{{ '$ ' . number_format($proyecto->presupuesto, 2, ',', '.') }}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-7 col-md-8 text-right"><strong>Adiciones al presupuesto del proyecto:</strong></div>
+                                            <div class="col-5 col-md-4 text-right text-md-left">{{ '$ ' . number_format($proyecto->adiciones->sum('adicion'), 2, ',', '.') }}</div>
+                                        </div>
+                                    @else
+                                        <div class="row">
+                                            <div class="col-7 col-md-8 text-right"><strong>Presupuesto total del proyecto:</strong></div>
+                                            <div class="col-5 col-md-4 text-right text-md-left">{{ '$ ' . number_format($proyecto->presupuesto, 2, ',', '.') }}</div>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="col-12 col-md-4">
                                      <div class="row">
-                                        <div class="col-8 col-md-5 text-right"><strong>Presupuesto del Proyecto:</strong></div>
-                                        <div class="col-4 col-md-7">{{ '$ ' . number_format($proyecto->presupuesto, 2, ',', '.') }}</div>
+                                        <div class="col-8 col-md-8 text-right"><strong>Ejecución del presupuesto:</strong></div>
+                                        <div class="col-4 col-md-4">{{ '$ ' . number_format($proyecto->ejecucion, 2, ',', '.') }}</div>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-4">
                                      <div class="row">
-                                        <div class="col-8 col-md-5 text-right"><strong>Ejecución del presupuesto:</strong></div>
-                                        <div class="col-4 col-md-7">{{ '$ ' . number_format($proyecto->ejecucion, 2, ',', '.') }}</div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-4">
-                                     <div class="row">
-                                        <div class="col-8 col-md-5 text-right"><strong>Porcentaje de ejecución:</strong></div>
-                                        <div class="col-4 col-md-7">{{ number_format($proyecto->porc_ejecucion, 2, ',', '.') }} %</div>
+                                        <div class="col-8 col-md-9 text-right"><strong>Porcentaje de ejecución:</strong></div>
+                                        <div class="col-4 col-md-3">{{ number_format($proyecto->porc_ejecucion, 2, ',', '.') }} %</div>
                                     </div>
                                 </div>
                             </div>
@@ -155,6 +170,12 @@
                                         <i class="fas fa-file-download mr-3" aria-hidden="true"></i>
                                         Exportar Informe
                                     </a>
+                                    @if ($proyecto->config_usuario_id==session('id_usuario')||session('rol.id')<4)
+                                    <a href="{{route('proyecto.edit',['id' => $proyecto->id])}}" class="btn btn-warning btn-xs btn-sombra mr-3 pl-3 pr-5 float-md-end">
+                                        <i class="fas fa-edit mr-3" aria-hidden="true"></i>
+                                        Editar Proyecto
+                                    </a>
+                                    @endif
                                 </div>
                             </div>
                         @endif
@@ -264,6 +285,12 @@
                                             <div class="row mb-5">
                                                 <div class="col-12">
                                                     <h6><strong>{{$componente->titulo}}</strong></h6>
+                                                    @if ($proyecto->config_usuario_id==session('id_usuario')||session('rol.id')<4)
+                                                        <a href="{{route('componente.edit',['id' => $componente->id])}}" class="btn btn-warning btn-xs btn-sombra mr-3 pl-3 pr-5 float-md-end">
+                                                            <i class="fas fa-edit mr-3" aria-hidden="true"></i>
+                                                            Editar Componente
+                                                        </a>
+                                                    @endif
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -281,7 +308,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-4 text-right"><strong>Fecha d creación:</strong></div>
+                                                        <div class="col-4 text-right"><strong>Fecha de creación:</strong></div>
                                                         <div class="col-8">{{ $componente->fec_creacion }}</div>
                                                     </div>
                                                     <div class="row">
@@ -297,7 +324,7 @@
                                                     <div class="row">
                                                         <div class="col-4 text-right"><strong>Porcentaje de avance:</strong></div>
                                                         <div class="col-8">
-                                                            {{ number_format(intval($componente->progreso), 2, ',', '.') }} %</div>
+                                                            {{ number_format(doubleval($componente->progreso), 2, ',', '.') }} %</div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-4 text-right"><strong>Objetivo:</strong></div>
@@ -310,11 +337,26 @@
                                             @if ($proyecto->presupuesto>0)
                                             <hr>
                                             <div class="row" style="font-size: 0.9em">
-                                                <div class="col-12 col-md-4">
+                                                <div class="col-12 col-md-5">
+                                                    @if ($componente->adiciones->count()>0)
                                                     <div class="row">
-                                                        <div class="col-7 col-md-5 text-right"><strong>Presupuesto del Componente:</strong></div>
+                                                        <div class="col-7 col-md-5 text-right"><strong>Presupuesto total del Componente:</strong></div>
+                                                        <div class="col-5 col-md-7 text-right text-md-left">{{ '$ ' . number_format(($componente->presupuesto + $componente->adiciones->sum('adicion')), 2, ',', '.') }}</div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-7 col-md-5 text-right"><strong>Presupuesto inicial del Componente:</strong></div>
                                                         <div class="col-5 col-md-7 text-right text-md-left">{{ '$ ' . number_format($componente->presupuesto, 2, ',', '.') }}</div>
                                                     </div>
+                                                    <div class="row">
+                                                        <div class="col-7 col-md-5 text-right"><strong>Adiciones al presupuesto del Componente:</strong></div>
+                                                        <div class="col-5 col-md-7 text-right text-md-left">{{ '$ ' . number_format($componente->adiciones->sum('adicion'), 2, ',', '.') }}</div>
+                                                    </div>
+                                                    @else
+                                                    <div class="row">
+                                                        <div class="col-7 col-md-5 text-right"><strong>Presupuesto total del Componente:</strong></div>
+                                                        <div class="col-5 col-md-7 text-right text-md-left">{{ '$ ' . number_format($componente->presupuesto, 2, ',', '.') }}</div>
+                                                    </div>
+                                                    @endif
                                                 </div>
                                                 <div class="col-12 col-md-4">
                                                     <div class="row">
@@ -322,7 +364,7 @@
                                                         <div class="col-5 col-md-7 text-right text-md-left">{{ '$ ' . number_format($componente->ejecucion, 2, ',', '.') }}</div>
                                                     </div>
                                                 </div>
-                                                <div class="col-12 col-md-4">
+                                                <div class="col-12 col-md-3">
                                                     <div class="row">
                                                         <div class="col-7 col-md-5 text-right"><strong>Porcentaje de ejecución:</strong></div>
                                                         <div class="col-5 col-md-7 text-right text-md-left">{{ number_format($componente->porc_ejecucion, 2, ',', '.') }} %</div>

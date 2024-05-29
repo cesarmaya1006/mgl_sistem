@@ -27,7 +27,7 @@ class ProyectosSeeder extends Seeder
         $datas = [
             [
                 'titulo' => 'Proyecto de Prueba',
-                'fec_creacion' => '2024-04-04',
+                'fec_creacion' => '2024-04-01',
                 'objetivo' => 'Objetivo de prueba para proyecto seeder',
                 'config_empresa_id' => 1,
                 'config_usuario_id' => 4,
@@ -35,10 +35,10 @@ class ProyectosSeeder extends Seeder
             ],
             [
                 'titulo' => 'Manejo de Presupuestos',
-                'fec_creacion' => '2024-04-14',
+                'fec_creacion' => '2024-04-01',
                 'objetivo' => 'Proyecto para monimoterear los presupuestos',
                 'config_empresa_id' => 1,
-                'config_usuario_id' => 4,
+                'config_usuario_id' => 9,
                 'presupuesto' => 30000000,
             ],
         ];

@@ -72,7 +72,7 @@ class ComponentesSeeder extends Seeder
                     $presupuesto_proyecto_asignado += $presupuesto;
                     $titulo = 'Calibración presupuestos ' . $i . ' presupuesto: $ ' . number_format($presupuesto,2);
                     $objetivo = 'Verificar el manejo de los presupuesto del componente '. $i . 'asociados al valor de presupuesto : $ '.  number_format($presupuesto,2);
-                    $fec_creacion = '2024-04-' . rand(14, 23);
+                    $fec_creacion = '2024-'.rand(4, 5).'-' . rand(1, 20);
                 }
                 array_push($datas, [
                     'proyectos_id' => intval($proyecto->id),

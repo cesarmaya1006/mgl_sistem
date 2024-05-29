@@ -37,5 +37,10 @@ class Proyecto extends Model
         return $this->hasMany(Componente::class, 'proyectos_id', 'id');
     }
     //----------------------------------------------------------------------------------
+    public function adiciones()
+    {
+        return $this->hasMany(AdicionProyecto::class, 'proyectos_id', 'id');
+    }
+    //----------------------------------------------------------------------------------
 
 }

@@ -179,6 +179,8 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
             Route::get('proyecto_avance_comp/{id}', 'proyecto_avance_comp')->name('proyecto.proyecto_avance_comp');
             Route::get('proyecto_presupuesto_comp/{id}', 'proyecto_presupuesto_comp')->name('proyecto.proyecto_presupuesto_comp');
             Route::get('expotar_informeproyecto/{id}', 'expotar_informeproyecto')->name('proyecto.expotar_informeproyecto');
+            Route::get('editar/{id}', 'edit')->name('proyecto.edit');
+            Route::put('actualizar/{id}', 'update')->name('proyecto.update');
 
         });
         // ----------------------------------------------------------------------------------------
@@ -187,6 +189,8 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         Route::controller(ComponenteController::class)->prefix('componentes')->group(function () {
             Route::get('crear/{proyectos_id}', 'create')->name('componente.create');
             Route::post('guardar', 'store')->name('componente.store');
+            Route::get('editar/{id}', 'edit')->name('componente.edit');
+            Route::put('actualizar/{id}', 'update')->name('componente.update');
         });
         // ----------------------------------------------------------------------------------------
         // Ruta tareas

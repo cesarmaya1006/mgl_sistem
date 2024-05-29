@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Configuracion\ConfigApariencia;
 use App\Models\Configuracion\ConfigUsuario;
 use App\Models\Configuracion\GrupoEmpresa;
+use App\Models\Proyectos\AdicionProyecto;
 use App\Models\Proyectos\Notificacion;
 use App\Models\Proyectos\Proyecto;
 use App\Models\Proyectos\Tarea;
@@ -131,17 +132,46 @@ class ProyectoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Proyecto $proyecto)
+    public function edit($id)
     {
-        //
+        $proyecto = Proyecto::findOrFail($id);
+        if (session('rol_id') < 3) {
+            $grupos = GrupoEmpresa::get();
+            return view('intranet.proyectos.proyecto.editar', compact('grupos','proyecto'));
+        } else {
+            $usuario = ConfigUsuario::findOrFail(session('id_usuario'));
+            $config_empresa_id = $usuario->config_empresa_id;
+            $lideres1 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id', $config_empresa_id)->where('estado', 1)->where('lider', 1)->get();
+            $lideres2 = ConfigUsuario::with('empleado.cargo.area.empresa')->where('config_empresa_id', '!=', $config_empresa_id)->where('estado', 1)->where('lider', 1)->whereHas('empresas_tranv', function ($q) use ($config_empresa_id) {
+                $q->where('config_empresa_id', $config_empresa_id);
+            })->get();
+            $lideres = $lideres1->concat($lideres2);
+            return view('intranet.proyectos.proyecto.editar', compact('usuario', 'lideres','proyecto'));
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Proyecto $proyecto)
+    public function update(Request $request, $id)
     {
-        //
+        $proy_update['config_usuario_id'] = $request['config_usuario_id'];
+        $proy_update['titulo'] = $request['titulo'];
+        $proy_update['objetivo'] = $request['objetivo'];
+        $proyecto = Proyecto::findOrfail($id);
+        $proyecto->update($proy_update);
+        //-----------------------------------------------------------------------------------
+        $this->actualizar_miembros_proyecto($proyecto, $request['config_usuario_id']);
+        //-----------------------------------------------------------------------------------
+        if (doubleval($request['adicion'])!= 0) {
+            $adicion_new['usuario_id'] = session('id_usuario');
+            $adicion_new['proyectos_id'] = $proyecto->id;
+            $adicion_new['adicion'] = doubleval($request['adicion']);
+            $adicion_new['fecha'] = date('Y-m-d');
+            $adicion_new['justificacion'] = $request['justificacion'];
+            AdicionProyecto::create($adicion_new);
+        }
+        return redirect('/dashboard/proyectos/gestion/'.$id)->with('mensaje', 'Proyecto actualizado con exito');
     }
 
     /**

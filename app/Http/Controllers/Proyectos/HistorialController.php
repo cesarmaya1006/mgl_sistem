@@ -90,7 +90,7 @@ class HistorialController extends Controller
 
             $proyecto = Proyecto::findOrFail($componente->proyectos_id);
             $proyectoUpdate['ejecucion'] = $request['costo'] + $proyecto->ejecucion;
-            $proyectoUpdate['porc_ejecucion'] = (($request['costo'] + $proyecto->ejecucion) * 100) / $proyecto->presupuesto;
+            $proyectoUpdate['porc_ejecucion'] = (($request['costo'] + $proyecto->ejecucion) * 100) / ($proyecto->presupuesto + $proyecto->adiciones->sum('adicion'));
             Proyecto::findOrFail($componente->proyectos_id)->update($proyectoUpdate);
         }
         $this->modificarprogresos($request['progreso'], $request['proy_tareas_id']);
