@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Seguridad;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Seguridad\LoginRequest;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException as ValidationValidationException;
 
 class LoginController extends Controller
 {
@@ -32,6 +34,17 @@ class LoginController extends Controller
         return back()->withErrors(['email' => 'Las credenciales proporcionadas no coinciden con nuestros registros.',])->onlyInput('email');
     }
 
+    //****************************************************************************************** */
+    public function login_api (LoginRequest $request){
+        if (Auth::attempt($request->only('email','password'))) {
+            $usuario = Auth::user();
+            $token = $usuario->createToken('Token Name')->accessToken;
+            return response()->json(['token' => $token],200);
+        } else {
+            throw ValidationValidationException::withMessages(['email' => 'Credenciales Invalidas']);
+        }
+
+    }
     //****************************************************************************************** */
     public function verificarUsuarioRol($usuario, $request){
         $usuario->setSession();
