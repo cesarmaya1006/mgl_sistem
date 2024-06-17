@@ -56,8 +56,7 @@
             </div>
         </li>
         <!-- Notifications Dropdown Menu -->
-        <input type="hidden" id="input_notificaiones"
-            data_url="{{ route('notificacion.getnotificaciones', ['id' => session('id_usuario')]) }}">
+        <input type="hidden" id="input_notificaiones" data_url="{{ route('notificacion.getnotificaciones', ['id' => session('id_usuario')]) }}">
         <input type="hidden" id="readnotificaciones" data_url="{{ route('notificacion.readnotificaciones') }}">
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
