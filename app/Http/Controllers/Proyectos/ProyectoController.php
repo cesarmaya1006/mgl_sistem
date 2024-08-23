@@ -125,6 +125,7 @@ class ProyectoController extends Controller
      */
     public function show(Request $request, $id)
     {
+        dd('sip');
         $proyecto = Proyecto::findOrfail($id);
         return view('intranet.proyectos.proyecto.detalle', compact('proyecto'));
     }
